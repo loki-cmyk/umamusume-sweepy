@@ -241,8 +241,10 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             energy = read_energy()
         if energy > 0 and energy < 33:
             if should_use_pal_outing_simple(ctx):
+                log.info(f"Energy at {energy}, decision made to use pal card recreation.")
                 ctx.ctrl.click_by_point(get_trip(ctx))
             else:
+                log.info(f"Energy at {energy}, decision made to rest.")
                 ctx.ctrl.click_by_point(CULTIVATE_REST)
             return
 
@@ -265,10 +267,22 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 energy = read_energy()
         if is_mant(ctx) and energy <= limit:
             ctx.cultivate_detail.turn_info.cached_energy = energy
+            log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), check if we have items to use.")
             if has_extra_race:
                 from module.umamusume.scenario.mant.inventory import has_energy_recovery
                 if has_energy_recovery(ctx):
+                    log.info("Checking training since we have energy recovery items.")
                     ctx.cultivate_detail.turn_info.energy_recovery_deferred = True
+                else:
+                    # FIXME: This block handles the case where the bot would otherwise decide to rest below because we don't have enough energy to 
+                    # check training. Instead, we forcibly kick it over to the race screen so it decides to race instead. This doesn't
+                    # always happen but I can't find the bug in the handle_mant_main_menu call that is causing this. We could maybe send it over
+                    # to the Shop or some other screen but there's a risk it would get stuck an infinte loop. Needs to be properly fixed.
+                    log.info("Not enough energy to train, so prioritizing racing.")
+                    ctx.cultivate_detail.turn_info.parse_train_info_finish = True
+                    is_summer = is_summer_camp_period(ctx.cultivate_detail.turn_info.date)
+                    ctx.ctrl.click_by_point(get_race(ctx, summer=is_summer))
+                    return
             else:
                 from module.umamusume.scenario.mant.inventory import handle_energy_recovery
                 if handle_energy_recovery(ctx):
@@ -276,18 +290,23 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         if energy <= limit:
             if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False):
                 base_energy, _, _ = scan_energy(ctx.ctrl)
+                log.info("Energy items available, checking training first.")
                 ctx.cultivate_detail.turn_info.base_energy = base_energy
                 ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
                 return
             if should_use_team_sirius_recreation(ctx):
                 if execute_team_sirius_recreation(ctx, trip_click_point=get_trip(ctx)):
+                    log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to use Team Sirius recreation.")
                     return
             if getattr(ctx.cultivate_detail, 'team_sirius_enabled', False):
                 if execute_regular_recreation(ctx, trip_click_point=get_trip(ctx)):
+                    log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to use regular recreation.")
                     return
             if should_use_pal_outing_simple(ctx):
+                log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to use pal card recreation.")
                 ctx.ctrl.click_by_point(get_trip(ctx))
             else:
+                log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to rest.")
                 ctx.ctrl.click_by_point(CULTIVATE_REST)
             return
         else:
