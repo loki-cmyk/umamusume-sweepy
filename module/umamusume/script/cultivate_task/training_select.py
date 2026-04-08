@@ -983,10 +983,61 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
     if op is not None and op.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_TRAINING:
         try:
             if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_MANT:
-                if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False):
-                    from module.umamusume.scenario.mant.inventory import handle_energy_recovery
-                    handle_energy_recovery(ctx)
+                selected_idx = op.training_type.value - 1
+                selected_til = ctx.cultivate_detail.turn_info.training_info_list[selected_idx]
+                selected_fr = int(getattr(selected_til, 'failure_rate', -1))
+                if selected_fr == 0:
+                    training_name = TRAINING_NAMES[selected_idx] if 0 <= selected_idx < len(TRAINING_NAMES) else f"idx={selected_idx}"
+                    log.info(f"Selected {training_name} training has 0% failure rate - skipping energy items checks")
                     ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
+
+                if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False):
+                    from module.umamusume.scenario.mant.inventory import get_best_percentile, handle_energy_recovery
+                    from module.umamusume.constants.game_constants import is_summer_camp_period as _is_summer
+
+                    _date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
+                    percentile = get_best_percentile(ctx)
+                    energy_pct_threshold = 35  # TODO: make configureable
+
+                    use_items = False
+                    if _is_summer(_date):
+                        log.info("Summer camp period - always using energy items")
+                        use_items = True
+                    elif percentile is not None and percentile >= energy_pct_threshold:
+                        log.info(f"Training quality good (pct={percentile:.0f}% >= {energy_pct_threshold}%) - using energy items")
+                        use_items = True
+                    elif percentile is None:
+                        log.info("Not enough data for percentile - skipping energy items")
+                    else:
+                        log.info(f"Training quality poor (pct={percentile:.0f}% < {energy_pct_threshold}%) - skipping energy items")
+
+                    ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
+
+                    if use_items:
+                        handle_energy_recovery(ctx)
+                    else:
+                        # Training not good enough to justify using items - fall back to race/outing/rest
+                        available_races = getattr(ctx.cultivate_detail.turn_info, 'cached_available_races', [])
+                        extra_race_this_turn = [rid for rid in ctx.cultivate_detail.extra_race_list if rid in available_races]
+                        if extra_race_this_turn:
+                            log.info(f"Skipping energy items - racing instead (race {extra_race_this_turn[0]})")
+                            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
+                            op.race_id = extra_race_this_turn[0]
+                            ctx.cultivate_detail.turn_info.turn_operation = op
+                            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                            return
+                        elif should_use_pal_outing_simple(ctx):
+                            log.info("Skipping energy items - using pal outing instead")
+                            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
+                            ctx.cultivate_detail.turn_info.turn_operation = op
+                            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                            return
+                        else:
+                            log.info("Skipping energy items - resting instead")
+                            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
+                            ctx.cultivate_detail.turn_info.turn_operation = op
+                            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                            return
 
                 ctx.cultivate_detail.turn_info._pre_item_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
                 ctx.cultivate_detail.turn_info._pre_item_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
