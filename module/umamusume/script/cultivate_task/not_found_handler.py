@@ -227,6 +227,5 @@ def script_not_found_ui(ctx: UmamusumeContext):
         pass
 
     log.debug("No specific UI detected - using default fallback click")
-    # Click center-bottom area (standard "Next/Continue" button zone)
-    x, y = random.randint(365, 420), random.randint(1050, 1150)
+    x, y = random.randint(0, 111), random.randint(1, 6)
     ctx.ctrl.click(x, y, "Default fallback click")
