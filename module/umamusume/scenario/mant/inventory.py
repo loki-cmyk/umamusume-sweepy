@@ -1259,7 +1259,7 @@ def whistle_loop(ctx, start_date):
     return True
 
 
-def handle_cupcake_use(ctx):
+def handle_cupcake_use(ctx, for_training=False):
     from module.umamusume.scenario.mant.constants import get_incoming_mood
 
     cached_mood = getattr(ctx.cultivate_detail.turn_info, 'cached_mood', None)
@@ -1269,6 +1269,9 @@ def handle_cupcake_use(ctx):
         from bot.conn.fetch import read_mood
         mood = read_mood(ctx.current_screen)
     if mood is None or mood >= 5:
+        return False
+    # In MANT we get mood ups from racing, only use cupcakes if mood is too low
+    if not for_training and mood >= 3:
         return False
 
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
@@ -1642,6 +1645,7 @@ def item_loop(ctx):
     if whistle_used:
         return
 
+    handle_cupcake_use(ctx, for_training=True)
     handle_megaphone(ctx)
     handle_anklet(ctx)
     
