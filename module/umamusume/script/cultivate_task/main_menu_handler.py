@@ -398,11 +398,10 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                         ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
             else:
                 if is_mant(ctx) and race_id == 0:
-                    log.info("Bot thinks we're in a Climax race but we're not, going to training instead.")
+                    log.info("Bot thinks we're in a Climax race but we're not, resetting to run MANT flow.")
                     ctx.cultivate_detail.turn_info.turn_operation = None
-                    base_energy, _, _ = scan_energy(ctx.ctrl)
-                    ctx.cultivate_detail.turn_info.base_energy = base_energy
-                    ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
+                    ctx.cultivate_detail.turn_info.parse_train_info_finish = False
+                    ctx.cultivate_detail.turn_info.parse_main_menu_finish = False
                     return
                 log.info(f"Proceeding with race operation (race_id: {race_id})")
                 ti = ctx.cultivate_detail.turn_info
