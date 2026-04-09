@@ -497,15 +497,18 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
 
     mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
     if mant_cfg and mant_cfg.item_tiers:
-        expiring = {name for name, _, _, turns, buyable in shop_items
-                    if turns == 1 and buyable}
-        if expiring:
+        buy_stat_early = getattr(mant_cfg, 'buy_stat_items_early', True)
+        stat_kw = ("Notepad", "Manual", "Scroll")
+        
+        items = {name for name, _, _, turns, buyable in shop_items
+                 if buyable and (turns == 1 or (buy_stat_early and any(kw in name for kw in stat_kw)))}
+        if items:
             shop_slugs = {display_to_slug(n) for n, _, _, _, buyable in shop_items
                           if buyable}
-            expiring_counts = {}
+            item_counts = {}
             for name, _, _, turns, buyable in shop_items:
-                if name in expiring and buyable:
-                    expiring_counts[name] = expiring_counts.get(name, 0) + 1
+                if name in items and buyable:
+                    item_counts[name] = item_counts.get(name, 0) + 1
             from module.umamusume.constants.game_constants import SUMMER_CAMP_2_END
             post_senior_summer = current_date > SUMMER_CAMP_2_END
 
@@ -528,9 +531,9 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
         
             if bbq_eff_em is not None and bbq_eff_em <= 0 and not ignore_grilled_carrots_em:
                 bbq_display_em = SLUG_TO_DISPLAY.get("grilled_carrots")
-                if bbq_display_em and bbq_display_em in expiring and bbq_display_em in shop_slugs:
+                if bbq_display_em and bbq_display_em in items and bbq_display_em in shop_slugs:
                     cost_em = SHOP_ITEM_COSTS.get(bbq_display_em, 9999)
-                    copies_em = expiring_counts.get(bbq_display_em, 0)
+                    copies_em = item_counts.get(bbq_display_em, 0)
                     for _ in range(copies_em):
                         if tmp_budget - cost_em < 0:
                             break
@@ -551,7 +554,7 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
                     if effective_tier_em != tier or slug not in shop_slugs:
                         continue
                     display = SLUG_TO_DISPLAY.get(slug)
-                    if not display or display not in expiring:
+                    if not display or display not in items:
                         continue
                     if display in set(AILMENT_CURE_MAP.values()) or display == AILMENT_CURE_ALL:
                         continue
@@ -565,7 +568,7 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
                             continue
 
                     cost = SHOP_ITEM_COSTS.get(display, 9999)
-                    copies = expiring_counts.get(display, 0)
+                    copies = item_counts.get(display, 0)
                     if copies <= 0:
                         continue
 

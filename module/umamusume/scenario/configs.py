@@ -39,6 +39,7 @@ class MantConfig:
     reserve_megaphones_for_summer: bool
     buy_first_megaphone: bool
     recovery_pct_threshold: int
+    buy_stat_items_early: bool
 
     def __init__(self, config: dict):
         self.item_tiers = config.get("item_tiers", {})
@@ -63,6 +64,7 @@ class MantConfig:
         self.reserve_megaphones_for_summer = config.get("reserve_megaphones_for_summer", True)
         self.buy_first_megaphone = config.get("buy_first_megaphone", True)
         self.recovery_pct_threshold = config.get("recovery_pct_threshold", 35)
+        self.buy_stat_items_early = config.get("buy_stat_items_early", True)
 
 class ScenarioConfig:
     aoharu_config: AoharuConfig = None
