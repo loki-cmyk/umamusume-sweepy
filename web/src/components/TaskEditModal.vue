@@ -2096,8 +2096,8 @@ export default {
       this.loadEventList();
     }
         this.mantItemTiers = this.mantGetDefaultTiers();
-        this.mantTierCount = 8;
-        this.mantTierThresholds = {"3":51,"7":300,"8":99999999999};
+        this.mantTierCount = 5;
+        this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
   },
   data: function () {
     return {
@@ -2139,7 +2139,7 @@ export default {
       fujikisekiShowDifficulty: 1,
       mantDragOverTier: null,
       mantDragItemId: null,
-      mantTierCount: 8,
+      mantTierCount: 5,
       mantItemIds: [
         'speed_notepad','speed_manual','speed_scroll',
         'stamina_notepad','stamina_manual','stamina_scroll',
@@ -2171,7 +2171,7 @@ export default {
       mantCharmThreshold: 40,
       mantCharmFailureRate: 21,
       mantSkipRacePercentile: 0,
-      mantTierThresholds: {"3":51,"7":300,"8":99999999999},
+      mantTierThresholds: {"2":15,"3":40,"4":100,"5":9999},
       levelDataList: [],
       umamusumeTaskTypeList: [
         {
@@ -3434,22 +3434,22 @@ export default {
     },
     mantGetDefaultTiers() {
       const defaults = {
-        speed_notepad: 6, speed_manual: 2, speed_scroll: 1,
-        stamina_notepad: 6, stamina_manual: 2, stamina_scroll: 1,
-        power_notepad: 6, power_manual: 2, power_scroll: 1,
-        guts_notepad: 6, guts_manual: 2, guts_scroll: 1,
-        wit_notepad: 6, wit_manual: 2, wit_scroll: 1,
-        vita_20: 3, vita_40: 2, vita_65: 2,
-        royal_kale_juice: 3, energy_drink_max: 6, energy_drink_max_ex: 7,
-        plain_cupcake: 3, berry_sweet_cupcake: 4, yummy_cat_food: 7, grilled_carrots: 4,
-        pretty_mirror: 7, reporters_binoculars: 8, master_practice_guide: 7, scholars_hat: 6,
-        fluffy_pillow: 7, pocket_planner: 7, rich_hand_cream: 5, smart_scale: 7,
-        aroma_diffuser: 7, practice_drills_dvd: 8, miracle_cure: 5,
-        speed_training_application: 7, stamina_training_application: 7, power_training_application: 7, guts_training_application: 7, wit_training_application: 7,
+        speed_notepad: 4, speed_manual: 2, speed_scroll: 1,
+        stamina_notepad: 4, stamina_manual: 2, stamina_scroll: 1,
+        power_notepad: 4, power_manual: 2, power_scroll: 1,
+        guts_notepad: 4, guts_manual: 2, guts_scroll: 1,
+        wit_notepad: 4, wit_manual: 2, wit_scroll: 1,
+        vita_20: 2, vita_40: 2, vita_65: 2,
+        royal_kale_juice: 3, energy_drink_max: 5, energy_drink_max_ex: 5,
+        plain_cupcake: 3, berry_sweet_cupcake: 3, yummy_cat_food: 5, grilled_carrots: 3,
+        pretty_mirror: 4, reporters_binoculars: 5, master_practice_guide: 5, scholars_hat: 4,
+        fluffy_pillow: 5, pocket_planner: 5, rich_hand_cream: 3, smart_scale: 5,
+        aroma_diffuser: 5, practice_drills_dvd: 5, miracle_cure: 3,
+        speed_training_application: 5, stamina_training_application: 5, power_training_application: 5, guts_training_application: 5, wit_training_application: 5,
         reset_whistle: 1,
-        coaching_megaphone: 3, motivating_megaphone: 3, empowering_megaphone: 3,
-        speed_ankle_weights: 7, stamina_ankle_weights: 7, power_ankle_weights: 7, guts_ankle_weights: 7,
-        'good-luck_charm': 3, artisan_cleat_hammer: 2, master_cleat_hammer: 1, glow_sticks: 8,
+        coaching_megaphone: 5, motivating_megaphone: 3, empowering_megaphone: 2,
+        speed_ankle_weights: 2, stamina_ankle_weights: 5, power_ankle_weights: 5, guts_ankle_weights: 5,
+        'good-luck_charm': 3, artisan_cleat_hammer: 1, master_cleat_hammer: 1, glow_sticks: 5,
       };
       const t = {};
       this.mantGetAllItemIds().forEach(id => { t[id] = defaults[id] ?? 2; });
@@ -4054,7 +4054,7 @@ export default {
       }
       if ('mant_config' in this.presetsUse && this.presetsUse.mant_config.item_tiers) {
         this.mantItemTiers = this.presetsUse.mant_config.item_tiers;
-        this.mantTierCount = this.presetsUse.mant_config.tier_count || 8;
+        this.mantTierCount = this.presetsUse.mant_config.tier_count || 5;
         this.mantNormalizeTiers();
         this.mantWhistleThreshold = this.presetsUse.mant_config.whistle_threshold ?? 20;
         this.mantWhistleFocusSummer = this.presetsUse.mant_config.whistle_focus_summer ?? true;
@@ -4070,11 +4070,11 @@ export default {
         this.mantCharmThreshold = this.presetsUse.mant_config.charm_threshold ?? 40;
         this.mantCharmFailureRate = this.presetsUse.mant_config.charm_failure_rate ?? 21;
         this.mantSkipRacePercentile = this.presetsUse.mant_config.skip_race_percentile ?? 0;
-        this.mantTierThresholds = this.presetsUse.mant_config.tier_thresholds ?? {"3":51,"7":300,"8":99999999999};
+        this.mantTierThresholds = this.presetsUse.mant_config.tier_thresholds ?? {"2":15,"3":40,"4":100,"5":9999};
       } else {
         this.mantItemTiers = this.mantGetDefaultTiers();
-        this.mantTierCount = 8;
-        this.mantTierThresholds = {"3":51,"7":300,"8":99999999999};
+        this.mantTierCount = 5;
+        this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
         this.mantWhistleThreshold = 20;
         this.mantWhistleFocusSummer = true;
         this.mantFocusSummerClassic = 20;
@@ -4272,7 +4272,7 @@ export default {
       }
       if (data.mant_config && data.mant_config.item_tiers) {
         this.mantItemTiers = data.mant_config.item_tiers;
-        this.mantTierCount = data.mant_config.tier_count || 8;
+        this.mantTierCount = data.mant_config.tier_count || 5;
         this.mantNormalizeTiers();
         this.mantWhistleThreshold = data.mant_config.whistle_threshold ?? 20;
         this.mantWhistleFocusSummer = data.mant_config.whistle_focus_summer ?? true;
@@ -4288,11 +4288,11 @@ export default {
         this.mantCharmThreshold = data.mant_config.charm_threshold ?? 40;
         this.mantCharmFailureRate = data.mant_config.charm_failure_rate ?? 21;
         this.mantSkipRacePercentile = data.mant_config.skip_race_percentile ?? 0;
-        this.mantTierThresholds = data.mant_config.tier_thresholds ?? {"3":51,"7":300,"8":99999999999};
+        this.mantTierThresholds = data.mant_config.tier_thresholds ?? {"2":15,"3":40,"4":100,"5":9999};
       } else {
         this.mantItemTiers = this.mantGetDefaultTiers();
-        this.mantTierCount = 8;
-        this.mantTierThresholds = {"3":51,"7":300,"8":99999999999};
+        this.mantTierCount = 5;
+        this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
         this.mantWhistleThreshold = 20;
         this.mantWhistleFocusSummer = true;
         this.mantFocusSummerClassic = 20;

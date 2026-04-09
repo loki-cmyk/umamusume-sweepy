@@ -402,8 +402,10 @@ def script_cultivate_finish(ctx: UmamusumeContext):
         clear_megaphone_state()
     except Exception:
         pass
+    time.sleep(2.0) # sleep in case we enter the final screen too late
     if not ctx.task.detail.manual_purchase_at_end:
         if not ctx.cultivate_detail.cultivate_finish:
+            log.info("Clicking learn skill to purchase skills")
             ctx.cultivate_detail.cultivate_finish = True
             ctx.cultivate_detail.final_skill_sweep_active = True
             ctx.cultivate_detail.learn_skill_done = False
@@ -413,21 +415,17 @@ def script_cultivate_finish(ctx: UmamusumeContext):
         if getattr(ctx.cultivate_detail, "final_skill_sweep_active", False):
             sweep_count = getattr(ctx.cultivate_detail, "final_skill_sweep_count", 0)
             if ctx.cultivate_detail.learn_skill_selected and sweep_count < 2:
+                log.info(f"Sweep count at {sweep_count}, clicking learn skill to purchase skills")
                 ctx.cultivate_detail.final_skill_sweep_count = sweep_count + 1
                 ctx.cultivate_detail.learn_skill_done = False
                 ctx.cultivate_detail.learn_skill_selected = False
                 ctx.ctrl.click_by_point(CULTIVATE_FINISH_LEARN_SKILL)
                 return
             else:
+                log.info("Final sweep is complete, clicking confirm to finish the run")
                 ctx.cultivate_detail.final_skill_sweep_active = False
                 ctx.ctrl.click_by_point(CULTIVATE_FINISH_CONFIRM)
                 return
-    if not ctx.task.detail.manual_purchase_at_end:
-        if not ctx.cultivate_detail.learn_skill_done or not ctx.cultivate_detail.cultivate_finish:
-            ctx.cultivate_detail.cultivate_finish = True
-            ctx.ctrl.click_by_point(CULTIVATE_FINISH_LEARN_SKILL)
-        else:
-            ctx.ctrl.click_by_point(CULTIVATE_FINISH_CONFIRM)
     else:
         if not ctx.cultivate_detail.manual_purchase_completed:
             if not hasattr(ctx.cultivate_detail, 'manual_purchase_initiated'):

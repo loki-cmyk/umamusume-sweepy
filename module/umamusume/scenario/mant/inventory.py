@@ -1434,8 +1434,9 @@ def handle_megaphone(ctx):
     active_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
     active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
 
-    from module.umamusume.constants.game_constants import is_summer_camp_period
+    from module.umamusume.constants.game_constants import is_summer_camp_period, is_after_second_summer_camp
     is_summer = is_summer_camp_period(date)
+    is_after_second_summer = is_after_second_summer_camp(date)
     summer_bonus = getattr(mant_cfg, 'mega_summer_bonus', 10)
     race_penalty = getattr(mant_cfg, 'mega_race_penalty', 5)
 
@@ -1452,6 +1453,13 @@ def handle_megaphone(ctx):
     for name, (tier, duration) in sorted(MEGAPHONE_TIERS.items(), key=lambda x: -x[1][0]):
         if owned_map.get(name, 0) <= 0:
             continue
+
+        if not is_summer and not is_after_second_summer and tier >= 2:
+            best_mega_count = sum(owned_map.get(n, 0) for n, (t, _) in MEGAPHONE_TIERS.items() if t >= 2)
+            if best_mega_count <= 2:
+                log.info(f"Only have {best_mega_count} megaphones, saving for summer camp.")
+                continue
+
         cfg_key = MEGAPHONE_CONFIG_KEYS[tier]
         base_threshold = getattr(mant_cfg, cfg_key, 50)
 

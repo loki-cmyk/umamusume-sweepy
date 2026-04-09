@@ -217,21 +217,21 @@ def handle_mant_shop_scan(ctx, current_date):
         if bought_cures:
             ctx.cultivate_detail._mant_bought_cures_this_cycle = bought_cures
 
-        # On first-ever shop turn (chunk 0, never seen before), ensure Coaching Megaphone
+        # On first-ever shop turn (chunk 0, never seen before), ensure Coaching or Motivating Megaphone
         # is bought if not already covered by tier config
         is_first_shop_turn = (chunk == 0 and last_chunk == -1)
-        coaching_megaphone_name = "Coaching Megaphone"
         coaching_megaphone_forced = False
-        if is_first_shop_turn and coaching_megaphone_name in shop_available:
-            coaching_in_tiers = False
-            if mant_cfg and mant_cfg.item_tiers:
-                tier_val = mant_cfg.item_tiers.get("coaching_megaphone")
-                coaching_in_tiers = tier_val is not None and tier_val <= mant_cfg.tier_count
-            if not coaching_in_tiers and coaching_megaphone_name not in set(priority_targets):
-                cost = SHOP_ITEM_COSTS.get(coaching_megaphone_name, 40)
+        target_megaphone_name = None
+
+        if is_first_shop_turn:
+            log.info("First shop turn: checking for megaphone")
+            target_megaphone_name = next((m for m in ("Coaching Megaphone", "Motivating Megaphone") if m in shop_available), None)
+            if target_megaphone_name and target_megaphone_name not in priority_targets:
+                fallback_cost = 40 if target_megaphone_name == "Coaching Megaphone" else 55
+                cost = SHOP_ITEM_COSTS.get(target_megaphone_name, fallback_cost)
                 if cost <= budget:
-                    log.info("First shop turn: forcing Coaching Megaphone purchase")
-                    priority_targets.insert(0, coaching_megaphone_name)
+                    log.info(f"First shop turn: forcing {target_megaphone_name} purchase")
+                    priority_targets.insert(0, target_megaphone_name)
                     budget -= cost
                     coaching_megaphone_forced = True
 
@@ -410,16 +410,16 @@ def handle_mant_shop_scan(ctx, current_date):
                 else:
                     log.info("Post-purchase check: all planned items found in inventory")
 
-            # If Coaching Megaphone was forcefully added on first shop turn, use it immediately
+            # If Coaching or Motivating Megaphone was forcefully added on first shop turn, use it immediately
             from module.umamusume.scenario.mant.inventory import use_item_and_update_inventory, open_items_panel, close_items_panel
-            if coaching_megaphone_forced:
-                log.info("First shop turn: using Coaching Megaphone immediately")
+            if coaching_megaphone_forced and target_megaphone_name:
+                log.info(f"First shop turn: using {target_megaphone_name} immediately")
                 opened = open_items_panel(ctx)
                 if opened:
-                    if use_item_and_update_inventory(ctx, coaching_megaphone_name):
-                        log.info("First shop turn: Coaching Megaphone used successfully")
+                    if use_item_and_update_inventory(ctx, target_megaphone_name):
+                        log.info(f"First shop turn: {target_megaphone_name} used successfully")
                     else:
-                        log.warning("First shop turn: Coaching Megaphone use failed, reserving in inventory")
+                        log.warning(f"First shop turn: {target_megaphone_name} use failed, reserving in inventory")
                     close_items_panel(ctx)
                 else:
                     log.warning("First shop turn: could not open items panel to use megaphone")

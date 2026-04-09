@@ -12,13 +12,16 @@ URA_QUALIFIER_ID = 2381
 URA_SEMIFINAL_ID = 2382
 URA_FINAL_IDS = (2385, 2386, 2387)
 URA_RACE_IDS = (URA_QUALIFIER_ID, URA_SEMIFINAL_ID) + URA_FINAL_IDS
-
-
 NEW_RUN_DETECTION_DATE = 2
+
 
 def is_summer_camp_period(date):
     return (SUMMER_CAMP_1_START < date <= SUMMER_CAMP_1_END or 
             SUMMER_CAMP_2_START < date <= SUMMER_CAMP_2_END)
+
+
+def is_after_second_summer_camp(date):
+    return date > SUMMER_CAMP_2_END
 
 
 def is_ura_race(race_id):

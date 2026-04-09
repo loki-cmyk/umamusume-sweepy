@@ -1,17 +1,32 @@
 # Sweepy — /vg/'s Uma Musume Bot (UAT REHASHED)
 
-This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). I'm not pulling in most upstream changes by default since most of the time the changes are broken and untested. Feature parity may be delayed or I may not even pull in some changes made if they're too low quality.
+This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). I'm not pulling in most upstream Sweepy changes by default since most of the time the changes are broken and untested. Feature parity may be delayed or I may not even pull in some changes made if they're too low quality. Half the time you're better off not updating from the upstream repo.
 
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations yet.
 
 ## Known Bugs
-- Skills are not being bought at the end of the run always; not consistently happening so hard to fix with the spaghetti code.
-- MANT item use is still terrible, bot will use energy items outside of summer and waste megaphones.
+
+- Skills are sometimes not being bought at the end of the run; happening fairly rarely so hard to fix with the current spaghetti code.
 - Bot is still getting stuck on some screens, fallback should get it unstuck. Terrible event flow code currently.
+- URA/Unity are not tested and may not work. This only works for MANT.
 
-### A umamusume bot that handles all aspects of gameplay including training, races, events, skill purchasing, and starting runs. 
+## Added Features / Changes from core Sweepy
 
-MANT is very far from being complete but it is functional rn and is prob better for parent farming compared to aoharu. The item usage isn't quite there yet but I need people to stress test the groundwork of MANT first (item purchase, inventory detection, using items) only then can I start finetuning the logic
+These features below do not have toggles (yet) because I'm making this for myself since I know what the optimal play pattern is and you can't really trust the bot to be that smart unfortunately so it's better to just idiot proof it instead of trying to make it handle edge cases (we want consistency over high rolls). Here's what's changed so far that's worth noting (this does not include the changes from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy) which were primarily fixes for event handling and the MANT shop):
+
+- Bot will always save two T2/T3 megaphones for summer training instead of wasting them on terrible training.
+- Bot buys the first T1/T2 megaphone on the first shop turn if available and uses it.
+- Bot now checks training **before** using energy items, so it won't waste energy items on bad training (skips training in the bottom 35th percentile).
+- Bot now properly goes to race even if there's no energy items in MANT (this was a bug they wouldn't fix).
+- Reverted some awful code written for template matching that was "faster" but broke randomly because it rejected matches too aggressively.
+- Updated the MANT tier defaults because I was tired of updating the tiers and moving items around to make them sane.
+- Fixed some bugs with TS Climax races where it tried to go to race early, wouldn't use hammer cleats, and other weirdness.
+- Safety click checks have been added for Rest and Recreation. This was due to the old code using unsafe areas to click on.
+- You can now install the Python dependencies in `venv` and just run `start.bat` without polluting your core Python install.
+
+### A Umamusume bot that handles all aspects of gameplay including training, races, events, skill purchasing, and starting runs. 
+
+MANT is very far from being complete but it is functional and is probably better for parent farming compared to Aoharu.
 
 ![Uma Musume Auto Trainer](docs/main.png)
 
