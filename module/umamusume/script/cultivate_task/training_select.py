@@ -997,19 +997,20 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
 
                     _date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
                     percentile = get_best_percentile(ctx)
-                    energy_pct_threshold = 35  # TODO: make configureable
+                    mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
+                    recovery_pct_threshold = getattr(mant_cfg, 'recovery_pct_threshold', 35) if mant_cfg else 35
 
                     use_items = False
                     if _is_summer(_date):
                         log.info("Summer camp period - always using energy items")
                         use_items = True
-                    elif percentile is not None and percentile >= energy_pct_threshold:
-                        log.info(f"Training quality good (pct={percentile:.0f}% >= {energy_pct_threshold}%) - using energy items")
+                    elif percentile is not None and percentile >= recovery_pct_threshold:
+                        log.info(f"Training quality good (pct={percentile:.0f}% >= {recovery_pct_threshold}%) - using energy items")
                         use_items = True
                     elif percentile is None:
                         log.info("Not enough data for percentile - skipping energy items")
                     else:
-                        log.info(f"Training quality poor (pct={percentile:.0f}% < {energy_pct_threshold}%) - skipping energy items")
+                        log.info(f"Training quality poor (pct={percentile:.0f}% < {recovery_pct_threshold}%) - skipping energy items")
 
                     ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
 

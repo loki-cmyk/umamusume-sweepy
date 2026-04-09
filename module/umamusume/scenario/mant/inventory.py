@@ -1520,10 +1520,11 @@ def handle_megaphone(ctx):
         if owned_map.get(name, 0) <= 0:
             continue
 
-        if not is_summer and not is_after_second_summer and tier >= 2:
+        reserve_megaphones = getattr(mant_cfg, 'reserve_megaphones_for_summer', True)
+        if reserve_megaphones and not is_summer and not is_after_second_summer and tier >= 2:
             best_mega_count = sum(owned_map.get(n, 0) for n, (t, _) in MEGAPHONE_TIERS.items() if t >= 2)
             if best_mega_count <= 2:
-                log.info(f"Only have {best_mega_count} megaphones, saving for summer camp.")
+                log.info(f"Only have {best_mega_count} megaphones, saving for summer camp (reserve_megaphones_for_summer flag is True).")
                 continue
 
         cfg_key = MEGAPHONE_CONFIG_KEYS[tier]

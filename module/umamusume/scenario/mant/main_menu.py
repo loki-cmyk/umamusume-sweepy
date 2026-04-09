@@ -224,7 +224,8 @@ def handle_mant_shop_scan(ctx, current_date):
         coaching_megaphone_forced = False
         target_megaphone_name = None
 
-        if is_first_shop_turn:
+        buy_first_megaphone = getattr(mant_cfg, 'buy_first_megaphone', True)
+        if is_first_shop_turn and buy_first_megaphone:
             log.info("First shop turn: checking for megaphone")
             target_megaphone_name = next((m for m in ("Coaching Megaphone", "Motivating Megaphone") if m in shop_available), None)
             if target_megaphone_name and target_megaphone_name not in priority_targets:
