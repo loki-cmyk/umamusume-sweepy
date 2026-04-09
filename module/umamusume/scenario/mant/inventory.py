@@ -862,11 +862,18 @@ def pick_best_energy_item(ctx):
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     from module.umamusume.constants.game_constants import get_date_period_index
     period_idx = get_date_period_index(date)
+    cupcake_available = any(
+        owned_map.get(name, 0) > 0
+        for name in ('Berry Sweet Cupcake', 'Plain Cupcake')
+    )
 
     best_item = None
     best_effective = 0
     for item_name, raw_energy in ENERGY_ITEMS.items():
         if owned_map.get(item_name, 0) <= 0:
+            continue
+        if item_name == 'Royal Kale Juice' and not cupcake_available:
+            log.info("Skipping Royal Kale Juice - no cupcake available to compensate mood penalty")
             continue
         result_energy = current_energy + raw_energy
         if result_energy < energy_result_min:
@@ -1039,10 +1046,18 @@ def handle_energy_recovery(ctx):
     owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
     owned_map = {n: q for n, q in owned}
 
+    cupcake_available = any(
+        owned_map.get(name, 0) > 0
+        for name in ('Berry Sweet Cupcake', 'Plain Cupcake')
+    )
+
     available = []
     for item_name, raw_energy in sorted(ENERGY_ITEMS.items(), key=lambda x: x[1], reverse=True):
         qty = owned_map.get(item_name, 0)
         if qty > 0:
+            if item_name == 'Royal Kale Juice' and not cupcake_available:
+                log.info("Skipping Royal Kale Juice in energy recovery - no cupcake available to compensate mood penalty")
+                continue
             available.append((item_name, raw_energy, qty))
 
     if not available:
