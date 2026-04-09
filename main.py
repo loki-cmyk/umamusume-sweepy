@@ -40,7 +40,7 @@ from uvicorn import run
 
 log = logger.get_logger(__name__)
 
-def _cleanup_orphan_processes():
+def cleanup_orphan_processes():
     for proc in ("adb.exe",):
         try:
             subprocess.run(f"taskkill /F /IM {proc} /T 2>nul", shell=True, capture_output=True)
@@ -314,7 +314,9 @@ def time_window_enforcer(device_id: str):
                 except Exception:
                     pass
                 paused = True
-            
+
+            cleanup_orphan_processes()
+
             next_start = next_window_start(now)
             total_sec = int((next_start - now).total_seconds()) + int(DAILY_WAIT_OFFSET)
             if total_sec < 0:
@@ -330,7 +332,7 @@ if __name__ == '__main__':
     except Exception:
         pass
 
-    _cleanup_orphan_processes()
+    cleanup_orphan_processes()
 
     selected_device = None
     if os.environ.get("UAT_AUTORESTART", "0") == "1":
@@ -354,12 +356,10 @@ if __name__ == '__main__':
         sys.exit(1)
     
     uninstall_uiautomator(selected_device)
-    
     if not validate_device_setup(selected_device):
         log.info("Fix the issues above and restart.")
         while True:
             time.sleep(3600)
-    
     if not run_health_checks(selected_device):
         print("Health checks failed")
         sys.exit(1)

@@ -202,6 +202,7 @@ class CultivateContextDetail:
         self.sp_burst_skill_purchased = False
 
 
+
     def reset_skill_learn(self):
         self.learn_skill_done = False
         self.learn_skill_selected = False

@@ -48,7 +48,6 @@ _load_all_race_data()
 
 
 def get_races_for_period(time_period: int) -> list[int]:
-    """Get all race IDs available for a specific time period"""
     return PERIOD_TO_RACES.get(time_period, [])
 
 
