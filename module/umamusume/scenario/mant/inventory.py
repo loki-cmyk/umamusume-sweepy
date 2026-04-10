@@ -815,7 +815,9 @@ ENERGY_RECOVERY_ITEMS = {
     'Energy Drink MAX', 'Energy Drink MAX EX',
 }
 CHARM_ITEM = 'Good-Luck Charm'
+MOOD_ITEMS = { 'Berry Sweet Cupcake', 'Plain Cupcake' }
 ENERGY_ITEM_SKIP_FAST_PATH_THRESHOLD = 1
+MOOD_ITEM_SKIP_FAST_PATH_THRESHOLD = 1
 
 ENERGY_ITEMS = {
     'Vita 20': 20,
@@ -1080,6 +1082,15 @@ def handle_energy_recovery(ctx):
             qty -= 1
             used_any = True
             ctx.cultivate_detail.turn_info.cached_energy = energy
+            # Update cached mood if we use Royal Kale Juice so cupcakes are used later
+            if item_name == "Royal Kale Juice":
+                cached_mood = getattr(ctx.cultivate_detail.turn_info, 'cached_mood', None)
+                if cached_mood is not None:
+                    ctx.cultivate_detail.turn_info.cached_mood = cached_mood - 1
+                else:
+                    from bot.conn.fetch import read_mood
+                    current_mood = read_mood(ctx.current_screen)
+                    ctx.cultivate_detail.turn_info.cached_mood = current_mood
             # Check if failure rate has reached 0% after this item — stop early if so
             if selected_idx is not None:
                 fr = _refresh_failure_rate_for_idx(ctx, selected_idx)
@@ -1670,9 +1681,15 @@ def should_skip_fast_path(ctx):
     owned_map = {n: q for n, q in owned}
     has_charm_item = owned_map.get(CHARM_ITEM, 0) > 0
     energy_count = sum(owned_map.get(item, 0) for item in ENERGY_RECOVERY_ITEMS)
+    mood_count = sum(owned_map.get(item, 0) for item in MOOD_ITEMS)
     if has_charm_item:
+        log.info("Have Charm items, skipping fast path.")
         return True
     if energy_count >= ENERGY_ITEM_SKIP_FAST_PATH_THRESHOLD:
+        log.info("Have Energy items, skipping fast path.")
+        return True
+    if mood_count >= MOOD_ITEM_SKIP_FAST_PATH_THRESHOLD:
+        log.info("Have Mood items, skipping fast path.")
         return True
     return False
 
