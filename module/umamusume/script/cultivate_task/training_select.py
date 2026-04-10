@@ -636,7 +636,9 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 if getattr(ctx.cultivate_detail, 'compensate_failure', True):
                     fr_val = int(getattr(til, 'failure_rate', -1))
                     if fr_val >= 0:
-                        fail_mult_calc = max(0.0, 1.0 - (float(fr_val) / 50.0))
+                        # Non-linear decay: decreases faster as it approaches 20.
+                        # At fr=5, mult=~0.97. At fr=10, mult=~0.87. At fr=20, mult=~0.49.
+                        fail_mult_calc = max(0.0, 1.0 - (float(fr_val) / 28.0)**2)
                         if not deferred:
                             fail_mult = fail_mult_calc
                             score *= fail_mult
@@ -999,6 +1001,29 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     else:
                         log.info("At least one condition failed - continuing with training")
     
+    def handle_decision(ctx):
+        available_races = getattr(ctx.cultivate_detail.turn_info, 'cached_available_races', [])
+        extra_race_this_turn = [rid for rid in ctx.cultivate_detail.extra_race_list if rid in available_races]
+        if extra_race_this_turn:
+            log.info(f"Skipping energy items - racing instead (race {extra_race_this_turn[0]})")
+            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
+            op.race_id = extra_race_this_turn[0]
+            ctx.cultivate_detail.turn_info.turn_operation = op
+            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+            return
+        elif should_use_pal_outing_simple(ctx):
+            log.info("Skipping energy items - using pal outing instead")
+            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
+            ctx.cultivate_detail.turn_info.turn_operation = op
+            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+            return
+        else:
+            log.info("Skipping energy items - resting instead")
+            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
+            ctx.cultivate_detail.turn_info.turn_operation = op
+            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+            return
+
     op = ctx.cultivate_detail.turn_info.turn_operation
     if op is not None and op.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_TRAINING:
         try:
@@ -1008,8 +1033,9 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 selected_fr = int(getattr(selected_til, 'failure_rate', -1))
                 if selected_fr == 0:
                     training_name = TRAINING_NAMES[selected_idx] if 0 <= selected_idx < len(TRAINING_NAMES) else f"idx={selected_idx}"
-                    log.info(f"Selected {training_name} training has 0% failure rate - skipping energy items checks")
+                    log.info(f"Selected {training_name} training has 0% failure rate - skipping energy items and charm checks")
                     ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
+                    ctx.cultivate_detail.turn_info.charm_deferred = False
 
                 if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False):
                     from module.umamusume.scenario.mant.inventory import get_best_percentile, handle_energy_recovery
@@ -1037,28 +1063,15 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     if use_items:
                         handle_energy_recovery(ctx)
                     else:
-                        # Training not good enough to justify using items - fall back to race/outing/rest
-                        available_races = getattr(ctx.cultivate_detail.turn_info, 'cached_available_races', [])
-                        extra_race_this_turn = [rid for rid in ctx.cultivate_detail.extra_race_list if rid in available_races]
-                        if extra_race_this_turn:
-                            log.info(f"Skipping energy items - racing instead (race {extra_race_this_turn[0]})")
-                            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
-                            op.race_id = extra_race_this_turn[0]
-                            ctx.cultivate_detail.turn_info.turn_operation = op
-                            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
-                            return
-                        elif should_use_pal_outing_simple(ctx):
-                            log.info("Skipping energy items - using pal outing instead")
-                            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
-                            ctx.cultivate_detail.turn_info.turn_operation = op
-                            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
-                            return
-                        else:
-                            log.info("Skipping energy items - resting instead")
-                            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
-                            ctx.cultivate_detail.turn_info.turn_operation = op
-                            ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
-                            return
+                        handle_decision(ctx)
+
+                if getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False):
+                    from module.umamusume.scenario.mant.inventory import handle_charm_simplified
+                    if handle_charm_simplified(ctx):
+                        log.info("Used a good-luck charm for training.")
+                        ctx.cultivate_detail.turn_info.charm_deferred = False
+                    else:
+                        handle_decision(ctx)
 
                 ctx.cultivate_detail.turn_info._pre_item_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
                 ctx.cultivate_detail.turn_info._pre_item_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)

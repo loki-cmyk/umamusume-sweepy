@@ -1238,6 +1238,18 @@ def handle_charm(ctx):
     return use_item_and_update_inventory(ctx, 'Good-Luck Charm')
 
 
+def handle_charm_simplified(ctx):
+    owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
+    owned_map = {n: q for n, q in owned}
+    if owned_map.get('Good-Luck Charm', 0) <= 0:
+        return False
+    charm_failure_rate = getattr(mant_cfg, 'charm_failure_rate', 21)
+    if fr < charm_failure_rate:
+        log.info("Charm failure rate is too low - not using charm")
+        return False
+    return use_item_and_update_inventory(ctx, 'Good-Luck Charm')
+
+
 def rescan_training(ctx):
     close_items_panel(ctx)
     ctx.cultivate_detail.turn_info.parse_train_info_finish = False

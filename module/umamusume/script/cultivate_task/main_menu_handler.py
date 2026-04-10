@@ -268,10 +268,17 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         if is_mant(ctx) and energy <= limit:
             ctx.cultivate_detail.turn_info.cached_energy = energy
             log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), check if we have items to use.")
-            from module.umamusume.scenario.mant.inventory import has_energy_recovery
+            from module.umamusume.scenario.mant.inventory import has_energy_recovery, has_charm
             if has_energy_recovery(ctx):
                 log.info("Energy items available - deferring to check training quality first.")
                 ctx.cultivate_detail.turn_info.energy_recovery_deferred = True
+                base_energy, _, _ = scan_energy(ctx.ctrl)
+                ctx.cultivate_detail.turn_info.base_energy = base_energy
+                ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
+                return
+            elif has_charm(ctx):
+                log.info("Amulets available - deferring to check training quality first.")
+                ctx.cultivate_detail.turn_info.charm_deferred = True
                 base_energy, _, _ = scan_energy(ctx.ctrl)
                 ctx.cultivate_detail.turn_info.base_energy = base_energy
                 ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
