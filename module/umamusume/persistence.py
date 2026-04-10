@@ -12,6 +12,9 @@ PERSISTENCE_FILE = os.path.normpath(PERSISTENCE_FILE)
 PERSIST_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'persist.json')
 PERSIST_FILE = os.path.normpath(PERSIST_FILE)
 
+TRAINING_LOG_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'training_analysis.log')
+TRAINING_LOG_FILE = os.path.normpath(TRAINING_LOG_FILE)
+
 MAX_DATAPOINTS = 888
 
 career_cleared_flag = False
@@ -87,12 +90,25 @@ def clear_career_data():
                 json.dump({'score_history': [], 'stat_only_history': []}, f)
                 f.flush()
                 os.fsync(f.fileno())
+            try:
+                if os.path.exists(TRAINING_LOG_FILE):
+                    os.remove(TRAINING_LOG_FILE)
+            except Exception as le:
+                log.info(f"Failed to clear training analysis log: {le}")
             career_cleared_flag = True
         log.info("Career data cleared")
         return True
     except Exception as e:
         log.info(f"Failed to clear career data: {e}")
         return False
+
+
+def append_training_log(text):
+    try:
+        with open(TRAINING_LOG_FILE, 'a', encoding='utf-8') as f:
+            f.write(text + '\n')
+    except Exception as e:
+        log.info(f"Failed to append to training log: {e}")
 
 
 def load_persist():

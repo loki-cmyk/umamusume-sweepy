@@ -473,6 +473,17 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 for cname in g['characters']:
                     fsg_lookup[cname] = mult
 
+        turn_log_lines = []
+        turn_log_lines.append(f"--- Turn: Date {date} | Energy: {current_energy} ---")
+        ew_str = extra_weight if isinstance(extra_weight, (list, tuple)) else extra_weight
+        config_info = f"Config: base_scores={base_scores}, extra_weight={ew_str}, w_lv1={w_lv1}, w_lv2={w_lv2}, w_nrg={w_energy_change}, w_hint={w_hint}"
+        turn_log_lines.append(config_info)
+        try:
+            uma = ctx.cultivate_detail.turn_info.uma_attribute
+            turn_log_lines.append(f"Stats: Speed={uma.speed}, Stamina={uma.stamina}, Power={uma.power}, Guts={uma.will}, Wit={uma.intelligence}")
+        except Exception:
+            pass
+
         for idx in range(5):
             til = ctx.cultivate_detail.turn_info.training_info_list[idx]
             target_type = type_map[idx]
@@ -731,7 +742,9 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             stat_str = " | " + " ".join(stat_parts) if stat_parts else ""
             nrg_change = getattr(til, 'energy_change', 0.0)
             nrg_str = f" | nrg:{nrg_change:+.1f}" if nrg_change != 0 else ""
-            log.info(f"{names[idx]}: {score:.3f} = [{formula_str}]{stat_str}{nrg_str}")
+            log_line = f"{names[idx]}: {score:.3f} = [{formula_str}]{stat_str}{nrg_str}"
+            log.info(log_line)
+            turn_log_lines.append(log_line)
 
         if is_mant:
             try:
@@ -859,6 +872,12 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 ties = [i for i, v in enumerate(computed_scores) if abs(v - max_score) < eps]
                 chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else int(np.argmax(computed_scores)))
         local_training_type = TrainingType(chosen_idx + 1)
+        turn_log_lines.append(f"AI Best Training Pick: {names[chosen_idx]}")
+        try:
+            from module.umamusume.persistence import append_training_log
+            append_training_log("\n".join(turn_log_lines) + "\n")
+        except Exception:
+            pass
      
         ctx.cultivate_detail.turn_info.cached_training_type = local_training_type
         try:

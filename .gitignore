@@ -142,3 +142,4 @@ scripts/
 testcase/
 career_data.json
 persist.json
+training_analysis.log
