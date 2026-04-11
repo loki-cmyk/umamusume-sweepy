@@ -1064,12 +1064,8 @@ def handle_energy_recovery(ctx):
     if not available:
         return False
 
-    # Determine which training slot to monitor failure rate for
-    selected_idx = _get_selected_training_idx(ctx)
-
     energy = current_energy
     used_any = False
-    failure_rate_zero = False
     for item_name, raw_energy, qty in available:
         while qty > 0 and energy <= limit:
             if energy + raw_energy > max_energy:
@@ -1090,31 +1086,15 @@ def handle_energy_recovery(ctx):
                     from bot.conn.fetch import read_mood
                     current_mood = read_mood(ctx.current_screen)
                     ctx.cultivate_detail.turn_info.cached_mood = current_mood
-            # Check if failure rate has reached 0% after this item — stop early if so
-            if selected_idx is not None:
-                fr = _refresh_failure_rate_for_idx(ctx, selected_idx)
-                if fr == 0:
-                    log.info(f"Failure rate reached 0% after using {item_name} - stopping energy item usage")
-                    failure_rate_zero = True
-                    break
-        if energy > limit or failure_rate_zero:
+        if energy > limit:
             break
 
-    if not used_any and not failure_rate_zero:
-        # Check failure rate before using the fallback smallest item
-        if selected_idx is not None:
-            fr = int(getattr(ctx.cultivate_detail.turn_info.training_info_list[selected_idx], 'failure_rate', -1))
-            if fr == 0:
-                log.info("Failure rate already 0% - skipping fallback energy item")
-                return False
+    if not used_any:
         smallest = available[-1]
         ok = use_item_and_update_inventory(ctx, smallest[0])
         if ok:
             used_any = True
             ctx.cultivate_detail.turn_info.cached_energy = energy + smallest[1]
-            # Refresh after fallback use too
-            if selected_idx is not None:
-                _refresh_failure_rate_for_idx(ctx, selected_idx)
 
     if used_any:
         ctx.cultivate_detail.turn_info.parse_main_menu_finish = False
@@ -1224,14 +1204,15 @@ def handle_charm(ctx):
     percentile = below_count / len(prev) * 100
 
     charm_threshold = getattr(mant_cfg, 'charm_threshold', 40)
-
     if percentile <= charm_threshold:
+        log.info(f"Charm percentile too low: percentile={percentile:.1f}% <= threshold={charm_threshold}%, skipping")
         return False
 
     til = ctx.cultivate_detail.turn_info.training_info_list[best_idx]
     fr = int(getattr(til, 'failure_rate', 0))
     charm_failure_rate = getattr(mant_cfg, 'charm_failure_rate', 21)
     if fr < charm_failure_rate:
+        log.info(f"Charm failure rate too low: failure_rate={fr}% < threshold={charm_failure_rate}%, skipping")
         return False
 
     return use_item_and_update_inventory(ctx, 'Good-Luck Charm')
@@ -1242,10 +1223,21 @@ def handle_charm_simplified(ctx):
     owned_map = {n: q for n, q in owned}
     if owned_map.get('Good-Luck Charm', 0) <= 0:
         return False
-    charm_failure_rate = getattr(mant_cfg, 'charm_failure_rate', 21)
-    if fr < charm_failure_rate:
-        log.info("Charm failure rate is too low - not using charm")
+
+    mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
+    charm_failure_rate = getattr(mant_cfg, 'charm_failure_rate', 21) if mant_cfg else 21
+
+    idx = _get_selected_training_idx(ctx)
+    if idx is None:
         return False
+
+    til = ctx.cultivate_detail.turn_info.training_info_list[idx]
+    fr = int(getattr(til, 'failure_rate', 0))
+
+    if fr < charm_failure_rate:
+        log.info(f"Charm failure rate too low (simplified): {fr}% < {charm_failure_rate}% - not using charm")
+        return False
+
     return use_item_and_update_inventory(ctx, 'Good-Luck Charm')
 
 
@@ -1685,26 +1677,18 @@ def tick_megaphone(ctx):
 
 
 def item_loop(ctx):
+    # Original item loop, this used to have charm logic but it's been moved earlier into the
+    # same block in training_select.py that handles energy and charm usage (which calls this).
     start_date = getattr(ctx.cultivate_detail.turn_info, 'date', None)
     sync_max_energy_to_scanner(ctx)
-
-    got_charm = has_charm(ctx)
-    got_whistle = has_whistle(ctx)
-    got_energy = has_energy_recovery(ctx)
-
     whistle_used = False
-    if got_charm and got_whistle:
-        whistle_used = whistle_loop(ctx, start_date)
-        if not whistle_used:
-            handle_charm(ctx)
-    elif got_charm:
-        handle_charm(ctx)
-    elif got_whistle and got_energy:
+    if has_whistle(ctx):
         whistle_used = whistle_loop(ctx, start_date)
 
     if whistle_used:
         return
 
+    # called with for_training=True to ensure max mood possible before training
     handle_cupcake_use(ctx, for_training=True)
     handle_megaphone(ctx)
     handle_anklet(ctx)
@@ -1717,13 +1701,10 @@ def should_skip_fast_path(ctx):
     energy_count = sum(owned_map.get(item, 0) for item in ENERGY_RECOVERY_ITEMS)
     mood_count = sum(owned_map.get(item, 0) for item in MOOD_ITEMS)
     if has_charm_item:
-        log.info("Have Charm items, skipping fast path.")
         return True
     if energy_count >= ENERGY_ITEM_SKIP_FAST_PATH_THRESHOLD:
-        log.info("Have Energy items, skipping fast path.")
         return True
     if mood_count >= MOOD_ITEM_SKIP_FAST_PATH_THRESHOLD:
-        log.info("Have Mood items, skipping fast path.")
         return True
     return False
 

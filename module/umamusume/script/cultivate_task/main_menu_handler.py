@@ -269,16 +269,15 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             ctx.cultivate_detail.turn_info.cached_energy = energy
             log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), check if we have items to use.")
             from module.umamusume.scenario.mant.inventory import has_energy_recovery, has_charm
-            if has_energy_recovery(ctx):
-                log.info("Energy items available - deferring to check training quality first.")
-                ctx.cultivate_detail.turn_info.energy_recovery_deferred = True
-                base_energy, _, _ = scan_energy(ctx.ctrl)
-                ctx.cultivate_detail.turn_info.base_energy = base_energy
-                ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
-                return
-            elif has_charm(ctx):
-                log.info("Amulets available - deferring to check training quality first.")
-                ctx.cultivate_detail.turn_info.charm_deferred = True
+            energy_items_avail = has_energy_recovery(ctx)
+            charms_avail = has_charm(ctx)
+            if energy_items_avail or charms_avail:
+                if energy_items_avail:
+                    log.info("Energy items available - deferring to check training quality first.")
+                if charms_avail:
+                    log.info("Amulets available - deferring to check training quality first.")
+                ctx.cultivate_detail.turn_info.energy_recovery_deferred = energy_items_avail
+                ctx.cultivate_detail.turn_info.charm_deferred = charms_avail
                 base_energy, _, _ = scan_energy(ctx.ctrl)
                 ctx.cultivate_detail.turn_info.base_energy = base_energy
                 ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
@@ -299,6 +298,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to use pal card recreation.")
                 ctx.ctrl.click_by_point(get_trip(ctx))
             else:
+                # TODO: add check for final turn to skip resting on it and instead at least check training
                 log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to rest.")
                 ctx.ctrl.click_by_point(CULTIVATE_REST)
             return

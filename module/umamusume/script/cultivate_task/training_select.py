@@ -634,12 +634,15 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             
             fail_mult = 1.0
             try:
-                deferred = getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False)
+                # The evaluation logic here is cooked, if you update the score by failure rate, 99% of the time it will hit
+                # wit because the score has been lowered too much by the failure rate. So we skip modifying the score here
+                # if we have energy items or amulets so the bot still picks the best option. Needs to be fixed.
+                deferred = (getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False) or 
+                           getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False))
                 if getattr(ctx.cultivate_detail, 'compensate_failure', True):
                     fr_val = int(getattr(til, 'failure_rate', -1))
                     if fr_val >= 0:
-                        # Non-linear decay: decreases faster as it approaches 20.
-                        # At fr=5, mult=~0.97. At fr=10, mult=~0.87. At fr=20, mult=~0.49.
+                        # Non-linear decay: decreases faster as it approaches 28.
                         fail_mult_calc = max(0.0, 1.0 - (float(fr_val) / 28.0)**2)
                         if not deferred:
                             fail_mult = fail_mult_calc
@@ -759,9 +762,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 pass
 
         ctx.cultivate_detail.turn_info.parse_train_info_finish = True
-        
         ctx.cultivate_detail.turn_info.cached_original_scores = list(original_scores)
-
         ctx.cultivate_detail.turn_info.cached_stat_scores = list(stat_scores)
 
         best_stat_score = max(stat_scores) if stat_scores else 0.0
@@ -1038,8 +1039,18 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     log.info(f"Selected {training_name} training has 0% failure rate - skipping energy items and charm checks")
                     ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
                     ctx.cultivate_detail.turn_info.charm_deferred = False
-
-                if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False):
+                charm_used = False
+                # Use charms before relying on energy items
+                if getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False):
+                    from module.umamusume.scenario.mant.inventory import handle_charm_simplified
+                    if handle_charm_simplified(ctx):
+                        log.info("Used a Good-luck Charm for training.")
+                        ctx.cultivate_detail.turn_info.charm_deferred = False
+                        charm_used = True
+                    else:
+                        handle_decision(ctx)
+                        return
+                if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False) and not charm_used:
                     from module.umamusume.scenario.mant.inventory import get_best_percentile, handle_energy_recovery
                     from module.umamusume.constants.game_constants import is_summer_camp_period as _is_summer
 
@@ -1059,21 +1070,13 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         log.info("Not enough data for percentile - skipping energy items")
                     else:
                         log.info(f"Training quality poor (pct={percentile:.0f}% < {recovery_pct_threshold}%) - skipping energy items")
-
-                    ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
-
+                    
                     if use_items:
                         handle_energy_recovery(ctx)
+                        ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
                     else:
                         handle_decision(ctx)
-
-                if getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False):
-                    from module.umamusume.scenario.mant.inventory import handle_charm_simplified
-                    if handle_charm_simplified(ctx):
-                        log.info("Used a good-luck charm for training.")
-                        ctx.cultivate_detail.turn_info.charm_deferred = False
-                    else:
-                        handle_decision(ctx)
+                        return
 
                 ctx.cultivate_detail.turn_info._pre_item_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
                 ctx.cultivate_detail.turn_info._pre_item_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
