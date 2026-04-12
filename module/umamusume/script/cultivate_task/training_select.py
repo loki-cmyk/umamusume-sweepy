@@ -647,8 +647,6 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         if not deferred:
                             fail_mult = fail_mult_calc
                             score *= fail_mult
-                        else:
-                            log.info("Failure rate compensation deferred due to energy recovery or charm.")
             except Exception:
                 pass
             pre_fail_score = score / fail_mult if fail_mult > 0 and fail_mult != 1.0 else score
@@ -880,7 +878,12 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 ties = [i for i, v in enumerate(computed_scores) if abs(v - max_score) < eps]
                 chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else int(np.argmax(computed_scores)))
         local_training_type = TrainingType(chosen_idx + 1)
-        decision = f"AI Best Training Pick: {names[chosen_idx]} (Score: {max_score:.3f})"
+        energy_recovery_deferred = getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False)
+        charm_deferred = getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False)
+        chosen_til = ctx.cultivate_detail.turn_info.training_info_list[chosen_idx]
+        failure_rate = getattr(chosen_til, 'failure_rate', 0)
+        decision = f"AI Best Training Pick: {names[chosen_idx]} (Score: {max_score:.3f} | Failure Rate: {failure_rate}% | " \
+                   f"Energy Recovery Deferred: {energy_recovery_deferred} | Charm Deferred: {charm_deferred})"
         turn_log_lines.append(decision)
         log.info(decision)
         try:
