@@ -93,19 +93,22 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     else:
         mood_threshold = ctx.cultivate_detail.motivation_threshold_year3
 
+    is_mant = ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_MANT
     mant_skip_fast_path = False
+    # calculate upcoming races for MANT
+    upcoming_races = []
+    turn_info = ctx.cultivate_detail.turn_info
+    date = turn_info.date
+    for d in range(date, date + 3):
+        available = get_races_for_period_cached(d)
+        for r in ctx.cultivate_detail.extra_race_list:
+            if r in available:
+                upcoming_races.append(r)
     try:
-        if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_MANT:
+        if is_mant:
             from module.umamusume.scenario.mant.inventory import should_skip_fast_path
             mant_skip_fast_path = should_skip_fast_path(ctx)
             if not mant_skip_fast_path and mood_raw is not None and mood_val < mood_threshold:
-                date = ctx.cultivate_detail.turn_info.date
-                upcoming_races = []
-                for d in range(date, date + 3):
-                    available = get_races_for_period_cached(d)
-                    for r in ctx.cultivate_detail.extra_race_list:
-                        if r in available:
-                            upcoming_races.append(r)
                 if upcoming_races:
                     log.info(f"Upcoming races in next 3 turns: {upcoming_races} - setting mant_skip_fast_path=True for mood")
                     mant_skip_fast_path = True
@@ -180,7 +183,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
             if extra_race_this_turn:
                 skip_race = False
                 try:
-                    if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_MANT:
+                    if is_mant:
                         from module.umamusume.scenario.mant.inventory import should_skip_race
                         skip_race = should_skip_race(ctx)
                 except Exception:
@@ -201,9 +204,6 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     cached_screen = getattr(ctx, 'current_screen_gray', None)
     if cached_screen is None and ctx.current_screen is not None:
         cached_screen = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
-
-    turn_info = ctx.cultivate_detail.turn_info
-    date = turn_info.date
 
     try:
         support_card_max = max(len(ti.support_card_info_list) for ti in turn_info.training_info_list)
@@ -375,7 +375,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
         if len(extra_race_this_turn) != 0:
             skip_race = False
             try:
-                if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_MANT:
+                if is_mant:
                     from module.umamusume.scenario.mant.inventory import should_skip_race
                     skip_race = should_skip_race(ctx)
             except Exception:
@@ -422,8 +422,13 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                 except Exception:
                     trip = False
             else:
-                log.info("Recreation conditions met - regular trip (PAL not configured)")
-                trip = True
+                from module.umamusume.scenario.mant.inventory import has_cupcake
+                if is_mant and (has_cupcake(ctx) or upcoming_races):
+                    log.info("Recreation conditions met but we have cupcakes/upcoming races, skipping.")
+                    trip = False
+                else:
+                    log.info("Recreation conditions met - regular trip (PAL not configured)")
+                    trip = True
 
     if trip and limit < 90 and energy > 26:
         log.info("Checking if outing is better than rest")

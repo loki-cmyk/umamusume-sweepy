@@ -1275,6 +1275,12 @@ def has_whistle(ctx):
     return owned_map.get('Reset Whistle', 0) > 0
 
 
+def has_cupcake(ctx):
+    owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
+    owned_map = {n: q for n, q in owned}
+    return any(owned_map.get(item, 0) > 0 for item in ('Berry Sweet Cupcake', 'Plain Cupcake'))
+
+
 def whistle_loop(ctx, start_date):
     if not ctx.task.running():
         return False
