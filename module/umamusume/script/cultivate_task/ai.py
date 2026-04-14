@@ -73,6 +73,8 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     turn_operation = TurnOperation()
     if not ctx.cultivate_detail.debut_race_win:
         if not hasattr(ctx.cultivate_detail.turn_info, 'race_search_attempted'):
+            log.warn("Debut race was lost, running the race again to try to recover.")
+            turn_operation.race_id = 0
             turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
     cached_energy = getattr(ctx.cultivate_detail.turn_info, 'cached_energy', None)
     if cached_energy is not None and cached_energy > 0:
