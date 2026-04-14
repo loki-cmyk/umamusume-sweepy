@@ -4,11 +4,15 @@ This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sw
 
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations yet.
 
+## Features Not Implemented Yet
+- Clock usage in MANT is not available. I'm thinking of allowing per race configuration from the UI if it's doable.
+- Option to skip training isn't configurable by G1/G2/G3 so I want to add that so you can avoid skipping G1s but consider it for G2/G3s.
+
+
 ## Known Bugs
 
-- Skills are sometimes not being bought at the end of the run; this happens very rarely. Still verifying if this is fixed.
-- Bot is still getting stuck on some screens, fallback should get it unstuck. I'm fixing these as I see them.
-- Clock usage is not implemented in MANT yet. I wouldn't trust my clocks to it, so it's not a high priority.
+- Losing your debut race means the run is cooked, the bot doesn't know how to recover from this until we implement retries.
+- Bot can sometimes lose track of where it is, but it usually recovers. I'm fixing these bugs as I see them pop up.
 - URA/Unity are not tested and may not work. This only works for MANT.
 
 ## Added Features / Changes from core Sweepy
