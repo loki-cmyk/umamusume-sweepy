@@ -134,6 +134,7 @@ dmypy.json
 
 # Personal scripts and configurations
 brayscript/
+scratch/
 
 **/__pycache__/
 /userdata
@@ -142,4 +143,4 @@ scripts/
 testcase/
 career_data.json
 persist.json
-training_analysis.log
+training_analysis.jsonl

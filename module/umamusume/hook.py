@@ -44,10 +44,10 @@ def complete_team_trials(ctx: UmamusumeContext):
         ctx.task.end_task(TaskStatus.TASK_STATUS_SUCCESS, EndTaskReason.COMPLETE)
 
 
-REF_CANT_TT_REGION = Template("cant_tt", UMAMUSUME_REF_TEMPLATE_PATH, 
+REF_CANT_TT_REGION = Template("cant_tt", UMAMUSUME_REF_TEMPLATE_PATH,
                                ImageMatchConfig(match_area=Area(369, 586, 439, 609)))
 
-REF_CANT_TT2_REGION = Template("cant_tt2", UMAMUSUME_REF_TEMPLATE_PATH, 
+REF_CANT_TT2_REGION = Template("cant_tt2", UMAMUSUME_REF_TEMPLATE_PATH,
                                 ImageMatchConfig(match_area=Area(391, 43, 433, 81)))
 
 RULES_BY_MODE = {
@@ -72,7 +72,7 @@ def apply_rules(ctx: UmamusumeContext, img_gray):
     mode = getattr(ctx.task.task_execute_mode, "name", None)
     if not mode:
         return False
-    
+
     if mode == "TASK_EXECUTE_MODE_FULL_AUTO":
         if getattr(ctx.task.detail, "do_tt_next", False):
             rules = RULES_BY_MODE.get("TASK_EXECUTE_MODE_TEAM_TRIALS", [])
@@ -110,7 +110,7 @@ def before_hook(ctx: UmamusumeContext):
     img = getattr(ctx, 'current_screen_gray', None)
     if img is None:
         img = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
-    
+
     try:
         if image_match(img, REF_EDIT_TEAM).find_match:
             import random
@@ -123,19 +123,19 @@ def before_hook(ctx: UmamusumeContext):
 
     if apply_rules(ctx, img):
         return
-    
+
     if image_match(img, REF_HOME_GIFT).find_match:
         mode_name = ctx.task.task_execute_mode.name
-        
+
         if mode_name == "TASK_EXECUTE_MODE_TEAM_TRIALS":
             ctx.ctrl.click(522, 1228, "team trials resume")
             return
-        
+
         elif mode_name == "TASK_EXECUTE_MODE_FULL_AUTO":
             if getattr(ctx.task.detail, "do_tt_next", False):
                 ctx.ctrl.click(522, 1228, "team trials resume")
                 return
-            
+
             # TT pixel check
             try:
                 screen = ctx.current_screen
@@ -144,10 +144,10 @@ def before_hook(ctx: UmamusumeContext):
                     b, g, r = int(pixel[0]), int(pixel[1]), int(pixel[2])
                     target_r, target_g, target_b = 81, 76, 89
                     tolerance = 5
-                    pixel_matches = (abs(r - target_r) <= tolerance and 
-                                   abs(g - target_g) <= tolerance and 
+                    pixel_matches = (abs(r - target_r) <= tolerance and
+                                   abs(g - target_g) <= tolerance and
                                    abs(b - target_b) <= tolerance)
-                    
+
                     if pixel_matches:
                         log.info(f"pixel matches - proceeding with career mode")
                         ctx.ctrl.click(552, 1082, "resume career")
@@ -160,10 +160,10 @@ def before_hook(ctx: UmamusumeContext):
                     ctx.ctrl.click(552, 1082, "resume career")
             except Exception as e:
                 ctx.ctrl.click(552, 1082, "resume career")
-        
+
         else:
             ctx.ctrl.click(552, 1082, "resume career")
-        
+
         time.sleep(1)
         img = cv2.cvtColor(ctx.ctrl.get_screen(), cv2.COLOR_BGR2GRAY)
         if image_match(img, REF_RESUME_CAREER).find_match:
@@ -174,7 +174,7 @@ def before_hook(ctx: UmamusumeContext):
             else:
                 ctx.ctrl.click(505, 908, "continue resume career")
         return
-    
+
     if image_match(img, REF_RESUME_CAREER).find_match:
         mode_name = ctx.task.task_execute_mode.name
         if mode_name == "TASK_EXECUTE_MODE_TEAM_TRIALS":
@@ -262,9 +262,9 @@ def after_hook(ctx: UmamusumeContext):
                 # Only get operation if we haven't already decided on training
                 # This prevents AI from overriding training decisions with race decisions
                 # Also check if we're in training selection screen - don't override training decisions there
-                in_training_select = (getattr(ctx, 'current_ui', None) is not None and 
+                in_training_select = (getattr(ctx, 'current_ui', None) is not None and
                                       getattr(ctx.current_ui, 'ui_name', '') == "CULTIVATE_TRAINING_SELECT")
-                
+
                 if not in_training_select:
                     log.info("Not in training selection screen - calling AI decision")
                     log.info(f"Extra race list: {ctx.cultivate_detail.extra_race_list}")
@@ -273,7 +273,12 @@ def after_hook(ctx: UmamusumeContext):
                     ctx.cultivate_detail.turn_info.turn_operation.log_turn_operation()
                 else:
                     log.info("In training selection screen - skipping AI decision to avoid overriding training")
-
-
-
-
+            if not getattr(ctx.cultivate_detail.turn_info, 'turn_info_exported', False):
+                try:
+                    from module.umamusume.script.cultivate_task.exporter import export_cultivate_context
+                    from module.umamusume.persistence import append_training_json
+                    json_data = export_cultivate_context(ctx)
+                    append_training_json(json_data)
+                    ctx.cultivate_detail.turn_info.turn_info_exported = True
+                except Exception as e:
+                    log.error(f"Failed to export turn info: {e}")

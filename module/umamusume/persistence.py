@@ -13,8 +13,8 @@ PERSISTENCE_FILE = os.path.normpath(PERSISTENCE_FILE)
 PERSIST_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'persist.json')
 PERSIST_FILE = os.path.normpath(PERSIST_FILE)
 
-TRAINING_LOG_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'training_analysis.log')
-TRAINING_LOG_FILE = os.path.normpath(TRAINING_LOG_FILE)
+TRAINING_JSON_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'training_analysis.jsonl')
+TRAINING_JSON_FILE = os.path.normpath(TRAINING_JSON_FILE)
 
 MAX_DATAPOINTS = 888
 
@@ -92,10 +92,10 @@ def clear_career_data():
                 f.flush()
                 os.fsync(f.fileno())
             try:
-                if os.path.exists(TRAINING_LOG_FILE):
-                    os.remove(TRAINING_LOG_FILE)
+                if os.path.exists(TRAINING_JSON_FILE):
+                    os.remove(TRAINING_JSON_FILE)
             except Exception as le:
-                log.info(f"Failed to clear training analysis log: {le}")
+                log.info(f"Failed to clear training analysis json: {le}")
             career_cleared_flag = True
         log.info("Career data cleared")
         return True
@@ -104,14 +104,14 @@ def clear_career_data():
         return False
 
 
-def append_training_log(text):
+def append_training_json(json_str):
     if CONFIG.bot.log_training_data is False:
         return
     try:
-        with open(TRAINING_LOG_FILE, 'a', encoding='utf-8') as f:
-            f.write(text + '\n')
+        with open(TRAINING_JSON_FILE, 'a', encoding='utf-8') as f:
+            f.write(json_str + '\n')
     except Exception as e:
-        log.info(f"Failed to append to training log: {e}")
+        log.info(f"Failed to append to training json: {e}")
 
 
 def load_persist():

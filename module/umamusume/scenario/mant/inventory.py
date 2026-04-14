@@ -939,6 +939,10 @@ def use_item_and_update_inventory(ctx, item_name):
     from module.umamusume.context import log_detected_items
     log_detected_items(updated)
     log.info(f"used {item_name}")
+    # Track item usage for turn analysis
+    if hasattr(ctx.cultivate_detail, 'turn_info') and ctx.cultivate_detail.turn_info is not None:
+        tracking_name = item_name.lower().replace(" ", "_").replace("-", "_") + "_used"
+        setattr(ctx.cultivate_detail.turn_info, tracking_name, True)
     return True
 
 
@@ -1181,6 +1185,11 @@ def handle_instant_use_items(ctx):
 
     log.info(f"used instant items: {selected}")
 
+    # Track batch item usage for turn analysis
+    if hasattr(ctx.cultivate_detail, 'turn_info') and ctx.cultivate_detail.turn_info is not None:
+        for item_name in selected:
+            tracking_name = item_name.lower().replace(" ", "_").replace("-", "_") + "_used"
+            setattr(ctx.cultivate_detail.turn_info, tracking_name, True)
     return True
 
 
