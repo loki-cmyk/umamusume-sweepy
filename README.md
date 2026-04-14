@@ -19,7 +19,7 @@ Here's what's changed so far that's worth noting, most of the new bot features h
 - Bot buys the first T1/T2 megaphone on the first shop turn if available and uses it.
 - Bot now checks training **before** using energy items, so it won't waste energy items on bad training (skips training in the bottom 35th percentile).
 - Bot now properly goes to race even if there's no energy items in MANT (this was a bug they wouldn't fix).
-- Bot now prioritizes buying scrolls/manuals/notepads in the shop instead of waiting until the last minute.
+- Bot now prioritizes buying scrolls/manuals in the shop instead of waiting until the last minute. Notepads are not included in this.
 - Bot no longer uses cupcakes to raise mood if it's not going to train and relies on racing first to raise mood (unless it's too low).
 - Bot now only uses Royal Kale Juice if it has a cupcake available to use afterwards or if mood is already Great without any other energy items.
 - Bot will now buy cupcakes to match the number of Royal Kale Juices it has, up to a maximum of 2.

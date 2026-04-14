@@ -1616,6 +1616,11 @@ def handle_megaphone(ctx):
             if other_qty > 0:
                 threshold -= other_qty * year_rate * 0.5
 
+        # Prevent mindless spamming of megaphones just because we have them
+        if threshold <= 15:
+            log.info(f"Calculated threshold ({threshold}) too low, limiting to the 15% percentile.")
+            threshold = 15
+
         races_in_window = count_races_in_window(ctx, duration)
         threshold += races_in_window * race_penalty
 

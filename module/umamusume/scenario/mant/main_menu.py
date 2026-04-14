@@ -156,7 +156,7 @@ def handle_mant_shop_scan(ctx, current_date):
     bought = False
     mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
     buy_stat_early = getattr(mant_cfg, 'buy_stat_items_early', True)
-    stat_kw = ("Notepad", "Manual", "Scroll")
+    stat_kw = ("Manual", "Scroll")
     if mant_cfg and mant_cfg.item_tiers:
         budget = ctx.cultivate_detail.mant_coins
         shop_available = {name for name, _, _, _, buyable in items_list if buyable}
@@ -367,7 +367,14 @@ def handle_mant_shop_scan(ctx, current_date):
                     continue
                 actual_turns = min_turns_for_item.get(display, 99)
                 if (buy_stat_early and any(kw in display for kw in stat_kw)):
-                    priority_targets.append(display)
+                    log.info(f"Buy stat items early enabled, buying all copies of {display} we can.")
+                    cost = SHOP_ITEM_COSTS.get(display, 9999)
+                    copies = shop_copy_counts.get(display, 0)
+                    for _ in range(copies):
+                        if budget - cost < 0:
+                            break
+                        priority_targets.append(display)
+                        budget -= cost
                 else:
                     tier_candidates.append((actual_turns, display))
 
@@ -420,7 +427,7 @@ def handle_mant_shop_scan(ctx, current_date):
                 from module.umamusume.context import log_detected_items
 
                 # Items that are used instantly after purchase (not tracked in inventory)
-                INSTANT_USE_PATTERNS = ('Scroll', 'Training Application', 'Manual')
+                INSTANT_USE_PATTERNS = ('Scroll', 'Training Application', 'Manual', 'Notepad')
                 is_instant = lambda name: any(p in name for p in INSTANT_USE_PATTERNS)
 
                 verify_targets = [t for t in targets if not is_instant(t)]
@@ -581,6 +588,9 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
                         continue
 
                     threshold = 0
+                    # Avoid buying terrible items in post senior summer
+                    if post_senior_summer and display in LATE_GAME_ITEM_BLACKLIST:
+                        break
                     if tier > 1 and not post_senior_summer:
                         threshold = mant_cfg.tier_thresholds.get(tier, (tier - 1) * 50)
 
@@ -653,6 +663,7 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
         ctx.cultivate_detail.mant_shop_handled_this_turn = True
         return True
 
+    log.info(f"Emergency shop purchase targets: {final_targets} (budget={budget})")
     bought, _ = buy_shop_items(ctx, final_targets, items_list, ratio, drag_ratio, first_item_gy)
     if bought:
         ctx.cultivate_detail.mant_inventory_rescan_pending = True
