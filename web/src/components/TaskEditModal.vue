@@ -193,11 +193,16 @@
                                 <input type="range" class="hint-slider" v-model.number="mantMegaRacePenalty" min="0" max="30" />
                                 <span class="mant-threshold-val">{{ mantMegaRacePenalty }}</span>
                               </div>
-                              <span class="mant-threshold-label">Megaphone summer bonus (threshold reduction)</span>
-                              <div class="mant-threshold-slider-row">
-                                <input type="range" class="hint-slider" v-model.number="mantMegaSummerBonus" min="0" max="30" />
-                                <span class="mant-threshold-val">{{ mantMegaSummerBonus }}</span>
-                              </div>
+                               <span class="mant-threshold-label">Megaphone summer bonus (threshold reduction)</span>
+                               <div class="mant-threshold-slider-row">
+                                 <input type="range" class="hint-slider" v-model.number="mantMegaSummerBonus" min="0" max="30" />
+                                 <span class="mant-threshold-val">{{ mantMegaSummerBonus }}</span>
+                               </div>
+                               <span class="mant-threshold-label">Ankle Weights summer bonus (threshold reduction)</span>
+                               <div class="mant-threshold-slider-row">
+                                 <input type="range" class="hint-slider" v-model.number="mantAnkletSummerBonus" min="0" max="30" />
+                                 <span class="mant-threshold-val">{{ mantAnkletSummerBonus }}</span>
+                               </div>
                             </div>
                           </div>
                           <div class="mant-threshold-row">
@@ -2207,6 +2212,7 @@ export default {
       mantMegaLargeThreshold: 47,
       mantMegaRacePenalty: 5,
       mantMegaSummerBonus: 10,
+      mantAnkletSummerBonus: 10,
       mantTrainingWeightsThreshold: 40,
       mantBbqUnmaxxedCards: 3,
       mantCharmThreshold: 40,
@@ -3682,6 +3688,7 @@ export default {
             "mega_large_threshold": this.mantMegaLargeThreshold,
             "mega_race_penalty": this.mantMegaRacePenalty,
             "mega_summer_bonus": this.mantMegaSummerBonus,
+            "anklet_summer_bonus": this.mantAnkletSummerBonus,
             "training_weights_threshold": this.mantTrainingWeightsThreshold,
             "bbq_unmaxxed_cards": this.mantBbqUnmaxxedCards,
             "charm_threshold": this.mantCharmThreshold,
@@ -4119,6 +4126,7 @@ export default {
         this.mantMegaLargeThreshold = this.presetsUse.mant_config.mega_large_threshold ?? 47;
         this.mantMegaRacePenalty = this.presetsUse.mant_config.mega_race_penalty ?? 5;
         this.mantMegaSummerBonus = this.presetsUse.mant_config.mega_summer_bonus ?? 10;
+        this.mantAnkletSummerBonus = this.presetsUse.mant_config.anklet_summer_bonus ?? 10;
         this.mantTrainingWeightsThreshold = this.presetsUse.mant_config.training_weights_threshold ?? 40;
         this.mantBbqUnmaxxedCards = this.presetsUse.mant_config.bbq_unmaxxed_cards ?? 3;
         this.mantCharmThreshold = this.presetsUse.mant_config.charm_threshold ?? 40;
@@ -4142,6 +4150,7 @@ export default {
         this.mantMegaLargeThreshold = 47;
         this.mantMegaRacePenalty = 5;
         this.mantMegaSummerBonus = 10;
+        this.mantAnkletSummerBonus = 10;
         this.mantTrainingWeightsThreshold = 40;
         this.mantBbqUnmaxxedCards = 3;
         this.mantCharmThreshold = 40;
@@ -4345,6 +4354,7 @@ export default {
         this.mantMegaLargeThreshold = data.mant_config.mega_large_threshold ?? 47;
         this.mantMegaRacePenalty = data.mant_config.mega_race_penalty ?? 5;
         this.mantMegaSummerBonus = data.mant_config.mega_summer_bonus ?? 10;
+        this.mantAnkletSummerBonus = data.mant_config.anklet_summer_bonus ?? 10;
         this.mantTrainingWeightsThreshold = data.mant_config.training_weights_threshold ?? 40;
         this.mantBbqUnmaxxedCards = data.mant_config.bbq_unmaxxed_cards ?? 3;
         this.mantCharmThreshold = data.mant_config.charm_threshold ?? 40;
@@ -4368,6 +4378,7 @@ export default {
         this.mantMegaLargeThreshold = 47;
         this.mantMegaRacePenalty = 5;
         this.mantMegaSummerBonus = 10;
+        this.mantAnkletSummerBonus = 10;
         this.mantTrainingWeightsThreshold = 40;
         this.mantBbqUnmaxxedCards = 3;
         this.mantCharmThreshold = 40;
@@ -4543,6 +4554,7 @@ export default {
           mega_large_threshold: this.mantMegaLargeThreshold,
           mega_race_penalty: this.mantMegaRacePenalty,
           mega_summer_bonus: this.mantMegaSummerBonus,
+          anklet_summer_bonus: this.mantAnkletSummerBonus,
           training_weights_threshold: this.mantTrainingWeightsThreshold,
           bbq_unmaxxed_cards: this.mantBbqUnmaxxedCards,
           charm_threshold: this.mantCharmThreshold,
@@ -4702,6 +4714,7 @@ export default {
           mega_large_threshold: this.mantMegaLargeThreshold,
           mega_race_penalty: this.mantMegaRacePenalty,
           mega_summer_bonus: this.mantMegaSummerBonus,
+          anklet_summer_bonus: this.mantAnkletSummerBonus,
           training_weights_threshold: this.mantTrainingWeightsThreshold,
           bbq_unmaxxed_cards: this.mantBbqUnmaxxedCards,
           charm_threshold: this.mantCharmThreshold,
