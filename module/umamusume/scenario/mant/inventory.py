@@ -1679,7 +1679,13 @@ def handle_anklet(ctx):
     if percentile is None:
         return False
 
+    date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     threshold = getattr(mant_cfg, 'training_weights_threshold', 40)
+    summer_bonus = getattr(mant_cfg, 'anklet_summer_bonus', 10)
+    from module.umamusume.constants.game_constants import is_summer_camp_period
+    is_summer = is_summer_camp_period(date)
+    if is_summer:
+        threshold -= summer_bonus
     
     if hasattr(ctx.cultivate_detail, 'turn_info') and ctx.cultivate_detail.turn_info is not None:
         ctx.cultivate_detail.turn_info.anklet_percentile = percentile
