@@ -417,6 +417,8 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                             ctx.cultivate_detail.extra_race_list = list(ctx.cultivate_detail.extra_race_list)
                         if race_id and race_id in ctx.cultivate_detail.extra_race_list:
                             ctx.cultivate_detail.extra_race_list.remove(race_id)
+                            from module.umamusume.asset.race_data import compute_race_chains
+                            ctx.cultivate_detail.race_chain_map = compute_race_chains(ctx.cultivate_detail.extra_race_list)
                     except Exception as e:
                         log.debug(f"fail: {e}")
                     ctx.cultivate_detail.turn_info.turn_operation = None

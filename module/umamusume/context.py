@@ -104,6 +104,7 @@ def clear_detected_shop_items():
     detected_shop_items_log.clear()
 
 class CultivateContextDetail:
+    race_chain_map: dict[int, tuple[int, int]]
     turn_info: TurnInfo | None
     turn_info_history: list[TurnInfo]
     scenario: any
@@ -153,6 +154,7 @@ class CultivateContextDetail:
     same_title_count: int
 
     def __init__(self):
+        self.race_chain_map = {}
         self.expect_attribute = None
         self.turn_info = TurnInfo()
         self.turn_info_history = []
@@ -245,6 +247,8 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
         detail.follow_support_card_level = task.detail.follow_support_card_level
         detail.extra_race_list = list(task.detail.extra_race_list or [])
         detail.retry_race_list = list(task.detail.retry_race_list or [])
+        from module.umamusume.asset.race_data import compute_race_chains
+        detail.race_chain_map = compute_race_chains(detail.extra_race_list)
         detail.learn_skill_list = [list(x) for x in (task.detail.learn_skill_list or [])]
         try:
             src = task.detail.learn_skill_list or []
