@@ -2,15 +2,14 @@
 
 This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). I'm not pulling in most upstream Sweepy changes by default since most of the time the changes are broken and untested. Feature parity may be delayed or I may not even pull in some changes made if they're too low quality. Half the time you're better off not updating from the upstream repo.
 
-Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations yet.
+Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
 
 ## Features Not Implemented Yet
-- Option to skip training isn't configurable by G1/G2/G3 so I want to add that so you can avoid skipping G1s but consider it for G2/G3s.
+- Option to skip races for training still does not take into account the race grade (G1/G2/G3).
 
 ## Known Bugs
 
 - Debut race loss logic was broken, but this should be fixed now. If you lose the debut race, it will try to race on the next turn.
-- Bot can sometimes lose track of where it is, but it usually recovers. I'm fixing these bugs as I see them pop up.
 - URA/Unity are not tested and may not work. This only works for MANT.
 
 ## Added Features / Changes from original Sweepy
@@ -18,10 +17,7 @@ Turn on auto-use items for MANT or the bot will break. You need to adjust the co
 Here's what's changed so far that's worth noting, most of the new bot features have options to toggle them off in the UI:
 
 - Bot now supports retrying specific races in MANT, you can select which races to retry in the UI.
-  - It will only retry up to configured clock limit. By default no races are retried, you must enable it yourself
-- Added a feature under `log_training_data` in `config.yaml` to dump all relevant internal turn data into `training_data.jsonl`.
-  - You can use `analyze_trainings.py` to do a high-level check of what the bot was doing and if it was making good decisions.
-  - Note: Not every turn is recorded on certain paths, so you may miss some information (due to "fast" path logic).
+  - It will only retry up to configured clock limit. By default no races are retried, you must enable it yourself.
 - Bot will save two T2/T3 megaphones for summer training instead of wasting them on terrible training.
 - Bot buys the first T1/T2 megaphone on the first shop turn if available and uses it.
 - Bot now checks training **before** using energy items, so it won't waste energy items on bad training (skips training in the bottom 35th percentile).
@@ -30,6 +26,9 @@ Here's what's changed so far that's worth noting, most of the new bot features h
 - Bot no longer uses cupcakes to raise mood if it's not going to train and relies on racing first to raise mood (unless it's too low).
 - Bot now only uses Royal Kale Juice if it has a cupcake available to use afterwards or if mood is already Great without any other energy items.
 - Bot will now buy cupcakes to match the number of Royal Kale Juices it has, up to a maximum of 2.
+- Added a feature under `log_training_data` in `config.yaml` to dump all relevant internal turn data into `training_data.jsonl`.
+  - You can use `analyze_trainings.py` to do a high-level check of what the bot was doing and if it was making good decisions.
+  - Note: Not every turn is recorded on certain paths, so you may miss some information (due to "fast" path logic).
 - Reverted some awful code written for template matching that was "faster" but broke randomly because it rejected matches too aggressively.
   - This causes some event handling to slow down sometimes, but it's better than the bot picking the wrong choice.
 - Updated the MANT tier defaults because I was tired of updating the tiers and moving items around to make them sane.
