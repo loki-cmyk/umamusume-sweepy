@@ -1241,9 +1241,10 @@
                         id="race-select"></textarea>
                     </div>
                     <div class="form-group mt-2">
-                      <label for="retry-race-select">Retry Race List <small style="color:var(--muted-2);font-weight:400">(enable "Retry Race" in the race popup)</small></label>
+                      <label for="retry-race-select">Retry Races (MANT)</label>
                       <textarea type="text" disabled v-model="retryRace" class="form-control"
                         id="retry-race-select"></textarea>
+                      <small style="color:var(--muted-2);font-weight:400">Enable the "Retry Race" checkbox for each race under Race Options.</small>
                     </div>
                   </div>
                 </div>

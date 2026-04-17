@@ -5,7 +5,7 @@ import bot.base.log as logger
 from bot.recog.image_matcher import image_match, compare_color_equal
 from module.umamusume.context import UmamusumeContext
 from module.umamusume.types import TurnInfo
-from module.umamusume.define import TurnOperationType
+from module.umamusume.define import TurnOperationType, ScenarioType
 from module.umamusume.asset.point import (
     CULTIVATE_GOAL_RACE_INTER_1, CULTIVATE_GOAL_RACE_INTER_2,
     RETURN_TO_CULTIVATE_MAIN_MENU, BEFORE_RACE_START, BEFORE_RACE_SKIP,
@@ -14,7 +14,8 @@ from module.umamusume.asset.point import (
 )
 from module.umamusume.asset.template import (
     REF_RACE_LIST, REF_RACE_LIST_GOAL_RACE, REF_RACE_LIST_URA_RACE,
-    REF_SUITABLE_RACE, REF_TRAIN_BTN
+    REF_SUITABLE_RACE, REF_TRAIN_BTN,
+    REF_MANT_RACE_TRY_AGAIN, REF_MANT_CLOCK
 )
 from module.umamusume.script.cultivate_task.parse import parse_date, find_race
 
@@ -350,7 +351,60 @@ def script_in_race(ctx: UmamusumeContext):
     ctx.ctrl.click_by_point(IN_RACE_SKIP)
 
 
+def _get_current_race_id(ctx) -> int:
+    """Safely retrieve the race_id from the current turn operation, or 0 if unavailable."""
+    try:
+        return ctx.cultivate_detail.turn_info.turn_operation.race_id
+    except Exception:
+        return 0
+
+
 def script_cultivate_race_result(ctx: UmamusumeContext):
+    # URA/Unity: Cannot retry individual races unless we fail a scenario goal, so just click Next.
+    if ctx.task.detail.scenario != ScenarioType.SCENARIO_TYPE_MANT:
+        ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
+        return
+    # MANT: Check if we won or lost the race, and if we should retry based on the user configuration.
+    try:
+        race_id = _get_current_race_id(ctx)
+        log.info(f"Checking race {race_id}")
+        retry_list = getattr(ctx.cultivate_detail, 'retry_race_list', [])
+        log.info(f"Retry races list: {retry_list}")
+        if race_id in retry_list:
+            log.info(f"Race {race_id} is in retry list")
+            if hasattr(ctx, 'cultivate_detail') and hasattr(ctx.cultivate_detail, 'scenario'):
+                clocks_used = ctx.cultivate_detail.clock_used or 0
+                clock_limit = ctx.cultivate_detail.clock_use_limit or 0
+                if clocks_used < clock_limit:
+                    # The difference between enabled/disabled is too small to be detectable in grayscale, so
+                    # what we do here instead is try to click the Try Again button. If it's enabled, we'll
+                    # be taken to the appropriate screen. If it's disabled, nothing will pop up and we assume 
+                    # we either won or we're out of retries for this current run.
+                    log.info(f"Checking if we can retry {race_id}")
+                    img = getattr(ctx, 'current_screen_gray', None)
+                    if img is None:
+                        img = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
+                    enabled_res = image_match(img, REF_MANT_RACE_TRY_AGAIN)
+                    cx, cy = enabled_res.center_point
+                    ctx.ctrl.click(cx, cy, "Check MANT race retry")
+                    time.sleep(0.5)
+                    reset_clock_match = image_match(img, REF_MANT_CLOCK)
+                    if reset_clock_match.find_match:
+                        log.info(f"Race {race_id} is retryable, retrying.")
+                        ctx.cultivate_detail.clock_used = clocks_used + 1
+                        ctx.ctrl.click(520, 1180, "MANT race retry confirm")
+                        time.sleep(0.5)
+                        return
+                    else:
+                        log.info("No option to try again, clicking Next.")
+                        ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
+                        return
+                else:
+                    log.info(f"Clock usage exceeded, not retrying race. {clocks_used}/{clock_limit}")
+            
+    except Exception as exc:
+        log.debug(f"Race outcome template check failed: {exc}")
+    
     ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
 
 

@@ -40,7 +40,6 @@ class MantConfig:
     buy_first_megaphone: bool
     recovery_pct_threshold: int
     buy_stat_items_early: bool
-    retry_race_list: list
 
     def __init__(self, config: dict):
         self.item_tiers = config.get("item_tiers", {})
@@ -66,7 +65,6 @@ class MantConfig:
         self.buy_first_megaphone = config.get("buy_first_megaphone", True)
         self.recovery_pct_threshold = config.get("recovery_pct_threshold", 35)
         self.buy_stat_items_early = config.get("buy_stat_items_early", True)
-        self.retry_race_list = config.get("retry_race_list", [])
 
 class ScenarioConfig:
     aoharu_config: AoharuConfig = None
