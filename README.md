@@ -5,6 +5,7 @@ This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sw
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
 
 ## Features Not Implemented Yet
+
 - Option to skip races for training still does not take into account the race grade (G1/G2/G3).
 
 ## Known Bugs
@@ -12,7 +13,7 @@ Turn on auto-use items for MANT or the bot will break. You need to adjust the co
 - Debut race loss logic was broken, but this should be fixed now. If you lose the debut race, it will try to race on the next turn.
 - URA/Unity are not tested and may not work. This only works for MANT.
 
-## Added Features / Changes from original Sweepy
+## Added Features / Changes
 
 Here's what's changed so far that's worth noting, most of the new bot features have options to toggle them off in the UI:
 
