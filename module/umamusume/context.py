@@ -111,6 +111,7 @@ class CultivateContextDetail:
     follow_support_card_name: str
     follow_support_card_level: int
     extra_race_list: list[int]
+    retry_race_list: list[int]
     learn_skill_list: list[list[str]]
     learn_skill_blacklist: list[str]
     learn_skill_done: bool
@@ -156,6 +157,7 @@ class CultivateContextDetail:
         self.turn_info = TurnInfo()
         self.turn_info_history = []
         self.extra_race_list = []
+        self.retry_race_list = []
         self.learn_skill_list = []
         self.learn_skill_blacklist = []
         self.learn_skill_done = False
@@ -241,6 +243,7 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
         detail.follow_support_card_name = task.detail.follow_support_card_name
         detail.follow_support_card_level = task.detail.follow_support_card_level
         detail.extra_race_list = list(task.detail.extra_race_list or [])
+        detail.retry_race_list = list(task.detail.retry_race_list or [])
         detail.learn_skill_list = [list(x) for x in (task.detail.learn_skill_list or [])]
         try:
             src = task.detail.learn_skill_list or []

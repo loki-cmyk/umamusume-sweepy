@@ -1240,6 +1240,12 @@
                       <textarea type="text" disabled v-model="extraRace" class="form-control"
                         id="race-select"></textarea>
                     </div>
+                    <div class="form-group mt-2">
+                      <label for="retry-race-select">Retry Races (MANT)</label>
+                      <textarea type="text" disabled v-model="retryRace" class="form-control"
+                        id="retry-race-select"></textarea>
+                      <small style="color:var(--muted-2);font-weight:400">Enable the "Retry Race" checkbox for each race under Race Options.</small>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group mt-2">
@@ -1307,8 +1313,18 @@
                           <i v-if="extraRace.includes(race.id)" class="bi bi-check-circle-fill race-slot-popup-check"></i>
                         </div>
                       </div>
+                      <div class="race-slot-popup-footer" @click.stop>
+                        <label class="race-retry-label" :class="{ disabled: !slotPopupRaces.some(r => extraRace.includes(r.id)) }">
+                          <input type="checkbox"
+                            :disabled="!slotPopupRaces.some(r => extraRace.includes(r.id))"
+                            :checked="slotPopupRaces.some(r => extraRace.includes(r.id) && retryRace.includes(r.id))"
+                            @change="toggleRetryRace(slotPopupRaces.find(r => extraRace.includes(r.id))?.id)" />
+                          Retry Race
+                        </label>
+                      </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -2217,6 +2233,7 @@ export default {
       mantBbqUnmaxxedCards: 3,
       mantCharmThreshold: 40,
       mantCharmFailureRate: 21,
+      retryRace: [],
       mantSkipRacePercentile: 0,
       mantReserveMegaphonesForSummer: true,
       mantBuyFirstMegaphone: true,
@@ -3321,6 +3338,14 @@ export default {
         this.extraRace.push(raceId);
       }
     },
+    toggleRetryRace: function (raceId) {
+      const index = this.retryRace.indexOf(raceId);
+      if (index > -1) {
+        this.retryRace.splice(index, 1);
+      } else {
+        this.retryRace.push(raceId);
+      }
+    },
     openSlotPopup: function (yearIdx, slotIdx) {
       const yearLabels = ['Junior Year', 'Classic Year', 'Senior Year'];
       const yearRaces = [this.filteredRaces_1, this.filteredRaces_2, this.filteredRaces_3][yearIdx];
@@ -3627,6 +3652,7 @@ export default {
           "follow_support_card_name": this.selectedSupportCard.name,
           "follow_support_card_level": this.supportCardLevel,
           "extra_race_list": this.extraRace,
+          "retry_race_list": this.retryRace.map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId)),
           "learn_skill_list": learn_skill_list,
           "learn_skill_blacklist": learn_skill_blacklist,
           "tactic_list": [4, 4, 4],
@@ -3784,6 +3810,7 @@ export default {
       const presetRaceList = Array.isArray(this.presetsUse.race_list)
         ? this.presetsUse.race_list
         : (Array.isArray(this.presetsUse.extra_race_list) ? this.presetsUse.extra_race_list : [])
+      this.retryRace = (Array.isArray(this.presetsUse.retry_race_list) ? this.presetsUse.retry_race_list : []).map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId));
       this.extraRace = presetRaceList
         .map(raceId => Number(raceId))
         .filter(raceId => Number.isFinite(raceId))
@@ -4186,6 +4213,7 @@ export default {
       }
       this.supportCardLevel = data.follow_support_card_level || this.supportCardLevel;
       this.extraRace = data.extra_race_list || [];
+      this.retryRace = data.retry_race_list || [];
       this.clockUseLimit = data.clock_use_limit !== undefined ? data.clock_use_limit : this.clockUseLimit;
       this.restTreshold = data.rest_threshold || data.rest_treshold || this.restTreshold;
       this.compensateFailure = data.compensate_failure !== false;
@@ -4427,6 +4455,7 @@ export default {
         scenario: this.selectedScenario,
         race_list: this.extraRace.map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId)),
         extra_race_list: this.extraRace.map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId)),
+        retry_race_list: this.retryRace.map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId)),
         skill_priority_list: skill_priority_list,
         skill_blacklist: skill_blacklist,
         event_weights: {
@@ -4649,6 +4678,7 @@ export default {
         scenario: this.selectedScenario,
         race_list: this.extraRace.map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId)),
         extra_race_list: this.extraRace.map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId)),
+        retry_race_list: this.retryRace.map(raceId => Number(raceId)).filter(raceId => Number.isFinite(raceId)),
         skill_priority_list: skill_priority_list,
         skill_blacklist: skill_blacklist,
         event_weights: {

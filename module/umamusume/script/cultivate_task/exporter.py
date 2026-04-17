@@ -15,6 +15,7 @@ EXCLUDE_FIELDS = {
 
     # Configuration / Constant Lists (repetitive every turn)
     "extra_race_list",
+    "retry_race_list",
     "learn_skill_list",
     "learn_skill_blacklist",
     "tactic_list",

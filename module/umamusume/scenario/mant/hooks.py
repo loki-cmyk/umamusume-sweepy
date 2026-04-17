@@ -29,4 +29,3 @@ def mant_after_hook(ctx, img):
         pass
 
     return False
-
