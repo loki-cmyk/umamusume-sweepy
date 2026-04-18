@@ -203,9 +203,11 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
 
     if turn_operation is not None and turn_operation.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_REST:
         if should_use_group_card_recreation(ctx):
+            ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
             if execute_group_card_recreation(ctx, trip_click_point=get_trip(ctx)):
                 return
         if should_use_pal_outing_simple(ctx):
+            ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
             ctx.ctrl.click_by_point(get_trip(ctx))
             return
         ctx.cultivate_detail.turn_info.turn_operation = None
@@ -235,9 +237,13 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         if energy > 0 and energy < 33:
             if should_use_pal_outing_simple(ctx):
                 log.info(f"Energy at {energy}, decision made to use pal card recreation.")
+                ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
+                ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
                 ctx.ctrl.click_by_point(get_trip(ctx))
             else:
                 log.info(f"Energy at {energy}, decision made to rest.")
+                ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
+                ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
                 ctx.ctrl.click_by_point(CULTIVATE_REST)
             return
 
@@ -321,9 +327,11 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
         elif turn_operation.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_REST:
             if should_use_group_card_recreation(ctx):
+                ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
                 if execute_group_card_recreation(ctx, trip_click_point=get_trip(ctx)):
                     return
             if should_use_pal_outing_simple(ctx):
+                ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
                 ctx.ctrl.click_by_point(get_trip(ctx))
                 return
             ctx.cultivate_detail.turn_info.turn_operation = None
