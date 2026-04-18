@@ -562,29 +562,29 @@
                           <i class="fas fa-check" v-if="palSelected === palName"></i>
                         </button>
                       </div>
-                      <div class="pal-card-name">{{ palData.group === 'team_sirius' ? 'Team Sirius' : palName }}</div>
+                      <div class="pal-card-name">{{ this.isGroupCard(palData) ? (palData.group === 'team_sirius' ? 'Team Sirius' : palData.group) : palName }}</div>
                     </div>
                     <div v-if="palSelected === palName" class="pal-stages-list">
-                      <template v-if="Array.isArray(palData)">
-                        <div v-for="(stageData, stageIdx) in palData" :key="stageIdx" class="pal-stage-row">
+                      <template v-if="this.isFriendCard(palData)">
+                        <div v-for="(stageData, stageIdx) in this.getPalThresholds(palData)" :key="stageIdx" class="pal-stage-row">
                           <div class="stage-label">Stage {{ stageIdx + 1 }}</div>
                           <div class="stage-inputs">
                             <div class="input-group input-group-sm">
                               <span class="input-group-text">Mood</span>
-                              <input type="number" class="form-control" v-model.number="palCardStore[palName][stageIdx][0]" min="0" max="5">
+                              <input type="number" class="form-control" v-model.number="this.getPalThresholds(palData)[stageIdx][0]" min="0" max="5">
                             </div>
                             <div class="input-group input-group-sm">
                               <span class="input-group-text">Energy</span>
-                              <input type="number" class="form-control" v-model.number="palCardStore[palName][stageIdx][1]" min="0" max="100">
+                              <input type="number" class="form-control" v-model.number="this.getPalThresholds(palData)[stageIdx][1]" min="0" max="100">
                             </div>
                             <div class="input-group input-group-sm">
                               <span class="input-group-text">Score</span>
-                              <input type="number" step="0.01" class="form-control" v-model.number="palCardStore[palName][stageIdx][2]" min="0" max="1">
+                              <input type="number" step="0.01" class="form-control" v-model.number="this.getPalThresholds(palData)[stageIdx][2]" min="0" max="1">
                             </div>
                           </div>
                         </div>
                       </template>
-                      <template v-else-if="palData.group === 'team_sirius'">
+                      <template v-else-if="this.isGroupCard(palData)">
                         <div class="pal-stage-row">
                           <div class="stage-label">Percentile</div>
                           <div class="stage-inputs">
@@ -2157,9 +2157,9 @@ export default {
     if (typeof this.loadEventList === 'function') {
       this.loadEventList();
     }
-        this.mantItemTiers = this.mantGetDefaultTiers();
-        this.mantTierCount = 5;
-        this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
+    this.mantItemTiers = this.mantGetDefaultTiers();
+    this.mantTierCount = 5;
+    this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
   },
   data: function () {
     return {
@@ -2353,6 +2353,19 @@ export default {
       spiritExplosionSeniorAfterSummer: [0.16, 0.16, 0.16, 0.06, 0.11],
       spiritExplosionFinale: [0.16, 0.16, 0.16, 0.06, 0.11],
 
+      eventWeightsJunior: {
+        Friendship: 35, Speed: 10, Stamina: 10, Power: 10, Guts: 20, Wits: 1,
+        Hint: 100, 'Skill Points': 10
+      },
+      eventWeightsClassic: {
+        Friendship: 20, Speed: 10, Stamina: 10, Power: 10, Guts: 20, Wits: 1,
+        Hint: 100, 'Skill Points': 10
+      },
+      eventWeightsSenior: {
+        Friendship: 0, Speed: 10, Stamina: 10, Power: 10, Guts: 20, Wits: 1,
+        Hint: 100, 'Skill Points': 10
+      },
+
       motivationThresholdYear1: 3,
       motivationThresholdYear2: 4,
       motivationThresholdYear3: 4,
@@ -2406,20 +2419,17 @@ export default {
       availableDistances: ['', 'Sprint', 'Mile', 'Medium', 'Long'],
       availableTiers: ['', 'SS', 'S', 'A', 'B', 'C', 'D'],
       availableRarities: ['', 'Unique', 'Rare', 'Normal'],
-      showSkillList: false
-      , spBurstEnabled: false,
+      showSkillList: false, 
+      spBurstEnabled: false,
       spBurstSkillName: '',
       spBurstThreshold: 0,
       spBurstDragOver: false,
-       showPresetMenu: false,
+      showPresetMenu: false,
       sharePresetText: '',
 
       showSlotPopup: false,
       slotPopupRaces: [],
       slotPopupTitle: '',
-
-            draggingSkillName: null,
-      dragOrigin: null,
       
       eventWeightsJunior: {
         Friendship: 35,
@@ -2451,6 +2461,8 @@ export default {
         Hint: 100,
         'Skill Points': 10
       },
+      draggingSkillName: null,
+      dragOrigin: null,
       dropHoverTarget: null,
       didValidDrop: false,
 
@@ -2478,10 +2490,23 @@ export default {
         { op: '>', val: 48, val2: 0, tactic: 3 }
       ],
       showTurnInfo: false,
-          }
+    };
   },
   mounted() {
-        window.addEventListener('dragend', this.onGlobalDragEnd, false);
+    this.loadCharacterData();
+    this.loadEventList();
+    this.loadRaceData();
+    this.loadSkillData();
+    this.loadTrainingCharacters();
+    this.initSelect();
+    this.getPresets();
+    this.loadPalCardStore();
+    this.successToast = $('#liveToast').toast({});
+    this.$nextTick(() => {
+      this.initScrollSpy();
+      this.normalizeScoreArrays(this.selectedScenario === 2 ? 5 : 4);
+    });
+    window.addEventListener('dragend', this.onGlobalDragEnd, false);
     window.addEventListener('drop', this.onGlobalDrop, false);
   },
   beforeUnmount() {
@@ -2516,29 +2541,23 @@ export default {
           (race.distance === 'Mile' && this.showMile) ||
           (race.distance === 'Medium' && this.showMedium) ||
           (race.distance === 'Long' && this.showLong);
-
         let matchesCharacter = true;
         if (this.selectedCharacter) {
           const character = this.characterList.find(c => c.name === this.selectedCharacter);
           if (character) {
             const matchesCharacterTerrain = race.terrain === character.terrain;
-
             const characterDistances = character.distance.split(', ').map(d => d.trim());
             const matchesCharacterDistance = characterDistances.includes(race.distance);
-
             const matchesAptitude = matchesCharacterTerrain && matchesCharacterDistance;
-
             const characterPeriods = this.characterTrainingPeriods[this.selectedCharacter];
             const matchesTrainingPeriod = characterPeriods && (
               (characterPeriods['Junior Year'] && characterPeriods['Junior Year'].includes(race.date)) ||
               (characterPeriods['Classic Year'] && characterPeriods['Classic Year'].includes(race.date)) ||
               (characterPeriods['Senior Year'] && characterPeriods['Senior Year'].includes(race.date))
             );
-
             matchesCharacter = matchesAptitude && matchesTrainingPeriod;
           }
         }
-
         return matchesSearch && matchesType && matchesTerrain && matchesDistance && matchesCharacter;
       });
     },
@@ -2561,29 +2580,23 @@ export default {
           (race.distance === 'Mile' && this.showMile) ||
           (race.distance === 'Medium' && this.showMedium) ||
           (race.distance === 'Long' && this.showLong);
-
         let matchesCharacter = true;
         if (this.selectedCharacter) {
           const character = this.characterList.find(c => c.name === this.selectedCharacter);
           if (character) {
             const matchesCharacterTerrain = race.terrain === character.terrain;
-
             const characterDistances = character.distance.split(', ').map(d => d.trim());
             const matchesCharacterDistance = characterDistances.includes(race.distance);
-
             const matchesAptitude = matchesCharacterTerrain && matchesCharacterDistance;
-
             const characterPeriods = this.characterTrainingPeriods[this.selectedCharacter];
             const matchesTrainingPeriod = characterPeriods && (
               (characterPeriods['Junior Year'] && characterPeriods['Junior Year'].includes(race.date)) ||
               (characterPeriods['Classic Year'] && characterPeriods['Classic Year'].includes(race.date)) ||
               (characterPeriods['Senior Year'] && characterPeriods['Senior Year'].includes(race.date))
             );
-
             matchesCharacter = matchesAptitude && matchesTrainingPeriod;
           }
         }
-
         return matchesSearch && matchesType && matchesTerrain && matchesDistance && matchesCharacter;
       });
     },
@@ -2606,38 +2619,30 @@ export default {
           (race.distance === 'Mile' && this.showMile) ||
           (race.distance === 'Medium' && this.showMedium) ||
           (race.distance === 'Long' && this.showLong);
-
         let matchesCharacter = true;
         if (this.selectedCharacter) {
           const character = this.characterList.find(c => c.name === this.selectedCharacter);
           if (character) {
             const matchesCharacterTerrain = race.terrain === character.terrain;
-
             const characterDistances = character.distance.split(', ').map(d => d.trim());
             const matchesCharacterDistance = characterDistances.includes(race.distance);
-
             const matchesAptitude = matchesCharacterTerrain && matchesCharacterDistance;
-
             const characterPeriods = this.characterTrainingPeriods[this.selectedCharacter];
             const matchesTrainingPeriod = characterPeriods && (
               (characterPeriods['Junior Year'] && characterPeriods['Junior Year'].includes(race.date)) ||
               (characterPeriods['Classic Year'] && characterPeriods['Classic Year'].includes(race.date)) ||
               (characterPeriods['Senior Year'] && characterPeriods['Senior Year'].includes(race.date))
             );
-
             matchesCharacter = matchesAptitude && matchesTrainingPeriod;
           }
         }
-
         return matchesSearch && matchesType && matchesTerrain && matchesDistance && matchesCharacter;
       });
     },
     skillsByTypePriority0() {
       const grouped = {};
       this.skillPriority0.forEach(skill => {
-        if (!grouped[skill.skill_type]) {
-          grouped[skill.skill_type] = [];
-        }
+        if (!grouped[skill.skill_type]) grouped[skill.skill_type] = [];
         grouped[skill.skill_type].push(skill);
       });
       return grouped;
@@ -2645,9 +2650,7 @@ export default {
     skillsByTypePriority1() {
       const grouped = {};
       this.skillPriority1.forEach(skill => {
-        if (!grouped[skill.skill_type]) {
-          grouped[skill.skill_type] = [];
-        }
+        if (!grouped[skill.skill_type]) grouped[skill.skill_type] = [];
         grouped[skill.skill_type].push(skill);
       });
       return grouped;
@@ -2655,9 +2658,7 @@ export default {
     skillsByTypePriority2() {
       const grouped = {};
       this.skillPriority2.forEach(skill => {
-        if (!grouped[skill.skill_type]) {
-          grouped[skill.skill_type] = [];
-        }
+        if (!grouped[skill.skill_type]) grouped[skill.skill_type] = [];
         grouped[skill.skill_type].push(skill);
       });
       return grouped;
@@ -2666,9 +2667,7 @@ export default {
       const allSkills = skillsData;
       const grouped = {};
       allSkills.forEach(skill => {
-        if (!grouped[skill.skill_type]) {
-          grouped[skill.skill_type] = [];
-        }
+        if (!grouped[skill.skill_type]) grouped[skill.skill_type] = [];
         grouped[skill.skill_type].push(skill);
       });
       return grouped;
@@ -2676,7 +2675,6 @@ export default {
     filteredSkillsByType() {
       const { strategy, distance, tier, rarity, query } = this.skillFilter;
       const allSkills = skillsData;
-
       const filteredSkills = allSkills.filter(skill => {
         const matchesStrategy = !strategy || (skill.strategy && skill.strategy === strategy);
         const matchesDistance = !distance || (skill.distance && skill.distance === distance);
@@ -2688,15 +2686,11 @@ export default {
           (skill.description && skill.description.toLowerCase().includes(q));
         return matchesStrategy && matchesDistance && matchesTier && matchesRarity && matchesQuery;
       });
-
       const grouped = {};
       filteredSkills.forEach(skill => {
-        if (!grouped[skill.skill_type]) {
-          grouped[skill.skill_type] = [];
-        }
+        if (!grouped[skill.skill_type]) grouped[skill.skill_type] = [];
         grouped[skill.skill_type].push(skill);
       });
-
       return grouped;
     },
     turnReferenceColumns() {
@@ -2704,23 +2698,19 @@ export default {
       const years = ["Junior", "Classic", "Senior"];
       const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const halves = ["Early", "Late"];
-
       for (let turn = 12; turn <= 77; turn++) {
         let desc = "";
-        
         if (turn === 12) {
-           desc = "Debut";
+          desc = "Debut";
         } else if (turn <= 72) {
-          const absIndex = turn - 1; 
-          
+          const absIndex = turn - 1;
           const yearIdx = Math.floor(absIndex / 24);
           const monthIdx = Math.floor((absIndex % 24) / 2);
           const halfIdx = absIndex % 2;
-
           if (yearIdx < years.length) {
             desc = `${years[yearIdx]} ${halves[halfIdx]} ${months[monthIdx]}`;
           } else {
-             desc = "Unknown";
+            desc = "Unknown";
           }
         } else {
           if (turn === 73) desc = "URA Qualifiers";
@@ -2730,61 +2720,74 @@ export default {
           else if (turn === 77) desc = "URA Finals";
           else desc = "Post-Game";
         }
-
         const colIdx = Math.floor((turn - 12) / 11);
-        if (colIdx < 6) {
-          columns[colIdx].push({ turn, desc });
-        }
+        if (colIdx < 6) columns[colIdx].push({ turn, desc });
       }
       return columns;
     }
   },
-  mounted() {
-    this.loadCharacterData()
-    this.loadEventList()
-    this.loadRaceData()
-    this.loadSkillData()
-    this.loadTrainingCharacters()
-    this.initSelect()
-    this.getPresets()
-    this.loadPalCardStore()
-    this.successToast = $('#liveToast').toast({})
-    this.$nextTick(() => {
-      this.initScrollSpy()
-      this.normalizeScoreArrays(this.selectedScenario === 2 ? 5 : 4)
-    })
-  },
-  watch: {
-    selectedScenario(newVal) {
-      this.normalizeScoreArrays(newVal === 2 ? 5 : 4)
-    },
-    scoreValueJunior(val) {
-      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
-        this.scoreValueJunior = [...val, ...Array(5 - val.length).fill(0.15)]
+  methods: {
+    // ---------------------------------------------------------------
+    // Normalize a pal_card_store entry to have an explicit type tag.
+    // Old presets: arrays = friend, objects with .group = group
+    // New presets: explicit type:"friend" or type:"group"
+    // ---------------------------------------------------------------
+    normalizePalEntry(key, val) {
+      if (Array.isArray(val)) {
+        // Old-style: bare array of threshold stages → friend card
+        return { type: 'friend', thresholds: val };
       }
-    },
-    scoreValueClassic(val) {
-      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
-        this.scoreValueClassic = [...val, ...Array(5 - val.length).fill(0.12)]
+      if (typeof val === 'object' && val !== null) {
+        if (val.type === 'friend' || val.type === 'group') {
+          // Already tagged — ensure friend cards have .thresholds
+          if (val.type === 'friend' && !val.thresholds) {
+            return { ...val, thresholds: [] };
+          }
+          return val;
+        }
+        // Infer from structure
+        if (val.group) {
+          // Has a .group field → group card (e.g. team_sirius)
+          return { ...val, type: 'group' };
+        }
+        if (val.thresholds && Array.isArray(val.thresholds)) {
+          return { ...val, type: 'friend' };
+        }
+        // Fallback: if it looks like an array of arrays, it's a friend
+        return { ...val, type: 'friend' };
       }
+      return val;
     },
-    scoreValueSenior(val) {
-      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
-        this.scoreValueSenior = [...val, ...Array(5 - val.length).fill(0.09)]
+
+    // Get the thresholds array from a pal entry (handles both old and new format)
+    getPalThresholds(palData) {
+      if (Array.isArray(palData)) return palData;
+      if (palData && typeof palData === 'object') {
+        if (Array.isArray(palData.thresholds)) return palData.thresholds;
       }
+      return null;
     },
-    scoreValueSeniorAfterSummer(val) {
-      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
-        this.scoreValueSeniorAfterSummer = [...val, ...Array(5 - val.length).fill(0.07)]
-      }
+
+    // Check if a pal entry is a group card
+    isGroupCard(palData) {
+      if (!palData || typeof palData !== 'object' || Array.isArray(palData)) return false;
+      const ptype = palData.type;
+      if (ptype === 'group') return true;
+      if (ptype === 'friend') return false;
+      // No type tag — infer from .group field
+      return !!palData.group;
     },
-    scoreValueFinale(val) {
-      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
-        this.scoreValueFinale = [...val, ...Array(5 - val.length).fill(0)]
-      }
-    }
-  },
-    methods: {
+
+    // Check if a pal entry is a friend card
+    isFriendCard(palData) {
+      if (Array.isArray(palData)) return true;
+      if (!palData || typeof palData !== 'object') return false;
+      const ptype = palData.type;
+      if (ptype === 'friend') return true;
+      if (ptype === 'group') return false;
+      // No type tag — infer
+      return !palData.group;
+    },
     getTurnFromDate(dateStr) {
       if (!dateStr) return '?';
       let y = 0, m = 0, h = 0;
@@ -2811,11 +2814,26 @@ export default {
           if (res && res.data) {
             const apiStore = res.data;
             for (const key in apiStore) {
-              this.palCardStore[key] = apiStore[key];
+              // Normalize: add type tags to old-format entries
+              this.palCardStore[key] = this.normalizePalEntry(key, apiStore[key]);
+            }
+            // Ensure team_sirius group card always exists (disabled by default)
+            if (!this.palCardStore['team_sirius']) {
+              this.palCardStore['team_sirius'] = { type: 'group', group: 'team_sirius', enabled: false, percentile: 26 };
             }
             const palNames = Object.keys(this.palCardStore);
             if (palNames.length > 0 && !this.palSelected) {
-              this.palSelected = palNames[0];
+              // Default to first friend card entry
+              const firstFriend = palNames.find(n => this.isFriendCard(this.palCardStore[n]));
+              this.palSelected = firstFriend || palNames[0];
+            }
+            // Sync: if a friend card is selected, group cards must be disabled
+            if (this.palSelected && this.isFriendCard(this.palCardStore[this.palSelected])) {
+              for (const v of Object.values(this.palCardStore)) {
+                if (this.isGroupCard(v)) {
+                  v.enabled = false;
+                }
+              }
             }
           }
         })
@@ -2857,26 +2875,60 @@ export default {
     this.showPalConfigPanel = !this.showPalConfigPanel;
     },
     togglePalCardSelection(palName) {
-    if (this.palSelected === palName) {
-      const entry = this.palCardStore[palName];
-      if (entry && typeof entry === 'object' && entry.group) {
-        entry.enabled = false;
-        if (!this.palCardStore['team_sirius']?.enabled) {
+      if (this.palSelected === palName) {
+        // Deselecting
+        const entry = this.palCardStore[palName];
+        if (this.isGroupCard(entry)) {
+          entry.enabled = false;
+        }
+        this.prioritizeRecreation = false;
+        this.palSelected = null;
+      } else {
+        // Selecting
+        const entry = this.palCardStore[palName];
+        if (this.isGroupCard(entry)) {
+          // Group card: toggle enabled flag, clear friend card state
+          entry.enabled = true;
           this.prioritizeRecreation = false;
+          this.palSelected = palName;
+        } else {
+          // Friend card: select it, set prioritize_recreation, disable any group cards
+          this.prioritizeRecreation = true;
+          this.palSelected = palName;
+          for (const [k, v] of Object.entries(this.palCardStore)) {
+            if (this.isGroupCard(v)) {
+              v.enabled = false;
+            }
+          }
         }
       }
-      if (!this.prioritizeRecreation) {
-        this.palSelected = null;
-      }
-    } else {
-      const entry = this.palCardStore[palName];
-      if (entry && typeof entry === 'object' && entry.group) {
-        entry.enabled = true;
-        this.prioritizeRecreation = true;
-      }
-      this.palSelected = palName;
-    }
     },
+    // Build pal_card_store with explicit type tags for saving/sharing presets
+    buildTaggedPalCardStore() {
+      const out = {};
+      const friendSelected = this.palSelected && this.isFriendCard(this.palCardStore[this.palSelected]);
+      console.log('[PAL-FRONTEND] buildTaggedPalCardStore: palSelected=', this.palSelected, 'friendSelected=', friendSelected, 'palCardStore keys=', Object.keys(this.palCardStore));
+      for (const [key, val] of Object.entries(this.palCardStore)) {
+        if (!val) continue;
+        if (this.isGroupCard(val)) {
+          if (val.enabled && !friendSelected) {
+            out[key] = { ...val, type: 'group' };
+            console.log('[PAL-FRONTEND] INCLUDED group card:', key, val);
+          } else {
+            console.log('[PAL-FRONTEND] EXCLUDED group card:', key, 'enabled=', val.enabled, 'friendSelected=', friendSelected);
+          }
+        } else if (this.isFriendCard(val)) {
+          const thresholds = this.getPalThresholds(val);
+          if (thresholds && thresholds.length > 0) {
+            out[key] = { type: 'friend', thresholds: thresholds };
+            console.log('[PAL-FRONTEND] INCLUDED friend card:', key);
+          }
+        }
+      }
+      console.log('[PAL-FRONTEND] Final pal_card_store payload:', out);
+      return out;
+    },
+
     getFilteredNames() {
         const names = [];
         Object.keys(this.filteredSkillsByType).forEach(type => {
@@ -3189,9 +3241,6 @@ export default {
       }
     },
     addBox(item) {
-      if (this.skillLearnPriorityList.length >= 5) {
-        return false
-      }
       this.skillLearnPriorityList.push(
         {
           priority: this.skillPriorityNum++,
@@ -3772,13 +3821,15 @@ export default {
         }
       };
 
-      const palThresholds = this.palCardStore[this.palSelected];
-      const tsData = this.palCardStore['team_sirius'];
-      const tsEnabled = tsData && typeof tsData === 'object' && tsData.group === 'team_sirius' && tsData.enabled;
-      if ((this.prioritizeRecreation && this.palSelected && Array.isArray(palThresholds) && palThresholds.length > 0) || tsEnabled) {
+      // --- Friend card data (separate from group card) ---
+      const selectedPalEntry = this.palSelected ? this.palCardStore[this.palSelected] : null;
+      const palThresholds = this.getPalThresholds(selectedPalEntry);
+      const hasFriendCard = this.prioritizeRecreation && this.palSelected && palThresholds && palThresholds.length > 0;
+
+      if (hasFriendCard) {
         payload.attachment_data.prioritize_recreation = true;
         payload.attachment_data.pal_name = this.palSelected || "";
-        payload.attachment_data.pal_thresholds = Array.isArray(palThresholds) ? palThresholds : [];
+        payload.attachment_data.pal_thresholds = palThresholds;
         payload.attachment_data.pal_friendship_score = [...this.palFriendshipScore];
         payload.attachment_data.pal_card_multiplier = this.palCardMultiplier;
       } else {
@@ -3788,7 +3839,31 @@ export default {
         payload.attachment_data.pal_friendship_score = [0.08, 0.057, 0.018];
         payload.attachment_data.pal_card_multiplier = 0.1;
       }
-      payload.attachment_data.pal_card_store = Object.fromEntries(Object.entries(this.palCardStore).filter(([k, v]) => (Array.isArray(v) && v.length > 0) || (typeof v === 'object' && v !== null && v.group && !(v.group === 'team_sirius' && v.enabled === false))));
+
+      // --- Group card data (separate from friend card) ---
+      // Build pal_card_store with explicit type tags so backend can distinguish
+      const palCardStoreOut = {};
+      const friendSelected = this.palSelected && this.isFriendCard(this.palCardStore[this.palSelected]);
+      console.log('[PAL-FRONTEND] (addTask) palSelected=', this.palSelected, 'friendSelected=', friendSelected);
+      for (const [key, val] of Object.entries(this.palCardStore)) {
+        if (!val) continue;
+        if (this.isGroupCard(val)) {
+          if (val.enabled && !friendSelected) {
+            palCardStoreOut[key] = { ...val, type: 'group' };
+            console.log('[PAL-FRONTEND] (addTask) INCLUDED group card:', key, val);
+          } else {
+            console.log('[PAL-FRONTEND] (addTask) EXCLUDED group card:', key, 'enabled=', val.enabled, 'friendSelected=', friendSelected);
+          }
+        } else if (this.isFriendCard(val)) {
+          const thresholds = this.getPalThresholds(val);
+          if (thresholds && thresholds.length > 0) {
+            palCardStoreOut[key] = { type: 'friend', thresholds: thresholds };
+            console.log('[PAL-FRONTEND] (addTask) INCLUDED friend card:', key);
+          }
+        }
+      }
+      console.log('[PAL-FRONTEND] (addTask) Final pal_card_store:', palCardStoreOut);
+      payload.attachment_data.pal_card_store = palCardStoreOut;
       payload.attachment_data.npc_score_value = [
         [...this.npcScoreJunior],
         [...this.npcScoreClassic],
@@ -3865,13 +3940,29 @@ export default {
         const presetStore = this.presetsUse.pal_card_store
         for (const key in presetStore) {
           const val = presetStore[key]
-          if ((Array.isArray(val) && val.length > 0) || (typeof val === 'object' && val !== null && val.group)) {
-            this.palCardStore[key] = val
+          // Normalize: add type tags to old-format entries
+          const normalized = this.normalizePalEntry(key, val);
+          if (normalized) {
+            this.palCardStore[key] = normalized;
           }
         }
       }
+      // Ensure team_sirius group card exists even if preset didn't have one
       if (!this.palCardStore['team_sirius']) {
-        this.palCardStore['team_sirius'] = { group: 'team_sirius', enabled: false, percentile: 26 }
+        this.palCardStore['team_sirius'] = { type: 'group', group: 'team_sirius', enabled: false, percentile: 26 };
+      }
+
+      // Sync: if a friend card is selected, group cards must be disabled
+      if (this.palSelected && this.isFriendCard(this.palCardStore[this.palSelected])) {
+        for (const v of Object.values(this.palCardStore)) {
+          if (this.isGroupCard(v)) {
+            v.enabled = false;
+          }
+        }
+      }
+      // If a group card is selected, friend card must not claim prioritize_recreation
+      if (this.palSelected && this.isGroupCard(this.palCardStore[this.palSelected])) {
+        this.prioritizeRecreation = false;
       }
 
       if ('pal_friendship_score' in this.presetsUse && Array.isArray(this.presetsUse.pal_friendship_score)) {
@@ -4026,12 +4117,14 @@ export default {
         this.skillLearnPriorityList = [{ priority: 0, skills: "" }];
         this.skillPriorityNum = 1;
 
-        for (let priority = 0; priority <= Math.max(...this.activePriorities); priority++) {
-          if (skillsByPriority[priority] && skillsByPriority[priority].length > 0) {
-            if (priority > 0) {
-              this.addBox();
-            }
-            this.skillLearnPriorityList[priority].skills = skillsByPriority[priority].join(", ");
+        const maxPriority = Math.max(...this.activePriorities);
+        while (this.skillLearnPriorityList.length <= maxPriority) {
+          this.addBox();
+        }
+        for (let pt = 0; pt <= maxPriority; pt++) {
+          if (this.skillLearnPriorityList[pt]) {
+            const prioritySkills = skillsByPriority[pt] || [];
+            this.skillLearnPriorityList[pt].skills = prioritySkills.join(", ");
           }
         }
       } else {
@@ -4069,11 +4162,14 @@ export default {
         }
       }
       else {
-        for (let i = 0; i < this.presetsUse.skill_priority_list.length; i++) {
-          if (i >= this.skillPriorityNum) {
-            this.addBox()
+        const splLen = this.presetsUse.skill_priority_list.length;
+        while (this.skillLearnPriorityList.length < splLen) {
+          this.addBox();
+        }
+        for (let i = 0; i < splLen; i++) {
+          if (this.skillLearnPriorityList[i]) {
+            this.skillLearnPriorityList[i].skills = this.presetsUse.skill_priority_list[i];
           }
-          this.skillLearnPriorityList[i].skills = this.presetsUse.skill_priority_list[i]
         }
         while (this.presetsUse.skill_priority_list.length != 0 &&
           this.skillPriorityNum > this.presetsUse.skill_priority_list.length) {
@@ -4246,21 +4342,26 @@ export default {
       this.motivationThresholdYear3 = data.motivation_threshold_year3 || 4;
       this.prioritizeRecreation = data.prioritize_recreation || false;
       if (data.pal_name) this.palSelected = data.pal_name;
+      // Legacy: pal_thresholds as a bare array → wrap as friend card
       if (data.pal_thresholds && this.palSelected) {
-        this.palCardStore[this.palSelected] = data.pal_thresholds;
+        this.palCardStore[this.palSelected] = this.normalizePalEntry(this.palSelected, data.pal_thresholds);
       }
       if (data.pal_card_store && typeof data.pal_card_store === 'object') {
         for (const key in data.pal_card_store) {
           const val = data.pal_card_store[key];
-          if ((Array.isArray(val) && val.length > 0) || (typeof val === 'object' && val !== null && val.group)) {
-            this.palCardStore[key] = val;
+          const normalized = this.normalizePalEntry(key, val);
+          if (normalized) {
+            this.palCardStore[key] = normalized;
           }
         }
       }
+      // Ensure team_sirius group card exists
       if (!this.palCardStore['team_sirius']) {
-        this.palCardStore['team_sirius'] = { group: 'team_sirius', enabled: false, percentile: 26 };
+        this.palCardStore['team_sirius'] = { type: 'group', group: 'team_sirius', enabled: false, percentile: 26 };
       }
-      if (this.palCardStore['team_sirius']?.enabled) {
+      // Set prioritize_recreation based on friend card selection (NOT group card — they're independent)
+      const selectedEntry = this.palSelected ? this.palCardStore[this.palSelected] : null;
+      if (selectedEntry && this.isFriendCard(selectedEntry) && this.getPalThresholds(selectedEntry)) {
         this.prioritizeRecreation = true;
       }
       if (!this.palSelected) {
@@ -4546,7 +4647,7 @@ export default {
         prioritize_recreation: this.prioritizeRecreation,
 
         pal_selected: this.palSelected,
-        pal_card_store: Object.fromEntries(Object.entries(this.palCardStore).filter(([k, v]) => (Array.isArray(v) && v.length > 0) || (typeof v === 'object' && v !== null && v.group))),
+        pal_card_store: this.buildTaggedPalCardStore(),
 
         pal_friendship_score: [...this.palFriendshipScore],
         pal_card_multiplier: this.palCardMultiplier,
@@ -4562,7 +4663,7 @@ export default {
         blacklistedSkills: [...this.blacklistedSkills],
         skillAssignments: { ...this.skillAssignments },
         activePriorities: [...this.activePriorities]
-      }
+      };
       preset.skillEventWeight = [...this.skillEventWeight];
       preset.resetSkillEventWeightList = this.resetSkillEventWeightList;
       if (this.selectedScenario === 2) {
@@ -4718,7 +4819,7 @@ export default {
         motivation_threshold_year3: this.motivationThresholdYear3,
         prioritize_recreation: this.prioritizeRecreation,
         pal_selected: this.palSelected,
-        pal_card_store: Object.fromEntries(Object.entries(this.palCardStore).filter(([k, v]) => (Array.isArray(v) && v.length > 0) || (typeof v === 'object' && v !== null && v.group))),
+        pal_card_store: this.buildTaggedPalCardStore(),
         pal_friendship_score: [...this.palFriendshipScore],
         pal_card_multiplier: this.palCardMultiplier,
         npc_score_value: [[...this.npcScoreJunior], [...this.npcScoreClassic], [...this.npcScoreSenior], [...this.npcScoreSeniorAfterSummer], [...this.npcScoreFinale]],
@@ -4894,7 +4995,37 @@ export default {
     this.destroyScrollSpy();
   },
   watch: {
-
+    presetsUse() {
+      this.applyPresetRace();
+    },
+    selectedScenario(newVal) {
+      this.normalizeScoreArrays(newVal === 2 ? 5 : 4);
+    },
+    scoreValueJunior(val) {
+      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
+        this.scoreValueJunior = [...val, ...Array(5 - val.length).fill(0.15)];
+      }
+    },
+    scoreValueClassic(val) {
+      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
+        this.scoreValueClassic = [...val, ...Array(5 - val.length).fill(0.12)];
+      }
+    },
+    scoreValueSenior(val) {
+      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
+        this.scoreValueSenior = [...val, ...Array(5 - val.length).fill(0.09)];
+      }
+    },
+    scoreValueSeniorAfterSummer(val) {
+      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
+        this.scoreValueSeniorAfterSummer = [...val, ...Array(5 - val.length).fill(0.07)];
+      }
+    },
+    scoreValueFinale(val) {
+      if (this.selectedScenario === 2 && Array.isArray(val) && val.length < 5) {
+        this.scoreValueFinale = [...val, ...Array(5 - val.length).fill(0)];
+      }
+    }
   }
 }
 </script>

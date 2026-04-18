@@ -19,6 +19,8 @@ RIVAL_COLOR_2 = (0x30, 0xAD, 0xEB)
 RIVAL_TOLERANCE = 5
 
 LATE_GAME_ITEM_BLACKLIST = [
+    "Aroma Diffuser",
+    "Practice Drills DVD",
     "Yummy Cat Food",
     "Pretty Mirror",
     "Reporter's Binoculars",
@@ -256,6 +258,7 @@ def handle_mant_shop_scan(ctx, current_date):
         all_cures = set(AILMENT_CURE_MAP.values())
 
         def should_skip(display_name):
+            from module.umamusume.constants.game_constants import SUMMER_CAMP_1_END
             if display_name in priority_set:
                 return True
             if display_name in ONE_TIME_BUFF_ITEMS and display_name in used_buffs:
@@ -274,6 +277,8 @@ def handle_mant_shop_scan(ctx, current_date):
             if display_name == AILMENT_CURE_ALL and has_miracle_cure:
                 return True
             if display_name == "Energy Drink MAX" and owned_map.get("Energy Drink MAX", 0) > 0:
+                return True
+            if display_name == "Pretty Mirror" and current_date > SUMMER_CAMP_1_END:
                 return True
             return False
 

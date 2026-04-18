@@ -15,7 +15,7 @@ from module.umamusume.asset.point import (
 from module.umamusume.asset.template import (
     REF_RACE_LIST, REF_RACE_LIST_GOAL_RACE, REF_RACE_LIST_URA_RACE,
     REF_SUITABLE_RACE, REF_TRAIN_BTN,
-    REF_MANT_RACE_TRY_AGAIN, REF_MANT_CLOCK
+    REF_MANT_RACE_TRY_AGAIN, REF_MANT_TRY_AGAIN_POP_UP
 )
 from module.umamusume.script.cultivate_task.parse import parse_date, find_race
 
@@ -80,12 +80,7 @@ def script_cultivate_goal_race(ctx: UmamusumeContext):
         else:
             log.info(f"This is a regular race (ID: {race_id}) - entering detail interface")
             if mant_cfg is not None and race_id == 0:
-                from module.umamusume.scenario.mant.inventory import (
-                    handle_cleat_before_race, handle_energy_drink_max_before_race, handle_glow_sticks_before_race
-                )
-                handle_energy_drink_max_before_race(ctx)
-                handle_glow_sticks_before_race(ctx)
-                handle_cleat_before_race(ctx, race_id, is_climax_override=True)
+                try_use_race_items(ctx, race_id, is_climax=True)
                 ctx.cultivate_detail.mant_climax_pending_train = True
                 ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
                 ctx.cultivate_detail.turn_info.turn_operation.race_id = 0
@@ -95,12 +90,17 @@ def script_cultivate_goal_race(ctx: UmamusumeContext):
         ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_1)
 
 
-def try_use_cleat(ctx, race_id, is_climax=False):
+def try_use_race_items(ctx, race_id, is_climax=False):
     mant_cfg = getattr(getattr(ctx.task.detail, 'scenario_config', None), 'mant_config', None)
     if mant_cfg is None:
         return False
-    from module.umamusume.scenario.mant.inventory import handle_cleat_before_race
-    return handle_cleat_before_race(ctx, race_id, is_climax)
+    from module.umamusume.scenario.mant.inventory import (
+        handle_cleat_before_race, handle_energy_drink_max_before_race, handle_glow_sticks_before_race
+    )
+    handle_energy_drink_max_before_race(ctx)
+    handle_glow_sticks_before_race(ctx)
+    handle_cleat_before_race(ctx, race_id, is_climax)
+    return
 
 
 def script_cultivate_race_list(ctx: UmamusumeContext):
@@ -130,7 +130,7 @@ def script_cultivate_race_list(ctx: UmamusumeContext):
             
             if suitable_match.find_match:
                 log.info("Found suitable race")
-                try_use_cleat(ctx, race_id, is_climax=True)
+                try_use_race_items(ctx, race_id, is_climax=True)
                 center_x = suitable_match.center_point[0]
                 center_y = suitable_match.center_point[1]
                 ctx.ctrl.click(center_x, center_y, "Suitable race")
@@ -154,11 +154,11 @@ def script_cultivate_race_list(ctx: UmamusumeContext):
     
     if goal_match:
         log.info(f"Found Goal Race with ID: {race_id} - clicking to enter detail interface")
-        try_use_cleat(ctx, race_id, is_climax=(race_id == 0))
+        try_use_race_items(ctx, race_id, is_climax=(race_id == 0))
         ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_1)
     elif ura_match:
         log.info(f"Found URA Race with ID: {race_id} - clicking to enter detail interface")
-        try_use_cleat(ctx, race_id, is_climax=(race_id == 0)) # should never be a MANT race, but just in case
+        try_use_race_items(ctx, race_id, is_climax=(race_id == 0)) # should never be a MANT race, but just in case
         ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_1)
     else:
         if ctx.cultivate_detail.turn_info.turn_operation is None:
@@ -171,7 +171,7 @@ def script_cultivate_race_list(ctx: UmamusumeContext):
                 log.info(f"Race operation with ID: {race_id}")
                 if race_id in [2381, 2382, 2385, 2386, 2387] or race_id == 0:
                     log.info("Detected URA race operation - clicking race button directly")
-                    try_use_cleat(ctx, race_id, is_climax=(race_id == 0))
+                    try_use_race_items(ctx, race_id, is_climax=(race_id == 0))
                     ctx.ctrl.click(319, 1082, "URA Race Button")
                     time.sleep(0.4)
                     return
@@ -182,7 +182,7 @@ def script_cultivate_race_list(ctx: UmamusumeContext):
                 img_up = ctx.ctrl.get_screen()
                 selected_up = find_race(ctx, img_up, race_id_up)
                 if selected_up:
-                    try_use_cleat(ctx, race_id_up)
+                    try_use_race_items(ctx, race_id_up)
                     time.sleep(0.58)
                     ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_1)
                     time.sleep(0.58)
@@ -250,7 +250,7 @@ def script_cultivate_race_list(ctx: UmamusumeContext):
                         delattr(ti, 'race_search_bottom_count')
                     if hasattr(ti, 'race_search_total_scans'):
                         delattr(ti, 'race_search_total_scans')
-                    try_use_cleat(ctx, race_id)
+                    try_use_race_items(ctx, race_id)
                     time.sleep(0.58)
                     ctx.ctrl.click_by_point(CULTIVATE_GOAL_RACE_INTER_1)
                     time.sleep(0.58)
@@ -380,28 +380,35 @@ def script_cultivate_race_result(ctx: UmamusumeContext):
                     # what we do here instead is try to click the Try Again button. If it's enabled, we'll
                     # be taken to the appropriate screen. If it's disabled, nothing will pop up and we assume 
                     # we either won or we're out of retries for this current run.
-                    log.info(f"Checking if we can retry {race_id}")
+                    log.info(f"Checking if we can retry {race_id} (Clocks: {clocks_used}/{clock_limit})")
                     img = getattr(ctx, 'current_screen_gray', None)
                     if img is None:
                         img = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
                     enabled_res = image_match(img, REF_MANT_RACE_TRY_AGAIN)
-                    cx, cy = enabled_res.center_point
-                    ctx.ctrl.click(cx, cy, "Check MANT race retry")
-                    time.sleep(0.5)
-                    reset_clock_match = image_match(img, REF_MANT_CLOCK)
-                    if reset_clock_match.find_match:
-                        log.info(f"Race {race_id} is retryable, retrying.")
-                        ctx.cultivate_detail.clock_used = clocks_used + 1
-                        ctx.ctrl.click(520, 1180, "MANT race retry confirm")
-                        time.sleep(0.5)
-                        return
+                    if enabled_res.find_match:
+                        cx, cy = enabled_res.center_point
+                        ctx.ctrl.click(cx, cy, "Check MANT race retry")
+                        time.sleep(1.0)
+                        img_after_click = cv2.cvtColor(ctx.ctrl.get_screen(), cv2.COLOR_BGR2GRAY)
+                        try_again_pop_up_match = image_match(img_after_click, REF_MANT_TRY_AGAIN_POP_UP)
+                        if try_again_pop_up_match.find_match:
+                            log.info(f"Race {race_id} is retryable, retrying.")
+                            ctx.cultivate_detail.clock_used = clocks_used + 1
+                            ctx.ctrl.click(520, 1180, "MANT race retry confirm")
+                            time.sleep(2.0)
+                            return
+                        else:
+                            log.info("No option to try again, clicking Next.")
+                            ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
+                            return
                     else:
-                        log.info("No option to try again, clicking Next.")
+                        log.info("Did not find Try Again button, continuing...")
                         ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
                         return
                 else:
                     log.info(f"Clock usage exceeded, not retrying race. {clocks_used}/{clock_limit}")
-            
+                    ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
+                    return
     except Exception as exc:
         log.debug(f"Race outcome template check failed: {exc}")
     

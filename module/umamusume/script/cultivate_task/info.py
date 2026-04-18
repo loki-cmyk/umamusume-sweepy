@@ -13,6 +13,7 @@ from module.umamusume.context import UmamusumeContext
 import bot.base.log as logger
 from bot.engine.ctrl import reset_task
 from module.umamusume.define import ScenarioType
+from module.umamusume.types import TurnOperation, TurnOperationType
 
 log = logger.get_logger(__name__)
 
@@ -199,8 +200,7 @@ def script_info(ctx: UmamusumeContext):
                 if image_match(screen, REF_TP_RECOVER_DRINK).find_match: # tp, 
                     ctx.ctrl.click_by_point(USE_TP_DRINK)
                 else:
-                    # TODO: 
-                    if ctx.cultivate_detail.allow_recover_tp == 2: # TP
+                    if ctx.cultivate_detail.allow_recover_tp == 2:
                         ctx.ctrl.click_by_point(USE_CARROT_RECOVER_TP)
                     else: 
                         reset_task(ctx.task.task_id)
@@ -283,34 +283,33 @@ def script_info(ctx: UmamusumeContext):
             time.sleep(0.5)
             ctx.ctrl.click_by_point(SCENARIO_SHORTEN_CONFIRM)
         if title_text == TITLE[8]:
-            if getattr(ctx.cultivate_detail, 'team_sirius_enabled', False):
-                ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
+            img = ctx.current_screen
+            img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            from module.umamusume.asset.template import UI_FRIEND_RECREATION, UI_FRIEND_RECREATION_COMPLETE
+
+            result_complete = image_match(img_gray, UI_FRIEND_RECREATION_COMPLETE)
+            log.info(f"Recreation complete match: {result_complete.find_match}")
+
+            if result_complete.find_match:
+                log.info("Recreation complete")
+                ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND_COMPLETE)
             else:
-                img = ctx.current_screen
-                img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                from module.umamusume.asset.template import UI_FRIEND_RECREATION, UI_FRIEND_RECREATION_COMPLETE
-
-                result_complete = image_match(img_gray, UI_FRIEND_RECREATION_COMPLETE)
-                log.info(f"Recreation complete match: {result_complete.find_match}")
-
-                if result_complete.find_match:
-                    log.info("Recreation complete")
-                    ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND_COMPLETE)
+                result = image_match(img_gray, UI_FRIEND_RECREATION)
+                log.info(f"Friend recreation match: {result.find_match}")
+                op = getattr(getattr(ctx.cultivate_detail, 'turn_info', {}), 'turn_operation', {})
+                op_type = getattr(op, 'turn_operation_type', TurnOperationType.TURN_OPERATION_TYPE_UNKNOWN)
+                if op_type != TurnOperationType.TURN_OPERATION_TYPE_TRIP:
+                    log.info("Turn operation not set to recreation, verifying decision first.")
+                    ctx.ctrl.click_by_point(ESCAPE)
+                    time.sleep(1)
+                elif result.find_match:
+                    log.info("Friend recreation - clicking CULTIVATE_TRIP_WITH_FRIEND")
+                    ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND)
                 else:
-                    result = image_match(img_gray, UI_FRIEND_RECREATION)
-                    log.info(f"Friend recreation match: {result.find_match}")
-
-                    if result.find_match:
-                        log.info("Friend recreation")
-                        ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
-                    else:
-                        log.info("Regular recreation")
-                        ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
+                    log.info("Regular recreation")
+                    ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
         if title_text == TITLE[55]:
-            if getattr(ctx.cultivate_detail, 'team_sirius_enabled', False):
-                ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
-            else:
-                ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
+            ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
         if title_text == TITLE[9]: #Confirmation
             ctx.ctrl.click_by_point(CULTIVATE_LEARN_SKILL_CONFIRM_AGAIN)
         if title_text == TITLE[10]: #Skills Learned
@@ -363,7 +362,6 @@ def script_info(ctx: UmamusumeContext):
             else:
                 target_race_id = 0  
 
-            from module.umamusume.types import TurnOperation, TurnOperationType
             ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
             ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
             ctx.cultivate_detail.turn_info.turn_operation.race_id = target_race_id
@@ -495,7 +493,6 @@ def script_info(ctx: UmamusumeContext):
                 target_race_id = 0  # Will search for any available race
             
             # Set a race operation so the race list logic knows what to do
-            from module.umamusume.types import TurnOperation, TurnOperationType
             ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
             ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
             ctx.cultivate_detail.turn_info.turn_operation.race_id = target_race_id
@@ -586,7 +583,6 @@ def script_info(ctx: UmamusumeContext):
                 target_race_id = 0  # Will search for any available race
             
             # Set a race operation so the race list logic knows what to do
-            from module.umamusume.types import TurnOperation, TurnOperationType
             ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
             ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
             ctx.cultivate_detail.turn_info.turn_operation.race_id = target_race_id

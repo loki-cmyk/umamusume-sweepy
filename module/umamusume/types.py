@@ -15,7 +15,6 @@ class SupportCardInfo:
     card_type: SupportCardType
     favor: SupportCardFavorLevel
     has_event: bool
-    # Youth Cup section
     can_incr_special_training: bool
     spirit_explosion: bool
 
@@ -89,6 +88,9 @@ class TurnOperation:
         self.training_type = TrainingType.TRAINING_TYPE_UNKNOWN
         self.race_id = 0
 
+    def __str__(self):
+        return f"TurnOperation(type={self.turn_operation_type.name}, training={self.training_type.name}, race_id={self.race_id})"
+
     def log_turn_operation(self):
         log.info("Current turn operation: %s", self.turn_operation_type.name)
         log.info("Current turn alternative operation: %s", self.turn_operation_type_replace.name)
@@ -131,6 +133,9 @@ class TurnInfo:
         self.aoharu_race_index = 0
         self.cached_mood = None
         self.cached_available_races = []
+
+    def __str__(self):
+        return f"TurnInfo(date={self.date}, stamina={self.remain_stamina}, motivation={self.motivation_level.name})"
 
     def log_turn_info(self, scenario_type: ScenarioType):
         log.info("Current turn time " + str(self.date))
@@ -179,6 +184,11 @@ class CultivateContextDetail:
     pal_friendship_score: list[float]
     pal_card_multiplier: float
     wit_special_multiplier: list
+    group_card_enabled: bool
+    group_card_name: str
+    group_card_percentile: int
+    group_card_available_dates: list
+    group_card_last_date: int
 
     def __init__(self):
         self.expect_attribute = None
@@ -206,6 +216,11 @@ class CultivateContextDetail:
         self.pal_thresholds = []
         self.pal_friendship_score = [0.08, 0.057, 0.018]
         self.pal_card_multiplier = 0.1
+        self.group_card_enabled = False
+        self.group_card_name = ""
+        self.group_card_percentile = 26
+        self.group_card_available_dates = []
+        self.group_card_last_date = -1
 
     def reset_skill_learn(self):
         self.learn_skill_done = False
