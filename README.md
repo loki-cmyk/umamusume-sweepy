@@ -1,4 +1,4 @@
-# Sweepy — /vg/'s Uma Musume Bot (UAT REHASHED)
+# Sweepy — /vg/'s Uma Musume Bot
 
 This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). I'm not pulling in most upstream Sweepy changes by default since most of the time the changes are broken and untested. Feature parity may be delayed or I may not even pull in some changes made if they're too low quality. Half the time you're better off not updating from the upstream repo.
 
@@ -11,6 +11,8 @@ Turn on auto-use items for MANT or the bot will break. You need to adjust the co
 ## Known Bugs
 
 - Debut race loss logic was broken, but this should be fixed now. If you lose the debut race, it will try to race on the next turn.
+- The recent Pal card fix introduced new bugs when it goes to check the Pal card state. I've put guardrails to prevent it from randomly clicking on it.
+  - This may cause the bot to get stuck in a loop if it's on a path that I didn't update. All of them should be fixed now.
 - URA/Unity are not tested and may not work. This only works for MANT.
 
 ## Added Features / Changes
