@@ -3241,9 +3241,6 @@ export default {
       }
     },
     addBox(item) {
-      if (this.skillLearnPriorityList.length >= 5) {
-        return false
-      }
       this.skillLearnPriorityList.push(
         {
           priority: this.skillPriorityNum++,
@@ -4120,12 +4117,14 @@ export default {
         this.skillLearnPriorityList = [{ priority: 0, skills: "" }];
         this.skillPriorityNum = 1;
 
-        for (let priority = 0; priority <= Math.max(...this.activePriorities); priority++) {
-          if (skillsByPriority[priority] && skillsByPriority[priority].length > 0) {
-            if (priority > 0) {
-              this.addBox();
-            }
-            this.skillLearnPriorityList[priority].skills = skillsByPriority[priority].join(", ");
+        const maxPriority = Math.max(...this.activePriorities);
+        while (this.skillLearnPriorityList.length <= maxPriority) {
+          this.addBox();
+        }
+        for (let pt = 0; pt <= maxPriority; pt++) {
+          if (this.skillLearnPriorityList[pt]) {
+            const prioritySkills = skillsByPriority[pt] || [];
+            this.skillLearnPriorityList[pt].skills = prioritySkills.join(", ");
           }
         }
       } else {
@@ -4163,11 +4162,14 @@ export default {
         }
       }
       else {
-        for (let i = 0; i < this.presetsUse.skill_priority_list.length; i++) {
-          if (i >= this.skillPriorityNum) {
-            this.addBox()
+        const splLen = this.presetsUse.skill_priority_list.length;
+        while (this.skillLearnPriorityList.length < splLen) {
+          this.addBox();
+        }
+        for (let i = 0; i < splLen; i++) {
+          if (this.skillLearnPriorityList[i]) {
+            this.skillLearnPriorityList[i].skills = this.presetsUse.skill_priority_list[i];
           }
-          this.skillLearnPriorityList[i].skills = this.presetsUse.skill_priority_list[i]
         }
         while (this.presetsUse.skill_priority_list.length != 0 &&
           this.skillPriorityNum > this.presetsUse.skill_priority_list.length) {
