@@ -88,6 +88,9 @@ class TurnOperation:
         self.training_type = TrainingType.TRAINING_TYPE_UNKNOWN
         self.race_id = 0
 
+    def __str__(self):
+        return f"TurnOperation(type={self.turn_operation_type.name}, training={self.training_type.name}, race_id={self.race_id})"
+
     def log_turn_operation(self):
         log.info("Current turn operation: %s", self.turn_operation_type.name)
         log.info("Current turn alternative operation: %s", self.turn_operation_type_replace.name)
@@ -130,6 +133,9 @@ class TurnInfo:
         self.aoharu_race_index = 0
         self.cached_mood = None
         self.cached_available_races = []
+
+    def __str__(self):
+        return f"TurnInfo(date={self.date}, stamina={self.remain_stamina}, motivation={self.motivation_level.name})"
 
     def log_turn_info(self, scenario_type: ScenarioType):
         log.info("Current turn time " + str(self.date))

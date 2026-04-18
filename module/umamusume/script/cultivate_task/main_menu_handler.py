@@ -277,6 +277,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 return
             elif has_extra_race:
                 # No energy items but there's a race available - go to race
+                # TODO: maybe check training to get stats recorded
                 log.info("Not enough energy to train and no energy items, prioritizing racing.")
                 ctx.cultivate_detail.turn_info.parse_train_info_finish = True
                 is_summer = is_summer_camp_period(ctx.cultivate_detail.turn_info.date)
@@ -291,13 +292,19 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 return
             if should_use_group_card_recreation(ctx):
                 log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to group card recreation.")
+                ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
+                ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
                 if execute_group_card_recreation(ctx, trip_click_point=get_trip(ctx)):
                     return
             if should_use_pal_outing_simple(ctx):
                 log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to pal card recreation.")
+                ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
+                ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
                 ctx.ctrl.click_by_point(get_trip(ctx))
             else:
                 log.info(f"Energy at {round(energy, 2)} (below limit of {limit}), decision made to rest.")
+                ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
+                ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
                 ctx.ctrl.click_by_point(CULTIVATE_REST)
             return
         else:
