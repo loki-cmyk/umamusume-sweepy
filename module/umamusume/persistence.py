@@ -16,7 +16,7 @@ PERSIST_FILE = os.path.normpath(PERSIST_FILE)
 TRAINING_JSON_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'training_analysis.jsonl')
 TRAINING_JSON_FILE = os.path.normpath(TRAINING_JSON_FILE)
 
-MAX_DATAPOINTS = 888
+MAX_DATAPOINTS = 2000
 
 career_cleared_flag = False
 career_data_lock = threading.Lock()
@@ -49,9 +49,21 @@ def save_career_data(ctx):
             scores = score_history[-MAX_DATAPOINTS:]
             stat_only_history = getattr(ctx.cultivate_detail, 'stat_only_history', [])
             stat_only = stat_only_history[-MAX_DATAPOINTS:]
+            energy_history = getattr(ctx.cultivate_detail, 'energy_history', [])
+            energy = energy_history[-MAX_DATAPOINTS:]
+            action_history = getattr(ctx.cultivate_detail, 'action_history', [])
+            actions = action_history[-MAX_DATAPOINTS:]
+            raw_stat_history = getattr(ctx.cultivate_detail, 'raw_stat_history', [])
+            raw_stats = raw_stat_history[-MAX_DATAPOINTS:]
+            date_history = getattr(ctx.cultivate_detail, 'date_history', [])
+            dates = date_history[-MAX_DATAPOINTS:]
             data = {
                 'score_history': scores,
                 'stat_only_history': stat_only,
+                'energy_history': energy,
+                'action_history': actions,
+                'raw_stat_history': raw_stats,
+                'date_history': dates,
             }
             with open(PERSISTENCE_FILE, 'w') as f:
                 json.dump(data, f)
@@ -67,14 +79,32 @@ def load_career_data(ctx):
             return False
         with open(PERSISTENCE_FILE, 'r') as f:
             data = json.load(f)
+        required_keys = {'score_history', 'stat_only_history', 'energy_history', 'action_history', 'raw_stat_history', 'date_history'}
+        if not required_keys.issubset(data.keys()):
+            log.info("Career data format mismatch - clearing old data")
+            with open(PERSISTENCE_FILE, 'w') as f:
+                json.dump({'score_history': [], 'stat_only_history': [], 'energy_history': [], 'action_history': [], 'raw_stat_history': [], 'date_history': []}, f)
+            return False
         score_history = data.get('score_history', [])
         stat_only_history = data.get('stat_only_history', [])
+        energy_history = data.get('energy_history', [])
+        action_history = data.get('action_history', [])
+        raw_stat_history = data.get('raw_stat_history', [])
+        date_history = data.get('date_history', [])
         if not score_history:
             return False
         scores = score_history[-MAX_DATAPOINTS:]
         stat_only = stat_only_history[-MAX_DATAPOINTS:]
+        energy = energy_history[-MAX_DATAPOINTS:]
+        actions = action_history[-MAX_DATAPOINTS:]
+        raw_stats = raw_stat_history[-MAX_DATAPOINTS:]
+        dates = date_history[-MAX_DATAPOINTS:]
         ctx.cultivate_detail.score_history = scores
         ctx.cultivate_detail.stat_only_history = stat_only
+        ctx.cultivate_detail.energy_history = energy
+        ctx.cultivate_detail.action_history = actions
+        ctx.cultivate_detail.raw_stat_history = raw_stats
+        ctx.cultivate_detail.date_history = dates
         ctx.cultivate_detail.percentile_history = rebuild_percentile_history(scores)
         log.info(f"Restored career data: {len(scores)} datapoints")
         return True
@@ -88,7 +118,7 @@ def clear_career_data():
     try:
         with career_data_lock:
             with open(PERSISTENCE_FILE, 'w') as f:
-                json.dump({'score_history': [], 'stat_only_history': []}, f)
+                json.dump({'score_history': [], 'stat_only_history': [], 'energy_history': [], 'action_history': [], 'raw_stat_history': [], 'date_history': []}, f)
                 f.flush()
                 os.fsync(f.fileno())
             try:
