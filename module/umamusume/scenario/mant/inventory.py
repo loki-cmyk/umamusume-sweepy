@@ -1230,7 +1230,10 @@ def handle_charm(ctx):
         log.info(f"Charm failure rate too low: failure_rate={fr}% < threshold={charm_failure_rate}%, skipping")
         return False
 
-    return use_item_and_update_inventory(ctx, 'Good-Luck Charm')
+    result = use_item_and_update_inventory(ctx, 'Good-Luck Charm')
+    if result:
+        ctx.cultivate_detail.turn_info.charm_used_this_turn = True
+    return result
 
 
 def handle_charm_simplified(ctx):
@@ -1253,7 +1256,10 @@ def handle_charm_simplified(ctx):
         log.info(f"Charm failure rate too low (simplified): {fr}% < {charm_failure_rate}% - not using charm")
         return False
 
-    return use_item_and_update_inventory(ctx, 'Good-Luck Charm')
+    result = use_item_and_update_inventory(ctx, 'Good-Luck Charm')
+    if result:
+        ctx.cultivate_detail.turn_info.charm_used_this_turn = True
+    return result
 
 
 def rescan_training(ctx):
