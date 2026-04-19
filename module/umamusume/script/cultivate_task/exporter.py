@@ -49,10 +49,42 @@ EXCLUDE_FIELDS = {
     "mant_shop_first_gy",
 }
 
+_TIER_TO_MEGA_NAME = {
+    1: "Coaching Megaphone",
+    2: "Motivating Megaphone",
+    3: "Empowering Megaphone",
+}
+
+def _build_megaphone_status(detail, current_date):
+    """
+    Returns a dict describing the active megaphone and which turns it covers,
+    or None if no megaphone is active.
+
+    Turns are listed as absolute turn numbers within the cultivation run.
+    Since the megaphone is already ticked for the current turn at scan time,
+    active_on_turns starts from current_date and extends for turns_remaining turns.
+    """
+    tier = getattr(detail, 'mant_megaphone_tier', 0)
+    turns_remaining = getattr(detail, 'mant_megaphone_turns', 0)
+
+    if tier <= 0 or turns_remaining <= 0:
+        return None
+
+    name = _TIER_TO_MEGA_NAME.get(tier, f"Megaphone Tier {tier}")
+    active_turns = list(range(current_date, current_date + turns_remaining))
+
+    return {
+        "name": name,
+        "tier": tier,
+        "turns_remaining": turns_remaining,
+        "active_on_turns": active_turns,
+    }
+
 def export_cultivate_context(ctx):
     """
     Serializes the current cultivation context into a JSON string.
-    Includes turn info, upcoming races, and the relevant parts of cultivate_detail.
+    Includes turn info, upcoming races, megaphone status, and the relevant
+    parts of cultivate_detail.
     Excludes large configuration and history lists to keep the payload efficient.
     """
     detail = ctx.cultivate_detail
@@ -77,6 +109,7 @@ def export_cultivate_context(ctx):
     payload = {
         "turn_counter": date,
         "upcoming_races": upcoming_races,
+        "megaphone_status": _build_megaphone_status(detail, date),
         "detail": to_dict(detail)
     }
 
