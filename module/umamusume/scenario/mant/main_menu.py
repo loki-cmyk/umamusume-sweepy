@@ -31,6 +31,7 @@ LATE_GAME_ITEM_BLACKLIST = [
     "Power Training Application",
     "Guts Training Application",
     "Wit Training Application",
+    "Energy Drink MAX EX",
 ]
 
 def read_shop_coins(img, is_summer, is_climax):

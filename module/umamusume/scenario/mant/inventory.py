@@ -1788,7 +1788,7 @@ def item_loop(ctx):
     if has_whistle(ctx):
         whistle_loop(ctx, start_date)
 
-    # called with for_training=True to ensure max mood possible before training
+    # handle cupcake usage to ensure max mood possible before training
     handle_cupcake_use(ctx)
     handle_megaphone(ctx)
     handle_anklet(ctx)
