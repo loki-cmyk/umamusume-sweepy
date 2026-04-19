@@ -1087,8 +1087,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         handle_decision(ctx)
                         return
 
-                    from module.umamusume.scenario.mant.inventory import item_loop
-                    item_loop(ctx)
+                from module.umamusume.scenario.mant.inventory import item_loop
+                item_loop(ctx)
 
                 try:
                     from module.umamusume.scenario.mant.inventory import megaphone_reevaluate

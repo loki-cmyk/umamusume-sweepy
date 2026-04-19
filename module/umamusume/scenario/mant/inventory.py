@@ -1674,11 +1674,6 @@ def handle_megaphone(ctx):
         if is_summer_camp_period(date):
             threshold -= 15
 
-        # Prevent mindless spamming of megaphones just because we have them
-        if threshold <= 15:
-            log.info(f"Calculated threshold ({threshold}) too low, limiting to the 15% percentile.")
-            threshold = 15
-
         races_in_window = count_races_in_window(ctx, duration)
         if duration == 2:
             if races_in_window >= 1:
