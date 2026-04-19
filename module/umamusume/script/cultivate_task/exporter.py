@@ -12,6 +12,10 @@ EXCLUDE_FIELDS = {
     "score_history",
     "percentile_history",
     "stat_only_history",
+    "energy_history",
+    "action_history",
+    "raw_stat_history",
+    "date_history",
 
     # Configuration / Constant Lists (repetitive every turn)
     "extra_race_list",
