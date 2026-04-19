@@ -3501,7 +3501,7 @@ export default {
         guts_notepad: 4, guts_manual: 2, guts_scroll: 1,
         wit_notepad: 4, wit_manual: 2, wit_scroll: 1,
         vita_20: 2, vita_40: 2, vita_65: 2,
-        royal_kale_juice: 3, energy_drink_max: 5, energy_drink_max_ex: 5,
+        royal_kale_juice: 3, energy_drink_max: 3, energy_drink_max_ex: 5,
         plain_cupcake: 3, berry_sweet_cupcake: 3, yummy_cat_food: 5, grilled_carrots: 3,
         pretty_mirror: 4, reporters_binoculars: 5, master_practice_guide: 5, scholars_hat: 4,
         fluffy_pillow: 5, pocket_planner: 5, rich_hand_cream: 3, smart_scale: 5,

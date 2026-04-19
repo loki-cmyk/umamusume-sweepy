@@ -1097,6 +1097,7 @@ def handle_energy_recovery(ctx):
             ctx.cultivate_detail.turn_info.cached_energy = energy
             # Update cached mood if we use Royal Kale Juice so cupcakes are used later
             if item_name == "Royal Kale Juice":
+                ctx.cultivate_detail.turn_info.use_cupcake = True
                 if cached_mood is not None:
                     ctx.cultivate_detail.turn_info.cached_mood = cached_mood - 1
                 else:
@@ -1322,9 +1323,10 @@ def whistle_loop(ctx, start_date):
     return True
 
 
-def handle_cupcake_use(ctx, for_training=False):
+def handle_cupcake_use(ctx):
     from module.umamusume.scenario.mant.constants import get_incoming_mood
     cached_mood = getattr(ctx.cultivate_detail.turn_info, 'cached_mood', None)
+    use_cupcake = getattr(ctx.cultivate_detail.turn_info, 'use_cupcake', False)
     if cached_mood is not None:
         mood = cached_mood
     else:
@@ -1332,23 +1334,25 @@ def handle_cupcake_use(ctx, for_training=False):
         mood = read_mood(ctx.current_screen)
     if mood is None or mood >= 5:
         return False
-    # In MANT we get mood ups from racing, only use cupcakes if mood is too low
-    if not for_training and mood >= 3:
-        return False
-
     _, total = get_chain_position(ctx)
-    if total > 1:
+    if total > 1 and not use_cupcake:
         log.info(f"Race chain of {total} - skipping cupcake (mood item)")
         return False
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     incoming = get_incoming_mood(date, 3)
     owned = {n: q for n, q in getattr(ctx.cultivate_detail, 'mant_owned_items', [])}
-    for name, boost in [('Berry Sweet Cupcake', 2), ('Plain Cupcake', 1)]:
+    cupcake_options = [('Berry Sweet Cupcake', 2), ('Plain Cupcake', 1)]
+    if use_cupcake:
+        log.info("Cupcake use forced by Royal Kale Juice.")
+        cupcake_options = [('Plain Cupcake', 1), ('Berry Sweet Cupcake', 2)]
+    for name, boost in cupcake_options:
         if owned.get(name, 0) <= 0:
             continue
-        if mood + boost + incoming > 5 and incoming > 0:
+        if mood + boost + incoming > 5 and incoming > 0 and not use_cupcake:
             continue
         if use_item_and_update_inventory(ctx, name):
+            if use_cupcake:
+                ctx.cultivate_detail.turn_info.use_cupcake = False
             ctx.cultivate_detail.turn_info.parse_main_menu_finish = False
             return True
     return False
@@ -1784,8 +1788,8 @@ def item_loop(ctx):
     if has_whistle(ctx):
         whistle_loop(ctx, start_date)
 
-    # called with for_training=True to ensure max mood possible before training
-    handle_cupcake_use(ctx, for_training=True)
+    # handle cupcake usage to ensure max mood possible before training
+    handle_cupcake_use(ctx)
     handle_megaphone(ctx)
     handle_anklet(ctx)
     

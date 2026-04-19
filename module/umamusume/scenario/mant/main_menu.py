@@ -31,6 +31,7 @@ LATE_GAME_ITEM_BLACKLIST = [
     "Power Training Application",
     "Guts Training Application",
     "Wit Training Application",
+    "Energy Drink MAX EX",
 ]
 
 def read_shop_coins(img, is_summer, is_climax):
@@ -840,6 +841,12 @@ def handle_mant_main_menu(ctx, img, current_date):
     from module.umamusume.scenario.mant.inventory import (
         has_instant_use_items, handle_instant_use_items, handle_cupcake_use
     )
+
+    if current_date > 13 and not getattr(ctx.cultivate_detail, 'mant_inventory_scanned', False):
+        log.info("MANT session initialized in the middle of a run - forcing initial inventory scan.")
+        if handle_mant_inventory_scan(ctx, current_date):
+            return True
+
     is_shop_turn = is_shop_scan_turn(current_date)
 
     if not is_shop_turn:
