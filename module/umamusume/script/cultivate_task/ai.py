@@ -445,6 +445,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
 
                                 if mood_below and energy_below:
                                     log.info("Both conditions met - using pal outing instead of rest")
+                                    turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
                                     pal_outing_available = True
                                     trip = True
                                     rest = False
