@@ -1777,16 +1777,12 @@ def tick_megaphone(ctx):
 
 
 def item_loop(ctx):
-    # Original item loop, this used to have charm logic but it's been moved earlier into the
+    # Original item loop, this used to have energy/charm logic but it's been moved earlier into the
     # same block in training_select.py that handles energy and charm usage (which calls this).
     start_date = getattr(ctx.cultivate_detail.turn_info, 'date', None)
     sync_max_energy_to_scanner(ctx)
-    whistle_used = False
     if has_whistle(ctx):
-        whistle_used = whistle_loop(ctx, start_date)
-
-    if whistle_used:
-        return
+        whistle_loop(ctx, start_date)
 
     # called with for_training=True to ensure max mood possible before training
     handle_cupcake_use(ctx, for_training=True)
