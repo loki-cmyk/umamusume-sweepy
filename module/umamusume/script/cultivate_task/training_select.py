@@ -69,6 +69,17 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
     if prev_was_race:
         ctx.cultivate_detail._prev_op_was_race = True
 
+    loop_counter = getattr(ctx.cultivate_detail.turn_info, 'training_loop_counter', 0)
+    if loop_counter > 5:
+        log.warning("Training loop detected, resetting turn info")
+        ctx.cultivate_detail.turn_info.turn_operation = None
+        ctx.cultivate_detail.turn_info.parse_train_info_finish = False
+        ctx.cultivate_detail.turn_info.training_loop_counter = 0
+        ctx.cultivate_detail.mant_cleat_used = False
+        turn_op = None
+
+    ctx.cultivate_detail.turn_info.training_loop_counter += 1
+
     if turn_op is not None:
         try:
             cached_stats = getattr(ctx.cultivate_detail, 'last_decision_stats', None)
@@ -76,20 +87,36 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             if cached_stats is not None:
                 uma = ctx.cultivate_detail.turn_info.uma_attribute
                 current_stats = (uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence)
-                if current_stats != cached_stats or force_invalidate:
-                    if force_invalidate:
-                      log.info(f"[training_select] Forcing cache invalidation as requested.")
-                      ctx.cultivate_detail.force_invalidate_cache = False
-                    else:
-                      log.info(f"[training_select] Cache invalid: was {cached_stats}, now {current_stats}")
+                current_turn = ctx.cultivate_detail.turn_info.date
+
+                stats_match = (current_stats == cached_stats[:5])
+                turn_match = (current_turn == cached_stats[5])
+
+                # If stats or turns don't match the expected values, clear the cached stats, return to the main menu and restart the logic flow. This
+                # ensures that when the cache is in an unexpected state we don't just go try to train. For cache invalidation, we stay on the training
+                # screen because it is only currently triggered from known training flows.
+                if not stats_match or not turn_match or force_invalidate:
                     ctx.cultivate_detail.turn_info.turn_operation = None
                     ctx.cultivate_detail.turn_info.parse_train_info_finish = False
                     ctx.cultivate_detail.mant_cleat_used = False
                     turn_op = None
+                    if force_invalidate:
+                        log.info(f"Forcing cache invalidation as requested.")
+                        ctx.cultivate_detail.force_invalidate_cache = False
+                    elif not stats_match:
+                        log.info(f"Cache invalid (stats mismatch): was {cached_stats[:5]}, now {current_stats}, returning to main menu")
+                        ctx.cultivate_detail.last_decision_stats = None
+                        ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                        return
+                    else:
+                        log.info(f"Cache invalid (turn mismatch): was {cached_stats[5]}, now {current_turn}, returning to main menu")
+                        ctx.cultivate_detail.last_decision_stats = None
+                        ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                        return
                 else:
-                    log.info(f"[training_select] Cache VALID (stats match)")
+                    log.info(f"Cache VALID (stats and turn match)")
             else:
-                log.info(f"[training_select] No cached stats to validate against")
+                log.info(f"No cached stats to validate against")
         except Exception:
             pass
 
@@ -835,7 +862,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.cultivate_detail.turn_info.cached_computed_scores = list(computed_scores)
         ctx.cultivate_detail.turn_info.cached_facility_mults = list(facility_mults)
 
-        max_score = max(computed_scores) if len(computed_scores) == 5 else 0.0
+        max_score = max(computed_scores[:5]) if len(computed_scores) >= 5 else 0.0
         eps = 1e-9
         
         blocked_count = sum(blocked_trainings)
@@ -863,18 +890,18 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 ctx.cultivate_detail.turn_info.race_search_attempted = True
             
             if date in (35, 36, 59, 60):
-                best_idx_tmp = int(np.argmax(computed_scores))
+                best_idx_tmp = int(np.argmax(computed_scores[:5]))
                 best_score_tmp = computed_scores[best_idx_tmp]
                 summer_threshold = getattr(ctx.cultivate_detail, 'summer_score_threshold', 0.34)
                 if best_score_tmp < summer_threshold:
                     log.info(f"Low training score before summer, conserving energy (score < {summer_threshold:.2f})")
                     chosen_idx = 4
                 else:
-                    ties = [i for i, v in enumerate(computed_scores) if abs(v - max_score) < eps]
+                    ties = [i for i, v in enumerate(computed_scores[:5]) if abs(v - max_score) < eps]
                     chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else best_idx_tmp)
             else:
-                ties = [i for i, v in enumerate(computed_scores) if abs(v - max_score) < eps]
-                chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else int(np.argmax(computed_scores)))
+                ties = [i for i, v in enumerate(computed_scores[:5]) if abs(v - max_score) < eps]
+                chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else int(np.argmax(computed_scores[:5])))
         local_training_type = TrainingType(chosen_idx + 1)
         energy_recovery_deferred = getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False)
         charm_deferred = getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False)
@@ -887,7 +914,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.cultivate_detail.turn_info.cached_training_type = local_training_type
         try:
             uma = ctx.cultivate_detail.turn_info.uma_attribute
-            ctx.cultivate_detail.last_decision_stats = (uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence)
+            current_turn = ctx.cultivate_detail.turn_info.date
+            ctx.cultivate_detail.last_decision_stats = (uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence, current_turn)
         except Exception:
             log.warn("Failed to set last_decision_stats.")
             pass
@@ -949,7 +977,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     return
 
     try:
-        best_idx_tmp = int(np.argmax(computed_scores))
+        best_idx_tmp = int(np.argmax(computed_scores[:5]))
         best_score_tmp = computed_scores[best_idx_tmp]
     except Exception:
         best_idx_tmp = None
@@ -1086,6 +1114,9 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     else:
                         handle_decision(ctx)
                         return
+
+                ctx.cultivate_detail.turn_info._pre_item_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
+                ctx.cultivate_detail.turn_info._pre_item_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
 
                 from module.umamusume.scenario.mant.inventory import item_loop
                 item_loop(ctx)

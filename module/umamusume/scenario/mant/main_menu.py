@@ -522,7 +522,8 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
 
     mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
     if mant_cfg and mant_cfg.item_tiers:
-        items = {name for name, _, _, turns, buyable in shop_items if buyable and turns == 1}
+        # don't trust OCR failures, we buy items with 99 turns left just in case
+        items = {name for name, _, _, turns, buyable in shop_items if buyable and (turns == 1 or turns == 99)}
         if items:
             shop_slugs = {display_to_slug(n) for n, _, _, _, buyable in shop_items
                           if buyable}
@@ -562,6 +563,8 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
                         tmp_budget -= cost_em
                         budget = tmp_budget
 
+            owned_em = {n: q for n, q in getattr(ctx.cultivate_detail, 'mant_owned_items', [])}
+            high_priority_items = ("Manual", "Scroll", "Vita")
             for tier in range(1, mant_cfg.tier_count + 1):
                 for slug, t in mant_cfg.item_tiers.items():
                     if slug == "grilled_carrots" and bbq_eff_em is not None and ignore_grilled_carrots_em:
@@ -584,9 +587,15 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
                     if display in ONE_TIME_BUFF_ITEMS and display in get_used_buffs():
                         continue
                     if display == "Energy Drink MAX":
-                        owned_em = {n: q for n, q in getattr(ctx.cultivate_detail, 'mant_owned_items', [])}
                         if owned_em.get("Energy Drink MAX", 0) > 0:
                             continue
+                    from module.umamusume.constants.game_constants import SUMMER_CAMP_1_END
+                    if display == "Pretty Mirror" and current_date > SUMMER_CAMP_1_END:
+                        continue
+                    if display == "Empowering Megaphone" and owned_em.get("Empowering Megaphone", 0) < 5:
+                        tier = 1
+                    if any(kw in display for kw in high_priority_items):
+                        tier = 1
 
                     cost = SHOP_ITEM_COSTS.get(display, 9999)
                     copies = item_counts.get(display, 0)
@@ -669,7 +678,7 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
         ctx.cultivate_detail.mant_shop_handled_this_turn = True
         return True
 
-    log.info(f"Emergency shop purchase targets: {final_targets} (budget={budget})")
+    log.info(f"Emergency shop purchase targets: {final_targets} (budget={ctx.cultivate_detail.mant_coins})")
     bought, _ = buy_shop_items(ctx, final_targets, items_list, ratio, drag_ratio, first_item_gy)
     if bought:
         ctx.cultivate_detail.mant_inventory_rescan_pending = True
@@ -685,6 +694,47 @@ def handle_mant_emergency_shop_buys(ctx, current_date):
                      for name, _, _, turns, buyable in items_list
                      if buyable and name not in bought_set]
         log_detected_shop_items(remaining)
+
+        # --- Post-purchase verification ---
+        from module.umamusume.scenario.mant.inventory import open_items_panel, close_items_panel, scan_inventory
+        from module.umamusume.context import log_detected_items
+        INSTANT_USE_PATTERNS = ('Scroll', 'Training Application', 'Manual', 'Notepad')
+        is_instant = lambda name: any(p in name for p in INSTANT_USE_PATTERNS)
+
+        verify_targets = [t for t in final_targets if not is_instant(t)]
+        owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
+        owned_map = {n: q for n, q in owned}
+        possibly_missing = [t for t in verify_targets if owned_map.get(t, 0) <= 0]
+
+        if possibly_missing:
+            opened = open_items_panel(ctx)
+            if opened:
+                owned = scan_inventory(ctx)
+                ctx.cultivate_detail.mant_owned_items = owned
+                ctx.cultivate_detail.mant_inventory_scanned = True
+                log_detected_items(owned)
+                close_items_panel(ctx)
+                owned_map = {n: q for n, q in owned}
+                possibly_missing = [t for t in verify_targets if owned_map.get(t, 0) <= 0]
+
+        if possibly_missing:
+            log.warning(f"Emergency Post-purchase check: truly missing {possibly_missing} - retrying shop")
+            from module.umamusume.scenario.mant.shop import scan_mant_shop
+            scan_result = scan_mant_shop(ctx)
+            if scan_result is not None:
+                retry_items, retry_ratio, retry_drag_ratio, retry_first_gy = scan_result
+                retry_bought, _ = buy_shop_items(ctx, possibly_missing, retry_items, retry_ratio, retry_drag_ratio, retry_first_gy)
+                if retry_bought:
+                    log.info(f"Emergency Retry successful: purchased {possibly_missing}")
+                    ctx.cultivate_detail.mant_inventory_rescan_pending = True
+                    total_spent_retry = sum(SHOP_ITEM_COSTS.get(t, 0) for t in possibly_missing)
+                    ctx.cultivate_detail.mant_coins = max(0, ctx.cultivate_detail.mant_coins - total_spent_retry)
+                else:
+                    log.warning(f"Emergency Retry failed: could not purchase {possibly_missing}")
+            else:
+                log.warning(f"Emergency Retry: shop scan failed")
+        else:
+            log.info("Emergency Post-purchase check: all targets found in inventory")
     else:
         ctx.ctrl.click(BACK_BTN_X, BACK_BTN_Y)
         _t.sleep(1)

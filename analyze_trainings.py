@@ -75,9 +75,9 @@ def analyze_jsonl(file_path):
             if not scores:
                 continue
 
-            max_score = max(scores)
+            max_score = max(scores[:5])
             max_index = scores.index(max_score)
-            max_train_type = training_types[max_index]
+            max_train_type = training_types[max_index] if max_index < len(training_types) else "Unknown"
             max_train_stats = stat_sums[max_index] if max_index < len(stat_sums) else 0
 
             chosen_index = -1
