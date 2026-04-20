@@ -92,19 +92,27 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 stats_match = (current_stats == cached_stats[:5])
                 turn_match = (current_turn == cached_stats[5])
 
+                # If stats or turns don't match the expected values, clear the cached stats, return to the main menu and restart the logic flow. This
+                # ensures that when the cache is in an unexpected state we don't just go try to train. For cache invalidation, we stay on the training
+                # screen because it is only currently triggered from known training flows.
                 if not stats_match or not turn_match or force_invalidate:
-                    if force_invalidate:
-                        log.info(f"Forcing cache invalidation as requested.")
-                        ctx.cultivate_detail.force_invalidate_cache = False
-                    elif not stats_match:
-                        log.info(f"Cache invalid (stats mismatch): was {cached_stats[:5]}, now {current_stats}")
-                    else:
-                        log.info(f"Cache invalid (turn mismatch): was {cached_stats[5]}, now {current_turn}")
-                    
                     ctx.cultivate_detail.turn_info.turn_operation = None
                     ctx.cultivate_detail.turn_info.parse_train_info_finish = False
                     ctx.cultivate_detail.mant_cleat_used = False
                     turn_op = None
+                    if force_invalidate:
+                        log.info(f"Forcing cache invalidation as requested.")
+                        ctx.cultivate_detail.force_invalidate_cache = False
+                    elif not stats_match:
+                        log.info(f"Cache invalid (stats mismatch): was {cached_stats[:5]}, now {current_stats}, returning to main menu")
+                        ctx.cultivate_detail.last_decision_stats = None
+                        ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                        return
+                    else:
+                        log.info(f"Cache invalid (turn mismatch): was {cached_stats[5]}, now {current_turn}, returning to main menu")
+                        ctx.cultivate_detail.last_decision_stats = None
+                        ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                        return
                 else:
                     log.info(f"Cache VALID (stats and turn match)")
             else:

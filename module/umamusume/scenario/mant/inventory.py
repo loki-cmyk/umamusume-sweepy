@@ -1625,7 +1625,6 @@ def handle_megaphone(ctx):
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
     if used_date == date:
-        log.info("Megaphone already used this turn, blocking.")
         return False
 
     if handle_megaphone_endgame(ctx):
