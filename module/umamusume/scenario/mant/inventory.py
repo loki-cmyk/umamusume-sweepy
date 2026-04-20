@@ -1486,12 +1486,12 @@ def megaphone_reevaluate(ctx, current_op):
     cached_stat_scores = getattr(ctx.cultivate_detail.turn_info, 'cached_stat_scores', None)
     cached_scores = getattr(ctx.cultivate_detail.turn_info, 'cached_computed_scores', None)
     cached_mults = getattr(ctx.cultivate_detail.turn_info, 'cached_facility_mults', None)
-    if not cached_stat_scores or not cached_scores or len(cached_stat_scores) != 5 or len(cached_scores) != 5:
+    if not cached_stat_scores or not cached_scores or len(cached_stat_scores) < 5 or len(cached_scores) < 5:
         return False
 
     buffed_scores = []
     for bi in range(5):
-        mult = cached_mults[bi] if cached_mults and len(cached_mults) == 5 else 1.0
+        mult = cached_mults[bi] if cached_mults and len(cached_mults) >= 5 else 1.0
         delta = cached_stat_scores[bi] * (ratio - 1.0) * mult
         buffed_scores.append(cached_scores[bi] + delta)
 

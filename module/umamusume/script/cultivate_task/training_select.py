@@ -854,7 +854,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.cultivate_detail.turn_info.cached_computed_scores = list(computed_scores)
         ctx.cultivate_detail.turn_info.cached_facility_mults = list(facility_mults)
 
-        max_score = max(computed_scores) if len(computed_scores) == 5 else 0.0
+        max_score = max(computed_scores[:5]) if len(computed_scores) >= 5 else 0.0
         eps = 1e-9
         
         blocked_count = sum(blocked_trainings)
@@ -882,18 +882,18 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 ctx.cultivate_detail.turn_info.race_search_attempted = True
             
             if date in (35, 36, 59, 60):
-                best_idx_tmp = int(np.argmax(computed_scores))
+                best_idx_tmp = int(np.argmax(computed_scores[:5]))
                 best_score_tmp = computed_scores[best_idx_tmp]
                 summer_threshold = getattr(ctx.cultivate_detail, 'summer_score_threshold', 0.34)
                 if best_score_tmp < summer_threshold:
                     log.info(f"Low training score before summer, conserving energy (score < {summer_threshold:.2f})")
                     chosen_idx = 4
                 else:
-                    ties = [i for i, v in enumerate(computed_scores) if abs(v - max_score) < eps]
+                    ties = [i for i, v in enumerate(computed_scores[:5]) if abs(v - max_score) < eps]
                     chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else best_idx_tmp)
             else:
-                ties = [i for i, v in enumerate(computed_scores) if abs(v - max_score) < eps]
-                chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else int(np.argmax(computed_scores)))
+                ties = [i for i, v in enumerate(computed_scores[:5]) if abs(v - max_score) < eps]
+                chosen_idx = 4 if 4 in ties else (min(ties) if len(ties) > 0 else int(np.argmax(computed_scores[:5])))
         local_training_type = TrainingType(chosen_idx + 1)
         energy_recovery_deferred = getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False)
         charm_deferred = getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False)
@@ -969,7 +969,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     return
 
     try:
-        best_idx_tmp = int(np.argmax(computed_scores))
+        best_idx_tmp = int(np.argmax(computed_scores[:5]))
         best_score_tmp = computed_scores[best_idx_tmp]
     except Exception:
         best_idx_tmp = None
