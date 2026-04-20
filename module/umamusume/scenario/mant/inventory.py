@@ -1585,8 +1585,7 @@ def handle_megaphone_endgame(ctx):
     owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
     owned_map = {n: q for n, q in owned}
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
-    
-    if date >= MANT_CLIMAX_START and date not in MANT_CLIMAX_TRAINING_TURNS:
+    if date < MANT_CLIMAX_START or (date >= MANT_CLIMAX_START and date not in MANT_CLIMAX_TRAINING_TURNS):
         return False
 
     log.info("Checking for megaphones to use during endgame.")
@@ -1619,6 +1618,10 @@ def handle_megaphone_endgame(ctx):
 
 
 def handle_megaphone(ctx):
+    mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
+    if mant_cfg is None:
+        return False
+
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
     if used_date == date:
@@ -1640,7 +1643,6 @@ def handle_megaphone(ctx):
 
     from module.umamusume.constants.game_constants import is_summer_camp_period
     is_summer = is_summer_camp_period(date)
-    mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
     summer_bonus = getattr(mant_cfg, 'mega_summer_bonus', 10) if mant_cfg else 10
     race_penalty = getattr(mant_cfg, 'mega_race_penalty', 5) if mant_cfg else 5
 
