@@ -94,12 +94,12 @@
                     <label>Items Selection</label>
                     <div class="event-weights-description mt-2 mb-3">
                       <div class="description-text">
-                        <strong>Item Tiering System:</strong> Items are prioritized by tiers (1 to 5). The bot scans the shop for buyable items and uses the following rules:
+                        <strong>Item Tiering System:</strong> Items are prioritized by tiers (1 to 5). The bot scans the shop for buyable items based on the configured tiers. Items are selected for purchase by scanning each tier and checking if the coins remaining is higher than the limit set on the left. It's generally better to set a low limit, and use tiers to prioritize item selection. Near the end-game the bot will ignore coin limits, but there is a list to block common bad items from being bought.
                       </div>
                       <div class="special-cases">
                         <ul>
-                          <li><strong>Tier 1 (Priority):</strong> Items in this tier are always considered for purchase if budget allows. Essential for Megaphones and Energy recovery.</li>
-                          <li><strong>Tiers 2-4 (Selective):</strong> Items are only bought if your remaining coins <i>after</i> purchase stay above the tier limit. Move items around here as needed.</li>
+                          <li><strong>Tier 1 (Priority):</strong> Items in this tier are always considered for purchase if budget allows.</li>
+                          <li><strong>Tiers 2-4 (Selective):</strong> Items are only bought if your remaining coins <i>after</i> purchase stay above the coin limit.</li>
                           <li><strong>Tier 5 (Ignore):</strong> Any items dragged here will be completely ignored by the shop bot since the coin limit is set to 9999.</li>
                         </ul>
                       </div>
