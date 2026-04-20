@@ -1637,6 +1637,7 @@ def handle_megaphone(ctx):
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
     if used_date == date:
+        log.info("Megaphone already used this turn, blocking.")
         return False
 
     if date >= MANT_CLIMAX_START and date not in MANT_CLIMAX_TRAINING_TURNS:
@@ -1682,16 +1683,14 @@ def handle_megaphone(ctx):
         cfg_key = MEGAPHONE_CONFIG_KEYS[tier]
         base_threshold = getattr(mant_cfg, cfg_key, 50)
 
-        if mant_cfg is not None:
-            reserve_megaphones = getattr(mant_cfg, 'reserve_megaphones_for_summer', True)
-            from module.umamusume.constants.game_constants import is_summer_camp_period, is_after_second_summer_camp
-            is_summer = is_summer_camp_period(date)
-            is_after_second_summer = is_after_second_summer_camp(date)
-            if reserve_megaphones and not is_summer and not is_after_second_summer and tier >= 2:
-                best_mega_count = sum(owned_map.get(n, 0) for n, (t, _) in MEGAPHONE_TIERS.items() if t >= 2)
-                if best_mega_count <= 2:
-                    log.info(f"Only have {best_mega_count} megaphones, saving for summer camp (reserve_megaphones_for_summer flag is True).")
-                    continue
+        reserve_megaphones = getattr(mant_cfg, 'reserve_megaphones_for_summer', True)
+        from module.umamusume.constants.game_constants import is_after_second_summer_camp
+        is_after_second_summer = is_after_second_summer_camp(date)
+        if reserve_megaphones and not is_summer and not is_after_second_summer and tier >= 2:
+            best_mega_count = sum(owned_map.get(n, 0) for n, (t, _) in MEGAPHONE_TIERS.items() if t >= 2)
+            if best_mega_count <= 2:
+                log.info(f"Only have {best_mega_count} megaphones, saving for summer camp (reserve_megaphones_for_summer flag is True).")
+                continue
 
         threshold = base_threshold
 
