@@ -1681,7 +1681,7 @@ def handle_megaphone(ctx):
         if owned_map.get(name, 0) <= 0:
             continue
         cfg_key = MEGAPHONE_CONFIG_KEYS[tier]
-        base_threshold = getattr(mant_cfg, cfg_key, 50)
+        base_threshold = getattr(mant_cfg, cfg_key, 35)
 
         reserve_megaphones = getattr(mant_cfg, 'reserve_megaphones_for_summer', True)
         from module.umamusume.constants.game_constants import is_after_second_summer_camp
@@ -1716,6 +1716,10 @@ def handle_megaphone(ctx):
 
         if is_summer:
             threshold -= summer_bonus
+
+        # Prevent mindless spamming of megaphones just because we have them
+        if threshold < 15:
+            threshold = 15
 
         # Store the first (best tier) megaphone's threshold we consider
         if best_available_threshold is None:

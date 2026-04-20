@@ -91,7 +91,19 @@
               <div class="row" v-if="selectedScenario === 3">
                 <div class="col-12">
                   <div class="form-group">
-                    <label>Items Selection <small style="color:var(--muted-2);font-weight:400">(I suggest you watch a guide before touching this [you have to adjust this])</small></label>
+                    <label>Items Selection</label>
+                    <div class="event-weights-description mt-2 mb-3">
+                      <div class="description-text">
+                        <strong>Item Tiering System:</strong> Items are prioritized by tiers (1 to 5). The bot scans the shop for buyable items and uses the following rules:
+                      </div>
+                      <div class="special-cases">
+                        <ul>
+                          <li><strong>Tier 1 (Priority):</strong> Items in this tier are always considered for purchase if budget allows. Essential for Megaphones and Energy recovery.</li>
+                          <li><strong>Tiers 2-4 (Selective):</strong> Items are only bought if your remaining coins <i>after</i> purchase stay above the tier limit. Move items around here as needed.</li>
+                          <li><strong>Tier 5 (Ignore):</strong> Any items dragged here will be completely ignored by the shop bot since the coin limit is set to 9999.</li>
+                        </ul>
+                      </div>
+                    </div>
                     <div class="section-card p-3">
                       <div class="mant-controls mb-2">
                         <button type="button" class="btn btn-sm btn--outline me-1" @click="mantAddTier">+ Add Tier</button>
@@ -2162,7 +2174,7 @@ export default {
     }
     this.mantItemTiers = this.mantGetDefaultTiers();
     this.mantTierCount = 5;
-    this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
+    this.mantTierThresholds = {"2":5,"3":10,"4":100,"5":9999};
   },
   data: function () {
     return {
@@ -2227,13 +2239,13 @@ export default {
       mantWhistleFocusSummer: true,
       mantFocusSummerClassic: 20,
       mantFocusSummerSenior: 10,
-      mantMegaSmallThreshold: 60,
-      mantMegaMediumThreshold: 70,
-      mantMegaLargeThreshold: 80,
+      mantMegaSmallThreshold: 35,
+      mantMegaMediumThreshold: 40,
+      mantMegaLargeThreshold: 47,
       mantMegaRacePenalty: 5,
       mantMegaSummerBonus: 10,
       mantAnkletSummerBonus: 10,
-      mantTrainingWeightsThreshold: 60,
+      mantTrainingWeightsThreshold: 40,
       mantBbqUnmaxxedCards: 3,
       mantCharmThreshold: 40,
       mantCharmFailureRate: 21,
@@ -2243,7 +2255,7 @@ export default {
       mantBuyFirstMegaphone: true,
       mantRecoveryPctThreshold: 35,
       mantBuyStatItemsEarly: true,
-      mantTierThresholds: {"2":15,"3":40,"4":100,"5":9999},
+      mantTierThresholds: {"2":5,"3":10,"4":100,"5":9999},
       levelDataList: [],
       umamusumeTaskTypeList: [
         {
@@ -4252,21 +4264,21 @@ export default {
         this.mantBuyFirstMegaphone = this.presetsUse.mant_config.buy_first_megaphone ?? true;
         this.mantRecoveryPctThreshold = this.presetsUse.mant_config.recovery_pct_threshold ?? 35;
         this.mantBuyStatItemsEarly = this.presetsUse.mant_config.buy_stat_items_early ?? true;
-        this.mantTierThresholds = this.presetsUse.mant_config.tier_thresholds ?? {"2":15,"3":40,"4":100,"5":9999};
+        this.mantTierThresholds = this.presetsUse.mant_config.tier_thresholds ?? {"2":5,"3":10,"4":100,"5":9999};
       } else {
         this.mantItemTiers = this.mantGetDefaultTiers();
         this.mantTierCount = 5;
-        this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
+        this.mantTierThresholds = {"2":5,"3":10,"4":100,"5":9999};
         this.mantWhistleThreshold = 20;
         this.mantWhistleFocusSummer = true;
         this.mantFocusSummerClassic = 20;
         this.mantFocusSummerSenior = 10;
-        this.mantMegaSmallThreshold = 60;
-        this.mantMegaMediumThreshold = 70;
-        this.mantMegaLargeThreshold = 80;
+        this.mantMegaSmallThreshold = 35;
+        this.mantMegaMediumThreshold = 40;
+        this.mantMegaLargeThreshold = 47;
         this.mantMegaRacePenalty = 5;
         this.mantMegaSummerBonus = 10;
-        this.mantTrainingWeightsThreshold = 60;
+        this.mantTrainingWeightsThreshold = 40;
         this.mantBbqUnmaxxedCards = 3;
         this.mantCharmThreshold = 40;
         this.mantCharmFailureRate = 21;
@@ -4478,29 +4490,29 @@ export default {
         this.mantBuyFirstMegaphone = data.mant_config.buy_first_megaphone ?? true;
         this.mantRecoveryPctThreshold = data.mant_config.recovery_pct_threshold ?? 35;
         this.mantBuyStatItemsEarly = data.mant_config.buy_stat_items_early ?? true;
-        this.mantTierThresholds = data.mant_config.tier_thresholds ?? {"2":15,"3":40,"4":100,"5":9999};
-        this.mantMegaSmallThreshold = data.mant_config.mega_small_threshold ?? 60;
-        this.mantMegaMediumThreshold = data.mant_config.mega_medium_threshold ?? 70;
-        this.mantMegaLargeThreshold = data.mant_config.mega_large_threshold ?? 80;
+        this.mantTierThresholds = data.mant_config.tier_thresholds ?? {"2":5,"3":10,"4":100,"5":9999};
+        this.mantMegaSmallThreshold = data.mant_config.mega_small_threshold ?? 35;
+        this.mantMegaMediumThreshold = data.mant_config.mega_medium_threshold ?? 40;
+        this.mantMegaLargeThreshold = data.mant_config.mega_large_threshold ?? 47;
         this.mantMegaRacePenalty = data.mant_config.mega_race_penalty ?? 5;
         this.mantMegaSummerBonus = data.mant_config.mega_summer_bonus ?? 10;
         this.mantAnkletSummerBonus = data.mant_config.anklet_summer_bonus ?? 10;
-        this.mantTrainingWeightsThreshold = data.mant_config.training_weights_threshold ?? 60;
+        this.mantTrainingWeightsThreshold = data.mant_config.training_weights_threshold ?? 40;
       } else {
         this.mantItemTiers = this.mantGetDefaultTiers();
         this.mantTierCount = 5;
-        this.mantTierThresholds = {"2":15,"3":40,"4":100,"5":9999};
+        this.mantTierThresholds = {"2":5,"3":10,"4":100,"5":9999};
         this.mantWhistleThreshold = 20;
         this.mantWhistleFocusSummer = true;
          this.mantFocusSummerClassic = 20;
          this.mantFocusSummerSenior = 10;
-         this.mantMegaSmallThreshold = 60;
-         this.mantMegaMediumThreshold = 70;
-         this.mantMegaLargeThreshold = 80;
+         this.mantMegaSmallThreshold = 35;
+         this.mantMegaMediumThreshold = 40;
+         this.mantMegaLargeThreshold = 47;
          this.mantMegaRacePenalty = 5;
          this.mantMegaSummerBonus = 10;
          this.mantAnkletSummerBonus = 10;
-         this.mantTrainingWeightsThreshold = 60;
+         this.mantTrainingWeightsThreshold = 40;
          this.mantBbqUnmaxxedCards = 3;
         this.mantCharmThreshold = 40;
         this.mantCharmFailureRate = 21;
