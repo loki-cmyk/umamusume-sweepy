@@ -1581,36 +1581,21 @@ def total_megaphone_turns(owned_map):
     return total
 
 
-def compute_mega_urgency(ctx):
-    owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
-    owned_map = {n: q for n, q in owned}
-    active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
-    date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
-    mega_turns = total_megaphone_turns(owned_map) + active_turns
-    training_remaining = remaining_training_turns_real(ctx, date)
-    if training_remaining <= 0:
-        return 99.0
-    return mega_turns / training_remaining
-
-
 def handle_megaphone_endgame(ctx):
     owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
     owned_map = {n: q for n, q in owned}
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     
-    used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
-    if used_date == date:
-        return False
-
-    active_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
-    active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
-
     if date >= MANT_CLIMAX_START and date not in MANT_CLIMAX_TRAINING_TURNS:
         return False
 
+    log.info("Checking for megaphones to use during endgame.")
+    active_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
+    active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
     training_remaining = remaining_training_turns_real(ctx, date)
     mega_turns = total_megaphone_turns(owned_map)
     if mega_turns <= training_remaining:
+        log.info(f"No need to use megaphones. {mega_turns} turns remaining vs {training_remaining} training turns.")
         return False
 
     for name, (tier, duration) in sorted(MEGAPHONE_TIERS.items(), key=lambda x: -x[1][0]):
@@ -1638,9 +1623,6 @@ def handle_megaphone(ctx):
     used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
     if used_date == date:
         log.info("Megaphone already used this turn, blocking.")
-        return False
-
-    if date >= MANT_CLIMAX_START and date not in MANT_CLIMAX_TRAINING_TURNS:
         return False
 
     if handle_megaphone_endgame(ctx):
