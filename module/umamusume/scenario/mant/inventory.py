@@ -1591,6 +1591,11 @@ def handle_megaphone_endgame(ctx):
     owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
     owned_map = {n: q for n, q in owned}
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
+    
+    used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
+    if used_date == date:
+        return False
+
     active_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
     active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
 
@@ -1601,7 +1606,7 @@ def handle_megaphone_endgame(ctx):
     if urgency < 1.0:
         return False
 
-    for name, (tier, duration) in sorted(MEGAPHONE_TIERS.items(), key=lambda x: x[1][0]):
+    for name, (tier, duration) in sorted(MEGAPHONE_TIERS.items(), key=lambda x: -x[1][0]):
         if owned_map.get(name, 0) <= 0:
             continue
         if active_turns > 0 and active_tier > 0 and tier <= active_tier:
@@ -1610,6 +1615,7 @@ def handle_megaphone_endgame(ctx):
         if ok:
             ctx.cultivate_detail.mant_megaphone_tier = tier
             ctx.cultivate_detail.mant_megaphone_turns = duration
+            ctx.cultivate_detail.mant_megaphone_used_date = date
             log.info(f"endgame megaphone dump: tier {tier} for {duration} turns")
             current_date = getattr(ctx.cultivate_detail.turn_info, 'date', -1)
             ctx.cultivate_detail.mant_megaphone_last_tick_date = current_date
@@ -1621,10 +1627,14 @@ def handle_megaphone_endgame(ctx):
 
 
 def handle_megaphone(ctx):
+    date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
+    used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
+    if used_date == date:
+        return False
+
     if handle_megaphone_endgame(ctx):
         return True
 
-    date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     if date >= MANT_CLIMAX_START and date not in MANT_CLIMAX_TRAINING_TURNS:
         return False
 
@@ -1717,6 +1727,7 @@ def handle_megaphone(ctx):
     if ok:
         ctx.cultivate_detail.mant_megaphone_tier = best_tier
         ctx.cultivate_detail.mant_megaphone_turns = duration
+        ctx.cultivate_detail.mant_megaphone_used_date = date
         log.info(f"megaphone active: tier {best_tier} for {duration} turns (urgency={urgency:.2f} pct={percentile:.0f})")
         current_date = getattr(ctx.cultivate_detail.turn_info, 'date', -1)
         ctx.cultivate_detail.mant_megaphone_last_tick_date = current_date

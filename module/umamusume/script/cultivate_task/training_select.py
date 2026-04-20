@@ -1107,6 +1107,9 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         handle_decision(ctx)
                         return
 
+                ctx.cultivate_detail.turn_info._pre_item_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
+                ctx.cultivate_detail.turn_info._pre_item_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
+
                 from module.umamusume.scenario.mant.inventory import item_loop
                 item_loop(ctx)
 
