@@ -110,6 +110,9 @@ class TurnInfo:
     medic_room_available: bool
     race_available: bool
 
+    # Loop detection
+    training_loop_counter: int
+
     turn_operation: TurnOperation | None
     turn_info_logged: bool
     turn_learn_skill_done: bool
@@ -133,6 +136,7 @@ class TurnInfo:
         self.aoharu_race_index = 0
         self.cached_mood = None
         self.cached_available_races = []
+        self.training_loop_counter = 0
 
     def __str__(self):
         return f"TurnInfo(date={self.date}, stamina={self.remain_stamina}, motivation={self.motivation_level.name})"

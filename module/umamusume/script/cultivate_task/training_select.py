@@ -69,6 +69,17 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
     if prev_was_race:
         ctx.cultivate_detail._prev_op_was_race = True
 
+    loop_counter = getattr(ctx.cultivate_detail.turn_info, 'training_loop_counter', 0)
+    if loop_counter > 5:
+        log.warning("Training loop detected, resetting turn info")
+        ctx.cultivate_detail.turn_info.turn_operation = None
+        ctx.cultivate_detail.turn_info.parse_train_info_finish = False
+        ctx.cultivate_detail.turn_info.training_loop_counter = 0
+        ctx.cultivate_detail.mant_cleat_used = False
+        turn_op = None
+
+    ctx.cultivate_detail.turn_info.training_loop_counter += 1
+
     if turn_op is not None:
         try:
             cached_stats = getattr(ctx.cultivate_detail, 'last_decision_stats', None)
@@ -76,20 +87,28 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             if cached_stats is not None:
                 uma = ctx.cultivate_detail.turn_info.uma_attribute
                 current_stats = (uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence)
-                if current_stats != cached_stats or force_invalidate:
+                current_turn = ctx.cultivate_detail.turn_info.date
+
+                stats_match = (current_stats == cached_stats[:5])
+                turn_match = (current_turn == cached_stats[5])
+
+                if not stats_match or not turn_match or force_invalidate:
                     if force_invalidate:
-                      log.info(f"[training_select] Forcing cache invalidation as requested.")
-                      ctx.cultivate_detail.force_invalidate_cache = False
+                        log.info(f"Forcing cache invalidation as requested.")
+                        ctx.cultivate_detail.force_invalidate_cache = False
+                    elif not stats_match:
+                        log.info(f"Cache invalid (stats mismatch): was {cached_stats[:5]}, now {current_stats}")
                     else:
-                      log.info(f"[training_select] Cache invalid: was {cached_stats}, now {current_stats}")
+                        log.info(f"Cache invalid (turn mismatch): was {cached_stats[5]}, now {current_turn}")
+                    
                     ctx.cultivate_detail.turn_info.turn_operation = None
                     ctx.cultivate_detail.turn_info.parse_train_info_finish = False
                     ctx.cultivate_detail.mant_cleat_used = False
                     turn_op = None
                 else:
-                    log.info(f"[training_select] Cache VALID (stats match)")
+                    log.info(f"Cache VALID (stats and turn match)")
             else:
-                log.info(f"[training_select] No cached stats to validate against")
+                log.info(f"No cached stats to validate against")
         except Exception:
             pass
 
@@ -887,7 +906,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.cultivate_detail.turn_info.cached_training_type = local_training_type
         try:
             uma = ctx.cultivate_detail.turn_info.uma_attribute
-            ctx.cultivate_detail.last_decision_stats = (uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence)
+            current_turn = ctx.cultivate_detail.turn_info.date
+            ctx.cultivate_detail.last_decision_stats = (uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence, current_turn)
         except Exception:
             log.warn("Failed to set last_decision_stats.")
             pass
