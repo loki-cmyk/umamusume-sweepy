@@ -779,10 +779,19 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.cultivate_detail.turn_info.cached_original_scores = list(original_scores)
         ctx.cultivate_detail.turn_info.cached_stat_scores = list(stat_scores)
 
+        mega_mult = 1.0
+        if is_mant:
+            mega_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
+            mega_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
+            if mega_turns > 0:
+                mega_mult = {1: 1.20, 2: 1.40, 3: 1.60}.get(mega_tier, 1.0)
+
         best_stat_score = max(stat_scores) if stat_scores else 0.0
+        unboosted_stat_score = best_stat_score / mega_mult
+
         if not hasattr(ctx.cultivate_detail, 'stat_only_history'):
             ctx.cultivate_detail.stat_only_history = []
-        ctx.cultivate_detail.stat_only_history.append(best_stat_score)
+        ctx.cultivate_detail.stat_only_history.append(unboosted_stat_score)
         if len(ctx.cultivate_detail.stat_only_history) > MAX_DATAPOINTS:
             ctx.cultivate_detail.stat_only_history = ctx.cultivate_detail.stat_only_history[-MAX_DATAPOINTS:]
         ctx.cultivate_detail.turn_info.cached_stat_only_score = best_stat_score
@@ -804,31 +813,15 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             raw_sum = sum(v for v in sr.values() if v > 0)
             if raw_sum > raw_best:
                 raw_best = raw_sum
-        ctx.cultivate_detail.raw_stat_history.append(raw_best)
+        
+        unboosted_raw_best = raw_best / mega_mult
+        ctx.cultivate_detail.raw_stat_history.append(unboosted_raw_best)
         if len(ctx.cultivate_detail.raw_stat_history) > MAX_DATAPOINTS:
             ctx.cultivate_detail.raw_stat_history = ctx.cultivate_detail.raw_stat_history[-MAX_DATAPOINTS:]
         ctx.cultivate_detail.date_history.append(int(date))
         if len(ctx.cultivate_detail.date_history) > MAX_DATAPOINTS:
             ctx.cultivate_detail.date_history = ctx.cultivate_detail.date_history[-MAX_DATAPOINTS:]
 
-        history = ctx.cultivate_detail.score_history
-        percentile = 0.0
-        best_score = max(original_scores)
-        history.append(best_score)
-        if len(history) >= 2:
-            prev = history[:-1]
-            below_count = sum(1 for s in prev if s < best_score)
-            percentile = below_count / len(prev) * 100
-            ctx.cultivate_detail.percentile_history.append(percentile)
-            pct_hist = ctx.cultivate_detail.percentile_history
-            hist_avg = float(np.mean(pct_hist))
-            dp_count = len(history)
-            if len(pct_hist) >= 5:
-                recent_avg = float(np.mean(pct_hist[-5:]))
-                avg_pct_change = recent_avg - hist_avg
-                log.info(f"Percentile: {percentile:.0f}% | Avg Percentile Change (last 5 vs all): {avg_pct_change:+.1f}% | Datapoints: {dp_count}")
-            else:
-                log.info(f"Percentile: {percentile:.0f}% | Historical Avg: {hist_avg:.1f}% | Datapoints: {dp_count}")
         try:
             from module.umamusume.persistence import save_career_data
             save_career_data(ctx)
@@ -862,7 +855,35 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.cultivate_detail.turn_info.cached_computed_scores = list(computed_scores)
         ctx.cultivate_detail.turn_info.cached_facility_mults = list(facility_mults)
 
-        max_score = max(computed_scores[:5]) if len(computed_scores) >= 5 else 0.0
+        max_score = max(computed_scores) if len(computed_scores) == 5 else 0.0
+        
+        if not hasattr(ctx.cultivate_detail, 'score_history'):
+            ctx.cultivate_detail.score_history = []
+        stat_boost_amt = best_stat_score - unboosted_stat_score
+        unboosted_total_score = max_score - stat_boost_amt
+        ctx.cultivate_detail.score_history.append(unboosted_total_score)
+
+        if len(ctx.cultivate_detail.score_history) >= 2:
+            history = ctx.cultivate_detail.score_history
+            best_score = history[-1]
+            prev = history[:-1]
+            below_count = sum(1 for s in prev if s < best_score)
+            percentile = below_count / len(prev) * 100
+            ctx.cultivate_detail.percentile_history.append(percentile)
+            
+            # Logging and stats
+            pct_hist = ctx.cultivate_detail.percentile_history
+            hist_avg = float(np.mean(pct_hist))
+            dp_count = len(history)
+            if len(pct_hist) >= 5:
+                recent_avg = float(np.mean(pct_hist[-5:]))
+                avg_pct_change = recent_avg - hist_avg
+                log.info(f"Percentile: {percentile:.0f}% | Avg Percentile Change (last 5 vs all): {avg_pct_change:+.1f}% | Datapoints: {dp_count}")
+            else:
+                log.info(f"Percentile: {percentile:.0f}% | Historical Avg: {hist_avg:.1f}% | Datapoints: {dp_count}")
+
+        if len(ctx.cultivate_detail.score_history) > MAX_DATAPOINTS:
+            ctx.cultivate_detail.score_history = ctx.cultivate_detail.score_history[-MAX_DATAPOINTS:]
         eps = 1e-9
         
         blocked_count = sum(blocked_trainings)
@@ -1066,8 +1087,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     log.info(f"Selected {training_name} training has 0% failure rate - skipping energy items and charm checks")
                     ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
                     ctx.cultivate_detail.turn_info.charm_deferred = False
+                charm_deferred = getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False)
+                energy_deferred = getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False)
                 # Use charms before relying on energy items
-                if getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False):
+                if charm_deferred:
                     from module.umamusume.scenario.mant.inventory import handle_charm_simplified
                     if handle_charm_simplified(ctx):
                         log.info("Used a Good-luck Charm for training.")
@@ -1076,10 +1099,11 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         ctx.cultivate_detail.turn_info.charm_deferred = False
                         ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
                         return
-                    else:
+                    elif not energy_deferred:
+                        # No charm used, and energy recovery is not deferred, so make a decision
                         handle_decision(ctx)
                         return
-                if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False):
+                if energy_deferred:
                     from module.umamusume.scenario.mant.inventory import get_best_percentile, handle_energy_recovery
                     from module.umamusume.constants.game_constants import is_summer_camp_period as _is_summer
 
