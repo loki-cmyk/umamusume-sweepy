@@ -1087,8 +1087,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     log.info(f"Selected {training_name} training has 0% failure rate - skipping energy items and charm checks")
                     ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
                     ctx.cultivate_detail.turn_info.charm_deferred = False
+                charm_deferred = getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False)
+                energy_deferred = getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False)
                 # Use charms before relying on energy items
-                if getattr(ctx.cultivate_detail.turn_info, 'charm_deferred', False):
+                if charm_deferred:
                     from module.umamusume.scenario.mant.inventory import handle_charm_simplified
                     if handle_charm_simplified(ctx):
                         log.info("Used a Good-luck Charm for training.")
@@ -1097,10 +1099,11 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         ctx.cultivate_detail.turn_info.charm_deferred = False
                         ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
                         return
-                    else:
+                    elif not energy_deferred:
+                        # No charm used, and energy recovery is not deferred, so make a decision
                         handle_decision(ctx)
                         return
-                if getattr(ctx.cultivate_detail.turn_info, 'energy_recovery_deferred', False):
+                if energy_deferred:
                     from module.umamusume.scenario.mant.inventory import get_best_percentile, handle_energy_recovery
                     from module.umamusume.constants.game_constants import is_summer_camp_period as _is_summer
 
