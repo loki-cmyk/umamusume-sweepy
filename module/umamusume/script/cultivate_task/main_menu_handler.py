@@ -165,6 +165,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
     if not ctx.cultivate_detail.debut_race_win and current_date > PRE_DEBUT_END:
         if not hasattr(ctx.cultivate_detail.turn_info, 'race_search_attempted'):
             log.warn("Debut race was lost, running the race again to try to recover.")
+            ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
             ctx.cultivate_detail.turn_info.turn_operation.race_id = 0
             ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
 
