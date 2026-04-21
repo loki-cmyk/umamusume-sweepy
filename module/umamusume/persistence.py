@@ -17,6 +17,7 @@ TRAINING_JSON_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'traini
 TRAINING_JSON_FILE = os.path.normpath(TRAINING_JSON_FILE)
 
 MAX_DATAPOINTS = 2000
+HISTORY_VERSION_FLAG = "aaa"
 
 career_cleared_flag = False
 career_data_lock = threading.Lock()
@@ -58,6 +59,7 @@ def save_career_data(ctx):
             date_history = getattr(ctx.cultivate_detail, 'date_history', [])
             dates = date_history[-MAX_DATAPOINTS:]
             data = {
+                'version': HISTORY_VERSION_FLAG,
                 'score_history': scores,
                 'stat_only_history': stat_only,
                 'energy_history': energy,
@@ -79,11 +81,15 @@ def load_career_data(ctx):
             return False
         with open(PERSISTENCE_FILE, 'r') as f:
             data = json.load(f)
+        stored_version = data.get('version', "")
+        if stored_version != HISTORY_VERSION_FLAG:
+            clear_career_data()
+            return False
+
         required_keys = {'score_history', 'stat_only_history', 'energy_history', 'action_history', 'raw_stat_history', 'date_history'}
         if not required_keys.issubset(data.keys()):
             log.info("Career data format mismatch - clearing old data")
-            with open(PERSISTENCE_FILE, 'w') as f:
-                json.dump({'score_history': [], 'stat_only_history': [], 'energy_history': [], 'action_history': [], 'raw_stat_history': [], 'date_history': []}, f)
+            clear_career_data()
             return False
         score_history = data.get('score_history', [])
         stat_only_history = data.get('stat_only_history', [])
@@ -118,7 +124,15 @@ def clear_career_data():
     try:
         with career_data_lock:
             with open(PERSISTENCE_FILE, 'w') as f:
-                json.dump({'score_history': [], 'stat_only_history': [], 'energy_history': [], 'action_history': [], 'raw_stat_history': [], 'date_history': []}, f)
+                json.dump({
+                    'version': HISTORY_VERSION_FLAG,
+                    'score_history': [], 
+                    'stat_only_history': [], 
+                    'energy_history': [], 
+                    'action_history': [], 
+                    'raw_stat_history': [], 
+                    'date_history': []
+                }, f)
                 f.flush()
                 os.fsync(f.fileno())
             try:
