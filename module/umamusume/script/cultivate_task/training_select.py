@@ -492,36 +492,38 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         if base_energy is not None:
             log.info(f"Base Energy: {base_energy:.1f}%{' (high energy)' if base_energy >= 80 else ''}")
 
-        fsg_lookup = {}
-        for g in getattr(ctx.cultivate_detail, 'friendship_score_groups', []):
-            if isinstance(g, dict) and g.get('characters'):
-                mult = g.get('multiplier', 100) / 100.0
-                for cname in g['characters']:
-                    fsg_lookup[cname] = mult
+
+        char_configs = getattr(ctx.cultivate_detail, 'character_score_configs', {})
+        period_key = 'junior' if period_idx == 0 else 'classic' if period_idx == 1 else 'senior'
 
         ew_str = extra_weight if isinstance(extra_weight, (list, tuple)) else extra_weight
         config_info = f"Config: base_scores={base_scores}, extra_weight={ew_str}, w_lv1={w_lv1}, w_lv2={w_lv2}, w_nrg={w_energy_change}, w_hint={w_hint}"
 
         for idx in range(5):
             til = ctx.cultivate_detail.turn_info.training_info_list[idx]
-            target_type = type_map[idx]
-            lv1c = 0
-            lv2c = 0
-            lv1_total = 0.0
-            lv2_total = 0.0
-            npc = 0
-            npc_total_contrib = 0.0
             pal_count = 0
             score = base_scores[idx] if isinstance(base_scores, (list, tuple)) and len(base_scores) > idx else 0.0
+            
+            lv1c = 0
+            lv2c = 0
+            lv3c = 0
+            lv1_total = 0.0
+            lv2_total = 0.0
+            lv3_total = 0.0
+            npc = 0
+            npc_total_contrib = 0.0
+
             detected_chars = getattr(til, 'detected_characters', [])
             slot_name_map = {}
             for slot_idx, cname, cscore in detected_chars:
-                if cname is not None:
+                if cname:
                     slot_name_map[slot_idx] = cname
+
             sc_list = getattr(til, "support_card_info_list", []) or []
             for sc_idx, sc in enumerate(sc_list):
                 favor = getattr(sc, "favor", SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN)
                 ctype = getattr(sc, "card_type", SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN)
+                
                 if ctype == SupportCardType.SUPPORT_CARD_TYPE_NPC:
                     npc += 1
                     npc_scores = getattr(ctx.cultivate_detail, 'npc_score_value', DEFAULT_NPC_SCORE_VALUE)
@@ -538,9 +540,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     score += npc_add
                     npc_total_contrib += npc_add
                     continue
-                if ctype == SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN:
-                    continue
-                if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN:
+
+                if ctype == SupportCardType.SUPPORT_CARD_TYPE_UNKNOWN or favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN:
                     continue
 
                 if ctype == SupportCardType.SUPPORT_CARD_TYPE_FRIEND:
@@ -553,26 +554,41 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     elif favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4):
                         score += pal_scores[2]
                     continue
+
                 if ctype == SupportCardType.SUPPORT_CARD_TYPE_GROUP:
                     if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
                         score += w_lv1
                     elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
                         score += w_lv2
                     continue
-                if favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4) and ctype == target_type:
-                    continue
+
                 char_name = slot_name_map.get(sc_idx)
-                fsg_mult = fsg_lookup.get(char_name, 1.0) if char_name else 1.0
-                if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
-                    lv1c += 1
-                    lv1_add = w_lv1 * fsg_mult
-                    lv1_total += lv1_add
-                    score += lv1_add
-                elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
-                    lv2c += 1
-                    lv2_add = w_lv2 * fsg_mult
-                    lv2_total += lv2_add
-                    score += lv2_add
+                if char_name and char_name in char_configs:
+                    cfg = char_configs[char_name].get(period_key, {})
+                    if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
+                        add_val = cfg.get('blue', 0)
+                        score += add_val
+                        lv1_total += add_val
+                        lv1c += 1
+                    elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
+                        add_val = cfg.get('green', 0)
+                        score += add_val
+                        lv2_total += add_val
+                        lv2c += 1
+                    elif favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4):
+                        add_val = cfg.get('yellow', 0)
+                        score += add_val
+                        lv3_total += add_val
+                        lv3c += 1
+                else:
+                    if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
+                        score += w_lv1
+                        lv1_total += w_lv1
+                        lv1c += 1
+                    elif favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_2:
+                        score += w_lv2
+                        lv2_total += w_lv2
+                        lv2c += 1
             
             stat_results = getattr(til, 'stat_results', {})
             stat_score = 0.0
@@ -723,6 +739,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             base_val = base_scores[idx] if isinstance(base_scores, (list, tuple)) and len(base_scores) > idx else 0.0
             lv1_contrib = lv1_total
             lv2_contrib = lv2_total
+            lv3_contrib = lv3_total
             
             formula_parts = []
             formula_parts.append(f"base:{base_val:.2f}")
@@ -732,6 +749,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 formula_parts.append(f"lv1({lv1c}):+{lv1_contrib:.3f}")
             if lv2_contrib > 0:
                 formula_parts.append(f"lv2({lv2c}):+{lv2_contrib:.3f}")
+            if lv3_contrib > 0:
+                formula_parts.append(f"lv3({lv3c}):+{lv3_contrib:.3f}")
             if energy_change_contrib != 0:
                 formula_parts.append(f"nrg({energy_change_val:+.1f}):{energy_change_contrib:+.3f}")
             if npc_total_contrib > 0:
@@ -896,12 +915,6 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             if not hasattr(ctx.cultivate_detail.turn_info, 'race_search_attempted') and date <= 72:
                 wit_race_threshold = getattr(ctx.cultivate_detail, 'wit_race_search_threshold', 0.15)
                 
-                current_energy = getattr(ctx.cultivate_detail.turn_info, 'cached_energy', 0)
-                if current_energy == 0:
-                    from bot.conn.fetch import read_energy
-                    current_energy = read_energy()
-                    ctx.cultivate_detail.turn_info.cached_energy = current_energy
-                
                 from module.umamusume.asset.race_data import get_races_for_period
                 next_date = ctx.cultivate_detail.turn_info.date + 1
                 available_races = get_races_for_period(next_date)
@@ -982,7 +995,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         ctx.cultivate_detail.mant_cleat_used = False
         ctx.cultivate_detail._prev_op_was_race = False
 
-    # Group card percentile override (separate from friend card — does not block friend)
+
     if getattr(ctx.cultivate_detail, 'group_card_enabled', False):
         gc_dates = getattr(ctx.cultivate_detail, 'group_card_available_dates', [])
         gc_percentile = getattr(ctx.cultivate_detail, 'group_card_percentile', 26)
