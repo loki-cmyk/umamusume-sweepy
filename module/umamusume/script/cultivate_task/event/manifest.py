@@ -16,17 +16,6 @@ from rapidfuzz import process, fuzz
 
 log = logger.get_logger(__name__)
 
-
-def _normalize_string(text: str) -> str:
-    if not text:
-        return ""
-    t = unicodedata.normalize('NFKD', str(text))
-    t = t.lower().strip()
-    t = re.sub(r"[^a-z0-9]+", " ", t)
-    t = " ".join(t.split())
-    return t
-
-
 event_map: dict[str, Union[callable, int]] = {
     "": 5,
     "": scenario_event_1,
@@ -43,6 +32,15 @@ event_name_list: list[str] = [*event_map]
 
 # Global variable to store the events database
 _events_database = None
+
+def normalize_string(text: str) -> str:
+    if not text:
+        return ""
+    t = unicodedata.normalize('NFKD', str(text))
+    t = t.lower().strip()
+    t = re.sub(r"[^a-z0-9]+", " ", t)
+    t = " ".join(t.split())
+    return t
 
 def load_events_database():
     """Load the events database from the JSON file"""
@@ -93,28 +91,28 @@ def get_local_event_choice(ctx: UmamusumeContext, event_name: str) -> Union[int,
     if event_name in events_db:
         return calculate_optimal_choice_from_db(ctx, events_db[event_name])
 
-    query = _normalize_string(event_name)
+    query = normalize_string(event_name)
 
-    norm_map = getattr(get_local_event_choice, "cacheNormalizedKeyMap", None)
+    norm_map = getattr(get_local_event_choice, "cache_normalized_key_map", None)
     if norm_map and query in norm_map:
         key = norm_map[query]
         return calculate_optimal_choice_from_db(ctx, events_db[key])
 
-    choices = getattr(get_local_event_choice, "cacheChoices", None)
-    source_cache = getattr(get_local_event_choice, "cacheSource", None)
-    norm_map = getattr(get_local_event_choice, "cacheNormalizedKeyMap", None)
+    choices = getattr(get_local_event_choice, "cache_choices", None)
+    source_cache = getattr(get_local_event_choice, "cache_source", None)
+    norm_map = getattr(get_local_event_choice, "cache_normalized_key_map", None)
 
     if choices is None or source_cache is not events_db or norm_map is None:
         norm_map = {}
         normalized_choices = []
         for original_key in events_db.keys():
-            normalized_key = _normalize_string(original_key)
+            normalized_key = normalize_string(original_key)
             if normalized_key:
                 norm_map[normalized_key] = original_key
                 normalized_choices.append(normalized_key)
-        setattr(get_local_event_choice, "cacheChoices", normalized_choices)
-        setattr(get_local_event_choice, "cacheSource", events_db)
-        setattr(get_local_event_choice, "cacheNormalizedKeyMap", norm_map)
+        setattr(get_local_event_choice, "cache_choices", normalized_choices)
+        setattr(get_local_event_choice, "cache_source", events_db)
+        setattr(get_local_event_choice, "cache_normalized_key_map", norm_map)
         choices = normalized_choices
 
     if not query or not choices:
@@ -158,26 +156,26 @@ def get_local_event_choice_with_count(ctx: UmamusumeContext, event_name: str):
     if event_name in events_db:
         return _resolve(event_name)
 
-    query = _normalize_string(event_name)
+    query = normalize_string(event_name)
 
-    norm_map = getattr(get_local_event_choice, "cacheNormalizedKeyMap", None)
+    norm_map = getattr(get_local_event_choice, "cache_normalized_key_map", None)
     if norm_map and query in norm_map:
         return _resolve(norm_map[query])
 
-    choices = getattr(get_local_event_choice, "cacheChoices", None)
-    source_cache = getattr(get_local_event_choice, "cacheSource", None)
+    choices = getattr(get_local_event_choice, "cache_choices", None)
+    source_cache = getattr(get_local_event_choice, "cache_source", None)
 
     if choices is None or source_cache is not events_db or norm_map is None:
         norm_map = {}
         normalized_choices = []
         for original_key in events_db.keys():
-            normalized_key = _normalize_string(original_key)
+            normalized_key = normalize_string(original_key)
             if normalized_key:
                 norm_map[normalized_key] = original_key
                 normalized_choices.append(normalized_key)
-        setattr(get_local_event_choice, "cacheChoices", normalized_choices)
-        setattr(get_local_event_choice, "cacheSource", events_db)
-        setattr(get_local_event_choice, "cacheNormalizedKeyMap", norm_map)
+        setattr(get_local_event_choice, "cache_choices", normalized_choices)
+        setattr(get_local_event_choice, "cache_source", events_db)
+        setattr(get_local_event_choice, "cache_normalized_key_map", norm_map)
         choices = normalized_choices
 
     if not query or not choices:
@@ -213,14 +211,14 @@ def warmup_event_index():
     norm_map = {}
     normalized_choices = []
     for original_key in events_db.keys():
-        normalized_key = _normalize_string(original_key)
+        normalized_key = normalize_string(original_key)
         if normalized_key:
             norm_map[normalized_key] = original_key
             normalized_choices.append(normalized_key)
 
-    setattr(get_local_event_choice, "cacheChoices", normalized_choices)
-    setattr(get_local_event_choice, "cacheSource", events_db)
-    setattr(get_local_event_choice, "cacheNormalizedKeyMap", norm_map)
+    setattr(get_local_event_choice, "cache_choices", normalized_choices)
+    setattr(get_local_event_choice, "cache_source", events_db)
+    setattr(get_local_event_choice, "cache_normalized_key_map", norm_map)
     return True
 
 

@@ -31,23 +31,23 @@ class LRUCache:
     def __init__(self, maxsize=2000):
         self.cache = OrderedDict()
         self.maxsize = maxsize
-    
+
     def get(self, key):
         if key not in self.cache:
             return None
         self.cache.move_to_end(key)
         return self.cache[key]
-    
+
     def set(self, key, value):
         if key in self.cache:
             self.cache.move_to_end(key)
         self.cache[key] = value
         if len(self.cache) > self.maxsize:
             self.cache.popitem(last=False)
-    
+
     def clear(self):
         self.cache.clear()
-    
+
     def __contains__(self, key):
         return key in self.cache
 
@@ -133,8 +133,8 @@ def get_canonical_skill_name(skill_name: str) -> str:
     qbigrams = build_bigrams(query)
     qtokens = set(query.split())
 
-    index_cache = getattr(get_canonical_skill_name, 'cacheIndex', None)
-    source_cache = getattr(get_canonical_skill_name, 'cacheSource', None)
+    index_cache = getattr(get_canonical_skill_name, 'cache_index', None)
+    source_cache = getattr(get_canonical_skill_name, 'cache_source', None)
     if index_cache is None or source_cache is not names:
         cache_list = []
         token_index = {}
@@ -149,16 +149,16 @@ def get_canonical_skill_name(skill_name: str) -> str:
             for tok in tokens:
                 if tok:
                     token_index.setdefault(tok, []).append(idx)
-        setattr(get_canonical_skill_name, 'cacheIndex', cache_list)
-        setattr(get_canonical_skill_name, 'cacheSource', names)
-        setattr(get_canonical_skill_name, 'cacheTokenIndex', token_index)
-        setattr(get_canonical_skill_name, 'cacheNormMap', norm_map)
+        setattr(get_canonical_skill_name, 'cache_index', cache_list)
+        setattr(get_canonical_skill_name, 'cache_source', names)
+        setattr(get_canonical_skill_name, 'cache_token_index', token_index)
+        setattr(get_canonical_skill_name, 'cache_norm_map', norm_map)
         index_cache = cache_list
 
     best_key = None
     best_score = 0.0
     best_len_ratio = 0.0
-    token_index = getattr(get_canonical_skill_name, 'cacheTokenIndex', None)
+    token_index = getattr(get_canonical_skill_name, 'cache_token_index', None)
     candidate_indices = set()
     for tok in qtokens:
         if token_index and tok in token_index:
@@ -224,10 +224,10 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
         sub_img_date = ctx.cultivate_detail.scenario.get_date_img(img)
         sub_img_date = cv2.copyMakeBorder(sub_img_date, 20, 20, 20, 20, cv2.BORDER_CONSTANT, None, (255, 255, 255))
         date_text = ocr_line(sub_img_date)
-        
+
         # Debug: Log the extracted date text
         log.info(f"Extracted date text: '{date_text}'")
-        
+
         year_text = ""
         for text in DATE_YEAR:
             if date_text.__contains__(text):
@@ -285,23 +285,23 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
         sub_img_date = ctx.cultivate_detail.scenario.get_date_img(img)
         sub_img_date = cv2.copyMakeBorder(sub_img_date, 20, 20, 20, 20, cv2.BORDER_CONSTANT, None, (255, 255, 255))
         date_text = ocr_line(sub_img_date)
-        
+
         # Debug: Log the extracted date text for URA
         log.info(f"URA Extracted date text: '{date_text}'")
-        
+
         if "Climax" in date_text or "TS Climax" in date_text:
             return 73
 
         # Special handling for "Finale Season" in URA championship
         if "Finale Season" in date_text or "Finale" in date_text:
             log.info("URA Finale Season detected - checking championship phase")
-            
+
             # Check specific coordinates for URA championship phase text
             championship_phase_img = img[74:100, 250:575]  # x: 250, y: 74, width: 325, height: 26
             championship_phase_img = cv2.copyMakeBorder(championship_phase_img, 20, 20, 20, 20, cv2.BORDER_CONSTANT, None, (255, 255, 255))
             championship_phase_text = ocr_line(championship_phase_img)
             log.info(f"URA Championship phase text: '{championship_phase_text}'")
-            
+
             # Determine URA championship phase based on OCR text
             if "URA Finale Qualifier" in championship_phase_text or "Qualifier" in championship_phase_text:
                 log.info("URA Finals Qualifier detected")
@@ -316,7 +316,7 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
                 log.warning(f"Unknown URA championship phase: '{championship_phase_text}'")
                 # Fallback to qualifier if unknown
                 return 73
-        
+
         year_text = ""
         for text in DATE_YEAR:
             if date_text.__contains__(text):
@@ -508,7 +508,7 @@ def parse_training_support_card(ctx: UmamusumeContext, img, train_type: Training
         if getattr(sc, "card_type", None) == target:
             relevant_count += 1
     til.relevant_count = relevant_count
-        
+
 def parse_train_type(ctx: UmamusumeContext, img) -> TrainingType:
     try:
         if img is None or getattr(img, 'size', 0) == 0:
@@ -540,7 +540,7 @@ def parse_train_type(ctx: UmamusumeContext, img) -> TrainingType:
 def parse_training_result(ctx: UmamusumeContext, img, train_type: TrainingType):
     train_incr = ctx.cultivate_detail.scenario.parse_training_result(img)
     log.debug(train_incr)
-    
+
     ctx.cultivate_detail.turn_info.training_info_list[train_type.value - 1].speed_incr = train_incr[0]
     ctx.cultivate_detail.turn_info.training_info_list[train_type.value - 1].stamina_incr = train_incr[1]
     ctx.cultivate_detail.turn_info.training_info_list[train_type.value - 1].power_incr = train_incr[2]
@@ -813,12 +813,12 @@ def find_skill(ctx: UmamusumeContext, img, skill: list[str], learn_any_skill: bo
                             or normalize_text_for_match(detected_text) == normalize_text_for_match(target)):
                             target_match = target
                             break
-                    
+
                     if target_match is not None or learn_any_skill:
                         tmp_img = ctx.ctrl.get_screen()
                         pt_text = re.sub("\\D", "", ocr_en(tmp_img[400: 440, 490: 665]))
                         skill_pt_cost_text = re.sub("\\D", "", ocr_en(skill_info_img[69: 99, 525: 588]))
-                        
+
                         # Handle empty cost (Global Server UI compatibility) - same as get_skill_list()
                         if not skill_pt_cost_text or skill_pt_cost_text == '':
                             alt_cost, alt_idx = try_alt_cost_regions(skill_info_img)
@@ -828,15 +828,15 @@ def find_skill(ctx: UmamusumeContext, img, skill: list[str], learn_any_skill: bo
                             if not skill_pt_cost_text or skill_pt_cost_text == '':
                                 log.debug(f"find_skill - Could not parse skill cost for '{detected_text}', defaulting to 1")
                                 skill_pt_cost_text = '1'
-                        
+
                         # Debug: Log point and cost extraction
                         log.debug(f"find_skill - Available points: '{pt_text}', Skill cost: '{skill_pt_cost_text}'")
-                        
+
                         if pt_text != "" and skill_pt_cost_text != "":
                             pt = int(pt_text)
                             skill_pt_cost = int(skill_pt_cost_text)
                             log.debug(f"find_skill - Points: {pt}, Cost: {skill_pt_cost}, Can buy: {pt >= skill_pt_cost}")
-                            
+
                             if pt >= skill_pt_cost:
                                 log.info(f"Buying skill '{detected_text}' - Points: {pt}, Cost: {skill_pt_cost}")
                                 ctx.ctrl.click(match_result.center_point[0] + 128, match_result.center_point[1],
@@ -884,7 +884,7 @@ def get_skill_list(img, skill: list[str], skill_blacklist: list[str]) -> list:
                 detected_text = ocr_en(skill_name_img)
                 cost_text = ocr_en(skill_cost_img)
                 cost = re.sub("\\D", "", cost_text)
-                
+
                 # Handle empty cost (Global Server UI compatibility)
                 if not cost or cost == '':
                     alt_cost, alt_idx = try_alt_cost_regions(skill_info_img)
@@ -938,7 +938,7 @@ def get_skill_list(img, skill: list[str], skill_blacklist: list[str]) -> list:
                 log.info(f"detected text='{detected_text}' matched skill='{matched_skill}' Hint: lv {hint_level}")
                 normalized_name = normalize_text_for_match(name_for_match)
                 in_blacklist = any(normalized_name == normalize_text_for_match(b) for b in skill_blacklist)
-                
+
                 if in_blacklist:
                     priority = -1
                     skill_name_raw = name_for_match
