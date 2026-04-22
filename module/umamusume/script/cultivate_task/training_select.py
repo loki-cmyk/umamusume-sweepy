@@ -501,14 +501,15 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
 
         for idx in range(5):
             til = ctx.cultivate_detail.turn_info.training_info_list[idx]
-            target_type_val = idx + 1
             pal_count = 0
             score = base_scores[idx] if isinstance(base_scores, (list, tuple)) and len(base_scores) > idx else 0.0
             
             lv1c = 0
             lv2c = 0
+            lv3c = 0
             lv1_total = 0.0
             lv2_total = 0.0
+            lv3_total = 0.0
             npc = 0
             npc_total_contrib = 0.0
 
@@ -575,7 +576,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         lv2_total += add_val
                         lv2c += 1
                     elif favor in (SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_3, SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_4):
-                        score += cfg.get('yellow', 0)
+                        add_val = cfg.get('yellow', 0)
+                        score += add_val
+                        lv3_total += add_val
+                        lv3c += 1
                 else:
                     if favor == SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_1:
                         score += w_lv1
@@ -735,6 +739,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             base_val = base_scores[idx] if isinstance(base_scores, (list, tuple)) and len(base_scores) > idx else 0.0
             lv1_contrib = lv1_total
             lv2_contrib = lv2_total
+            lv3_contrib = lv3_total
             
             formula_parts = []
             formula_parts.append(f"base:{base_val:.2f}")
@@ -744,6 +749,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 formula_parts.append(f"lv1({lv1c}):+{lv1_contrib:.3f}")
             if lv2_contrib > 0:
                 formula_parts.append(f"lv2({lv2c}):+{lv2_contrib:.3f}")
+            if lv3_contrib > 0:
+                formula_parts.append(f"lv3({lv3c}):+{lv3_contrib:.3f}")
             if energy_change_contrib != 0:
                 formula_parts.append(f"nrg({energy_change_val:+.1f}):{energy_change_contrib:+.3f}")
             if npc_total_contrib > 0:
@@ -907,12 +914,6 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         
             if not hasattr(ctx.cultivate_detail.turn_info, 'race_search_attempted') and date <= 72:
                 wit_race_threshold = getattr(ctx.cultivate_detail, 'wit_race_search_threshold', 0.15)
-                
-                current_energy = getattr(ctx.cultivate_detail.turn_info, 'cached_energy', 0)
-                if current_energy == 0:
-                    from bot.conn.fetch import read_energy
-                    current_energy = read_energy()
-                    ctx.cultivate_detail.turn_info.cached_energy = current_energy
                 
                 from module.umamusume.asset.race_data import get_races_for_period
                 next_date = ctx.cultivate_detail.turn_info.date + 1
