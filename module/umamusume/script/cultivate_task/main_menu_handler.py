@@ -168,6 +168,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
             ctx.cultivate_detail.turn_info.turn_operation.race_id = 0
             ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
+            return
 
     available_races = getattr(ctx.cultivate_detail.turn_info, 'cached_available_races', None)
     if available_races is None:

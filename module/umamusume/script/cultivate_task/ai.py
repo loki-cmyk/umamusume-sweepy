@@ -78,6 +78,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
             log.warn("Debut race was lost, running the race again to try to recover.")
             turn_operation.race_id = 0
             turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
+            return turn_operation
     cached_energy = getattr(ctx.cultivate_detail.turn_info, 'cached_energy', None)
     if cached_energy is not None and cached_energy > 0:
         state = fetch_state(ctx.current_screen)
