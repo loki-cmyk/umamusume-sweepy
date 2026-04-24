@@ -401,8 +401,23 @@ def script_cultivate_finish(ctx: UmamusumeContext):
         clear_used_buffs()
         clear_megaphone_state()
         clear_clock_used()
-    except Exception:
-        pass
+    except Exception as e:
+        log.error(f"Failed to clear career state: {e}")
+    # Log run summary on career finish
+    if not getattr(ctx.cultivate_detail, '_run_summary_logged', False):
+        try:
+            from module.umamusume.script.cultivate_task.exporter import export_run_summary
+            from module.umamusume.persistence import append_training_json, clear_run_id, clear_last_turn
+            summary_json = export_run_summary(ctx)
+            if summary_json:
+                append_training_json(summary_json)
+            clear_run_id()
+            clear_last_turn()
+            if hasattr(ctx.cultivate_detail, 'last_logged_date'):
+                delattr(ctx.cultivate_detail, 'last_logged_date')
+            ctx.cultivate_detail._run_summary_logged = True
+        except Exception as e:
+            log.error(f"Failed to export run summary: {e}")
     time.sleep(2.0) # sleep in case we enter the final screen too late
     if not ctx.task.detail.manual_purchase_at_end:
         if not ctx.cultivate_detail.cultivate_finish:

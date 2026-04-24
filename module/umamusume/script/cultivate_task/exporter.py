@@ -80,7 +80,20 @@ def _build_megaphone_status(detail, current_date):
         "active_on_turns": active_turns,
     }
 
-def export_cultivate_context(ctx):
+def _build_pre_stats(turn_info):
+    """Extracts the current uma stats at decision time."""
+    uma = turn_info.uma_attribute
+    return {
+        "speed": uma.speed,
+        "stamina": uma.stamina,
+        "power": uma.power,
+        "guts": uma.will,
+        "wits": uma.intelligence,
+        "sp": uma.skill_point,
+    }
+
+
+def export_cultivate_context(ctx, fixed_date=None):
     """
     Serializes the current cultivation context into a JSON string.
     Includes turn info, upcoming races, megaphone status, and the relevant
@@ -89,11 +102,12 @@ def export_cultivate_context(ctx):
     """
     detail = ctx.cultivate_detail
     turn_info = detail.turn_info
-    date = turn_info.date
+    date = fixed_date if fixed_date is not None else turn_info.date
+
     upcoming_races = []
     # Search for the next 3 turns for scheduled races
     extra_races = getattr(detail, 'extra_race_list', []) or []
-    for current_search_date in range(date + 1, min(date + 4, 76)):
+    for current_search_date in range(turn_info.date + 1, min(turn_info.date + 4, 76)):
         rids = get_races_for_period(current_search_date)
         for rid in rids:
             if rid in extra_races:
@@ -107,12 +121,83 @@ def export_cultivate_context(ctx):
 
     # Build the final payload
     payload = {
+        "type": "turn_snapshot",
+        "run_id": getattr(detail, 'run_id', None),
         "turn_counter": date,
+        "pre_stats": _build_pre_stats(turn_info),
+        "energy": getattr(turn_info, 'cached_energy', None),
+        "mood": getattr(turn_info, 'cached_mood', None),
         "upcoming_races": upcoming_races,
-        "megaphone_status": _build_megaphone_status(detail, date),
+        "megaphone_status": _build_megaphone_status(detail, turn_info.date),
         "detail": to_dict(detail)
     }
 
+    return json.dumps(payload, ensure_ascii=False)
+
+
+def export_post_stats(ctx, prev_turn_date):
+    """
+    Logs the uma's stats after a turn has completed.
+    Called at the start of the next turn to capture what happened.
+    """
+    detail = ctx.cultivate_detail
+    turn_info = detail.turn_info
+    if turn_info is None:
+        return None
+
+    uma = turn_info.uma_attribute
+    payload = {
+        "type": "post_stats",
+        "run_id": getattr(detail, 'run_id', None),
+        "turn": prev_turn_date,
+        "post_stats": {
+            "speed": uma.speed,
+            "stamina": uma.stamina,
+            "power": uma.power,
+            "guts": uma.will,
+            "wits": uma.intelligence,
+            "sp": uma.skill_point,
+        },
+    }
+    return json.dumps(payload, ensure_ascii=False)
+
+
+def export_run_summary(ctx):
+    """
+    Logs the final stats when a career run finishes.
+    """
+    detail = ctx.cultivate_detail
+    turn_info = detail.turn_info
+    if turn_info is None:
+        return None
+    uma = turn_info.uma_attribute
+
+    # If the current turn info hasn't had stats parsed yet (e.g. at the finish screen),
+    # fall back to the last known stats from the turn history.
+    if sum([uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence]) == 0:
+        history = getattr(detail, 'turn_info_history', [])
+        if history:
+            uma = history[-1].uma_attribute
+
+    scenario_name = "unknown"
+    try:
+        scenario_name = detail.scenario.scenario_type().name
+    except Exception:
+        pass
+    payload = {
+        "type": "run_summary",
+        "run_id": getattr(detail, 'run_id', None),
+        "final_stats": {
+            "speed": uma.speed,
+            "stamina": uma.stamina,
+            "power": uma.power,
+            "guts": uma.will,
+            "wits": uma.intelligence,
+            "sp": uma.skill_point,
+        },
+        "total_turns": len(getattr(detail, 'turn_info_history', [])),
+        "scenario": scenario_name,
+    }
     return json.dumps(payload, ensure_ascii=False)
 
 def to_dict(obj, seen=None):

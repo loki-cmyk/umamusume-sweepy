@@ -296,3 +296,65 @@ def clear_clock_used():
     data = load_persist()
     data.pop('clock_used', None)
     save_persist(data)
+
+
+def save_run_id(run_id):
+    data = load_persist()
+    data['run_id'] = run_id
+    save_persist(data)
+
+
+def load_run_id():
+    data = load_persist()
+    return data.get('run_id', None)
+
+
+def clear_run_id():
+    data = load_persist()
+    data.pop('run_id', None)
+    save_persist(data)
+
+
+def save_last_turn(turn):
+    data = load_persist()
+    data['last_turn'] = turn
+    save_persist(data)
+
+
+def load_last_turn():
+    data = load_persist()
+    return data.get('last_turn', None)
+
+
+def clear_last_turn():
+    data = load_persist()
+    data.pop('last_turn', None)
+    save_persist(data)
+
+
+def get_sanitized_turn(detail, requested_date):
+    """
+    Ensures turn progression is sequential and persists the state.
+    Fixes OCR jumps by capping at last_turn + 1.
+    """
+    last = getattr(detail, 'last_logged_date', None)
+    if last is None:
+        try:
+            last = load_last_turn()
+            detail.last_logged_date = last
+        except Exception:
+            pass
+
+    # If it's a huge jump forward, cap it at last + 1
+    if last is not None and requested_date > last + 1:
+        requested_date = last + 1
+
+    # Update the tracker if we moved forward
+    if last is None or requested_date > last:
+        detail.last_logged_date = requested_date
+        try:
+            save_last_turn(requested_date)
+        except Exception:
+            pass
+
+    return requested_date

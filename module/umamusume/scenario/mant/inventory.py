@@ -1648,18 +1648,12 @@ def handle_megaphone_endgame(ctx):
     log.info("Checking for megaphones to use during endgame.")
     active_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
     active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
-    training_remaining = remaining_training_turns_real(ctx, date)
-    total_available_turns = total_megaphone_turns(owned_map) + active_turns
-    if total_available_turns < training_remaining:
-        log.info(f"No need to use megaphones. {total_available_turns} available turns <= {training_remaining} training turns remaining.")
-        return False
 
     for name, (tier, duration) in sorted(MEGAPHONE_TIERS.items(), key=lambda x: -x[1][0]):
         if owned_map.get(name, 0) <= 0:
             continue
         if active_turns > 0 and active_tier > 0 and tier <= active_tier:
-            if total_available_turns <= training_remaining:
-                continue
+            continue
         ok = use_item_and_update_inventory(ctx, name)
         if ok:
             ctx.cultivate_detail.mant_megaphone_tier = tier
