@@ -249,6 +249,8 @@ def script_info(ctx: UmamusumeContext):
                 if ctx.cultivate_detail.clock_used < ctx.cultivate_detail.clock_use_limit:
                     ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_USE_CLOCK)
                     ctx.cultivate_detail.clock_used += 1
+                    from module.umamusume.persistence import save_clock_used
+                    save_clock_used(ctx.cultivate_detail.clock_used)
                     log.info("Clock limit %s, used %s", str(ctx.cultivate_detail.clock_use_limit), str(ctx.cultivate_detail.clock_used))
                 else:
                     ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_CANCEL)
@@ -261,6 +263,8 @@ def script_info(ctx: UmamusumeContext):
                     if ctx.cultivate_detail.clock_used < ctx.cultivate_detail.clock_use_limit:
                         ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_USE_CLOCK)
                         ctx.cultivate_detail.clock_used += 1
+                        from module.umamusume.persistence import save_clock_used
+                        save_clock_used(ctx.cultivate_detail.clock_used)
                         log.info("(retry) Clock limit %s, used %s", str(ctx.cultivate_detail.clock_use_limit), str(ctx.cultivate_detail.clock_used))
                     else:
                         ctx.ctrl.click_by_point(RACE_FAIL_CONTINUE_CANCEL)

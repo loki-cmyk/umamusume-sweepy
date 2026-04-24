@@ -397,9 +397,10 @@ def script_cultivate_finish(ctx: UmamusumeContext):
     import bot.conn.u2_ctrl as u2c
     u2c.IN_CAREER_RUN = False
     try:
-        from module.umamusume.persistence import clear_used_buffs, clear_megaphone_state
+        from module.umamusume.persistence import clear_used_buffs, clear_megaphone_state, clear_clock_used
         clear_used_buffs()
         clear_megaphone_state()
+        clear_clock_used()
     except Exception:
         pass
     time.sleep(2.0) # sleep in case we enter the final screen too late

@@ -976,6 +976,8 @@ def try_use_cure_items(ctx):
         log.info(f"using {AILMENT_CURE_ALL} for {afflictions}")
         if use_item_and_update_inventory(ctx, AILMENT_CURE_ALL):
             ctx.cultivate_detail.mant_afflictions = []
+            from module.umamusume.persistence import save_afflictions
+            save_afflictions(ctx.cultivate_detail.mant_afflictions)
             return True
 
     used_any = False
@@ -992,6 +994,8 @@ def try_use_cure_items(ctx):
             break
 
     ctx.cultivate_detail.mant_afflictions = afflictions
+    from module.umamusume.persistence import save_afflictions
+    save_afflictions(ctx.cultivate_detail.mant_afflictions)
     return used_any
 
 
@@ -1006,11 +1010,15 @@ def handle_mant_afflictions(ctx, img):
     medic_lit = medic_px[0] > 200 and medic_px[1] > 200 and medic_px[2] > 200
     if not medic_lit:
         ctx.cultivate_detail.mant_afflictions = []
+        from module.umamusume.persistence import save_afflictions
+        save_afflictions(ctx.cultivate_detail.mant_afflictions)
         return False
     if medic_lit and not ctx.cultivate_detail.mant_afflictions:
         from module.umamusume.scenario.mant.afflictions import detect_afflictions
         afflictions = detect_afflictions(ctx)
         ctx.cultivate_detail.mant_afflictions = afflictions
+        from module.umamusume.persistence import save_afflictions
+        save_afflictions(ctx.cultivate_detail.mant_afflictions)
         ctx.cultivate_detail.turn_info.parse_main_menu_finish = False
         return True
     if ctx.cultivate_detail.mant_afflictions:

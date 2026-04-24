@@ -210,6 +210,10 @@ class CultivateContextDetail:
         self.last_title = ""
         self.same_title_count = 0
         self.sp_burst_skill_purchased = False
+        self.mant_megaphone_tier = 0
+        self.mant_megaphone_turns = 0
+        self.mant_megaphone_last_tick_date = -1
+        self.mant_megaphone_used_date = -1
 
 
 
@@ -348,16 +352,36 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
             detail.group_card_name = ""
 
         try:
-            from module.umamusume.persistence import load_megaphone_state
-            mega_tier, mega_turns, mega_last_date = load_megaphone_state()
+            from module.umamusume.persistence import load_megaphone_state, load_afflictions
+            mega_data = load_megaphone_state()
+            if len(mega_data) == 4:
+                mega_tier, mega_turns, mega_last_date, mega_used_date = mega_data
+            else:
+                # handle legacy users here
+                mega_tier, mega_turns, mega_last_date = mega_data[:3]
+                mega_used_date = -1
+
             detail.mant_megaphone_tier = mega_tier
             detail.mant_megaphone_turns = mega_turns
             detail.mant_megaphone_last_tick_date = mega_last_date
+            detail.mant_megaphone_used_date = mega_used_date
             if mega_tier > 0 and mega_turns > 0:
                 log.info("Restored megaphone state")
-        except Exception:
+
+            detail.mant_afflictions = load_afflictions()
+            if detail.mant_afflictions:
+                log.info(f"Restored afflictions: {detail.mant_afflictions}")
+
+            from module.umamusume.persistence import load_clock_used
+            detail.clock_used = load_clock_used()
+            if detail.clock_used > 0:
+                log.info(f"Restored clock used: {detail.clock_used}")
+        except Exception as e:
+            log.info(f"Failed to restore megaphone or affliction state: {e}")
             detail.mant_megaphone_tier = 0
             detail.mant_megaphone_turns = 0
             detail.mant_megaphone_last_tick_date = -1
+            detail.mant_megaphone_used_date = -1
+            detail.mant_afflictions = []
 
     return ctx
