@@ -1,6 +1,6 @@
 # Sweepy — /vg/'s Uma Musume Bot
 
-This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). I'm not pulling in most upstream Sweepy changes by default since most of the time the changes are broken and untested. Feature parity may be delayed or I may not even pull in some changes made if they're too low quality. Half the time you're better off not updating from the upstream repo.
+This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). I'm not pulling in most upstream Sweepy changes by default since most of the time the changes are broken and untested. Feature parity may be delayed or I may not even pull in some changes made if they're too low quality. Half the time you're better off not updating from the upstream repo. I'm 100% skipping the attempted ADB/U2 refactoring work from the upstream because it is completely broken.
 
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
 
@@ -44,7 +44,7 @@ This list does not include the changes from [waivegames-oss/umamusume-sweepy](ht
 
 ### A Umamusume bot that handles all aspects of gameplay including training, races, events, skill purchasing, and starting runs. 
 
-MANT support is a work in progress. It works but it's still mainly putting out S ranks. The bot is still just terrible at picking the proper trainings and I haven't demystified the meaning of stat limits or how to get it to properly pick the best trainings. I think it's overcomplicated and probably needs to be made simpler but I'm avoiding touching that for now.
+MANT support is mostly complete; depending on your deck and who you're training you can expect S+ on average (assuming no retries) - I've almost hit SS rank on Tachyon.
 
 ![Uma Musume Auto Trainer](docs/main.png)
 
