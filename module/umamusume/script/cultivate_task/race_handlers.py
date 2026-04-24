@@ -394,6 +394,8 @@ def script_cultivate_race_result(ctx: UmamusumeContext):
                         if try_again_pop_up_match.find_match:
                             log.info(f"Race {race_id} is retryable, retrying.")
                             ctx.cultivate_detail.clock_used = clocks_used + 1
+                            from module.umamusume.persistence import save_clock_used
+                            save_clock_used(ctx.cultivate_detail.clock_used)
                             ctx.ctrl.click(520, 1180, "MANT race retry confirm")
                             time.sleep(2.0)
                             return

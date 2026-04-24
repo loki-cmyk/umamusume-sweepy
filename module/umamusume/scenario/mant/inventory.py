@@ -1669,7 +1669,7 @@ def handle_megaphone_endgame(ctx):
             current_date = getattr(ctx.cultivate_detail.turn_info, 'date', -1)
             ctx.cultivate_detail.mant_megaphone_last_tick_date = current_date
             from module.umamusume.persistence import save_megaphone_state
-            save_megaphone_state(tier, duration, current_date)
+            save_megaphone_state(tier, duration, current_date, date)
         return ok
 
     return False
@@ -1797,7 +1797,7 @@ def handle_megaphone(ctx):
         current_date = getattr(ctx.cultivate_detail.turn_info, 'date', -1)
         ctx.cultivate_detail.mant_megaphone_last_tick_date = current_date
         from module.umamusume.persistence import save_megaphone_state
-        save_megaphone_state(best_tier, duration, current_date)
+        save_megaphone_state(best_tier, duration, current_date, date)
     return ok
 
 
@@ -1849,7 +1849,8 @@ def tick_megaphone(ctx):
             ctx.cultivate_detail.mant_megaphone_tier = 0
         from module.umamusume.persistence import save_megaphone_state
         last_tick_date = getattr(ctx.cultivate_detail, 'mant_megaphone_last_tick_date', -1)
-        save_megaphone_state(getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0), active_turns, last_tick_date)
+        save_megaphone_state(getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0), active_turns, last_tick_date,
+                            getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1))
 
 
 def item_loop(ctx):

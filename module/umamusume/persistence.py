@@ -164,7 +164,8 @@ def load_persist():
             return {}
         with open(PERSIST_FILE, 'r') as f:
             return json.load(f)
-    except Exception:
+    except Exception as e:
+        log.info(f"Failed to load persist.json: {e}")
         return {}
 
 
@@ -172,8 +173,8 @@ def save_persist(data):
     try:
         with open(PERSIST_FILE, 'w') as f:
             json.dump(data, f)
-    except Exception:
-        pass
+    except Exception as e:
+        log.info(f"Failed to save persist.json: {e}")
 
 
 def mark_buff_used(item_name):
@@ -234,12 +235,31 @@ def clear_ignore_grilled_carrots():
     save_persist(data)
 
 
-def save_megaphone_state(tier, turns, last_tick_date=-1):
+def save_afflictions(afflictions):
+    data = load_persist()
+    data['afflictions'] = list(afflictions)
+    save_persist(data)
+
+
+def load_afflictions():
+    data = load_persist()
+    return data.get('afflictions', [])
+
+
+def clear_afflictions():
+    data = load_persist()
+    data.pop('afflictions', None)
+    save_persist(data)
+
+
+def save_megaphone_state(tier, turns, last_tick_date=-1, used_date=-1):
     data = load_persist()
     data['megaphone_tier'] = tier
     data['megaphone_turns'] = turns
     if last_tick_date != -1:
         data['megaphone_last_tick_date'] = last_tick_date
+    if used_date != -1:
+        data['megaphone_used_date'] = used_date
     save_persist(data)
 
 
@@ -248,7 +268,8 @@ def load_megaphone_state():
     tier = data.get('megaphone_tier', 0)
     turns = data.get('megaphone_turns', 0)
     last_tick_date = data.get('megaphone_last_tick_date', -1)
-    return tier, turns, last_tick_date
+    used_date = data.get('megaphone_used_date', -1)
+    return tier, turns, last_tick_date, used_date
 
 
 def clear_megaphone_state():
@@ -256,4 +277,22 @@ def clear_megaphone_state():
     data.pop('megaphone_tier', None)
     data.pop('megaphone_turns', None)
     data.pop('megaphone_last_tick_date', None)
+    data.pop('megaphone_used_date', None)
+    save_persist(data)
+
+
+def save_clock_used(count):
+    data = load_persist()
+    data['clock_used'] = count
+    save_persist(data)
+
+
+def load_clock_used():
+    data = load_persist()
+    return data.get('clock_used', 0)
+
+
+def clear_clock_used():
+    data = load_persist()
+    data.pop('clock_used', None)
     save_persist(data)
