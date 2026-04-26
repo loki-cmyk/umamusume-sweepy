@@ -1251,6 +1251,11 @@ def handle_charm_simplified(ctx):
     mant_cfg = getattr(ctx.task.detail.scenario_config, 'mant_config', None)
     charm_failure_rate = getattr(mant_cfg, 'charm_failure_rate', 21) if mant_cfg else 21
 
+    date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
+    if date >= 73:
+        log.info("In Climax period, charm failure rate threshold is set to 5%")
+        charm_failure_rate = min(charm_failure_rate, 5)
+
     idx = _get_selected_training_idx(ctx)
     if idx is None:
         return False
@@ -1641,35 +1646,28 @@ def total_megaphone_turns(owned_map):
 def handle_megaphone_endgame(ctx):
     owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
     owned_map = {n: q for n, q in owned}
-    date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
-    if date < MANT_CLIMAX_START or (date >= MANT_CLIMAX_START and date not in MANT_CLIMAX_TRAINING_TURNS):
+    date = getattr(ctx.cultivate_detail.turn_info, 'date', -1)
+    if date < MANT_CLIMAX_START:
         return False
 
     log.info("Checking for megaphones to use during endgame.")
     active_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
     active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
-    training_remaining = remaining_training_turns_real(ctx, date)
-    total_available_turns = total_megaphone_turns(owned_map) + active_turns
-    if total_available_turns < training_remaining:
-        log.info(f"No need to use megaphones. {total_available_turns} available turns <= {training_remaining} training turns remaining.")
-        return False
 
     for name, (tier, duration) in sorted(MEGAPHONE_TIERS.items(), key=lambda x: -x[1][0]):
         if owned_map.get(name, 0) <= 0:
             continue
         if active_turns > 0 and active_tier > 0 and tier <= active_tier:
-            if total_available_turns <= training_remaining:
-                continue
+            continue
         ok = use_item_and_update_inventory(ctx, name)
         if ok:
             ctx.cultivate_detail.mant_megaphone_tier = tier
             ctx.cultivate_detail.mant_megaphone_turns = duration
             ctx.cultivate_detail.mant_megaphone_used_date = date
             log.info(f"endgame megaphone dump: tier {tier} for {duration} turns")
-            current_date = getattr(ctx.cultivate_detail.turn_info, 'date', -1)
-            ctx.cultivate_detail.mant_megaphone_last_tick_date = current_date
+            ctx.cultivate_detail.mant_megaphone_last_tick_date = date
             from module.umamusume.persistence import save_megaphone_state
-            save_megaphone_state(tier, duration, current_date, date)
+            save_megaphone_state(tier, duration, date, date)
         return ok
 
     return False
@@ -1682,7 +1680,9 @@ def handle_megaphone(ctx):
 
     date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     used_date = getattr(ctx.cultivate_detail, 'mant_megaphone_used_date', -1)
-    if used_date == date:
+    active_tier = getattr(ctx.cultivate_detail, 'mant_megaphone_tier', 0)
+    active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
+    if used_date == date and active_turns > 0 and active_tier > 0:
         return False
 
     if handle_megaphone_endgame(ctx):
@@ -1691,7 +1691,6 @@ def handle_megaphone(ctx):
     training_remaining = remaining_training_turns_real(ctx, date)
     owned = getattr(ctx.cultivate_detail, 'mant_owned_items', [])
     owned_map = {n: q for n, q in owned}
-    active_turns = getattr(ctx.cultivate_detail, 'mant_megaphone_turns', 0)
     total_coverage = total_megaphone_turns(owned_map) + active_turns
 
     if training_remaining > 0 and total_coverage / training_remaining >= 1.0:
@@ -1794,10 +1793,9 @@ def handle_megaphone(ctx):
         ctx.cultivate_detail.mant_megaphone_turns = duration
         ctx.cultivate_detail.mant_megaphone_used_date = date
         log.info(f"megaphone active: tier {best_tier} for {duration} turns")
-        current_date = getattr(ctx.cultivate_detail.turn_info, 'date', -1)
-        ctx.cultivate_detail.mant_megaphone_last_tick_date = current_date
+        ctx.cultivate_detail.mant_megaphone_last_tick_date = date
         from module.umamusume.persistence import save_megaphone_state
-        save_megaphone_state(best_tier, duration, current_date, date)
+        save_megaphone_state(best_tier, duration, date, date)
     return ok
 
 

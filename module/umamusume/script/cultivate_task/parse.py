@@ -290,6 +290,20 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
         log.info(f"URA Extracted date text: '{date_text}'")
 
         if "Climax" in date_text or "TS Climax" in date_text:
+            if hasattr(ctx.cultivate_detail, 'date_history') and ctx.cultivate_detail.date_history:
+                prev_date = ctx.cultivate_detail.date_history[-1]
+                if prev_date >= 73:
+                    current_turn_count = len(getattr(ctx.cultivate_detail, 'turn_info_history', []))
+                    last_inc_turn = getattr(ctx.cultivate_detail, 'last_climax_increment_turn_count', -1)
+                    if last_inc_turn == current_turn_count:
+                        bumped_date = getattr(ctx.cultivate_detail, 'last_climax_increment_date', prev_date)
+                        return bumped_date
+                    else:
+                        new_date = prev_date + 1
+                        ctx.cultivate_detail.last_climax_increment_turn_count = current_turn_count
+                        ctx.cultivate_detail.last_climax_increment_date = new_date
+                        log.info(f"MANT Climax turn increment: {prev_date} -> {new_date}")
+                        return new_date
             return 73
 
         # Special handling for "Finale Season" in URA championship
@@ -356,6 +370,7 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
             sub_img_turn_to_race = ctx.cultivate_detail.scenario.get_turn_to_race_img(img)
             sub_img_turn_to_race = cv2.copyMakeBorder(sub_img_turn_to_race, 20, 20, 20, 20, cv2.BORDER_CONSTANT, None,
                                                       (255, 255, 255))
+            # There is a bug here with OCR, it will sometimes get the wrong number of turns left.
             turn_to_race_text = ocr_line(sub_img_turn_to_race)
             if turn_to_race_text == "Race Day":
                 log.debug("URA Debut race day")
@@ -363,11 +378,11 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
             turn_to_race_text = DIGITS_ONLY.sub("", turn_to_race_text)
             if turn_to_race_text == '':
                 log.warning("URA Debut race date recognition exception")
-                return max(1, 12 - (len(ctx.cultivate_detail.turn_info_history) + 1))
+                return len(ctx.cultivate_detail.turn_info_history) + 1
             date_id = 12 - int(turn_to_race_text)
             if date_id < 1:
                 log.warning("URA Debut race date recognition exception")
-                return max(1, 12 - (len(ctx.cultivate_detail.turn_info_history) + 1))
+                return len(ctx.cultivate_detail.turn_info_history) + 1
         return date_id
 
 

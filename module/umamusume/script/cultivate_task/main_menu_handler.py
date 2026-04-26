@@ -60,12 +60,15 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         current_date = -(len(ctx.cultivate_detail.turn_info_history) + 1)
 
     if ctx.cultivate_detail.turn_info is None or current_date != ctx.cultivate_detail.turn_info.date:
+        prev_turn_date = None
         if ctx.cultivate_detail.turn_info is not None:
+            prev_turn_date = ctx.cultivate_detail.turn_info.date
             ctx.cultivate_detail.turn_info_history.append(ctx.cultivate_detail.turn_info)
             if len(ctx.cultivate_detail.turn_info_history) > 100:
                 ctx.cultivate_detail.turn_info_history = ctx.cultivate_detail.turn_info_history[-100:]
         ctx.cultivate_detail.turn_info = TurnInfo()
         ctx.cultivate_detail.turn_info.date = current_date
+        ctx.cultivate_detail.turn_info._prev_turn_date = prev_turn_date
         ctx.cultivate_detail.mant_shop_scanned_this_turn = False
         if current_date > 0:
             ctx.cultivate_detail.group_card_available_dates = []
@@ -82,13 +85,62 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             ctx.cultivate_detail.manual_purchase_completed = False
             if hasattr(ctx.cultivate_detail, 'manual_purchase_initiated'):
                 delattr(ctx.cultivate_detail, 'manual_purchase_initiated')
+            # Generate and persist a new run_id for this career
+            import uuid
+            run_id = str(uuid.uuid4())
+            ctx.cultivate_detail.run_id = run_id
+            from module.umamusume.persistence import save_run_id, clear_last_turn
+            save_run_id(run_id)
+            clear_last_turn()
+            if hasattr(ctx.cultivate_detail, 'last_logged_date'):
+                delattr(ctx.cultivate_detail, 'last_logged_date')
+
+    # Restore run_id from persist.json if not in memory (e.g. after bot restart)
+    if not getattr(ctx.cultivate_detail, 'run_id', None):
+        try:
+            from module.umamusume.persistence import load_run_id
+            stored_run_id = load_run_id()
+            if stored_run_id:
+                ctx.cultivate_detail.run_id = stored_run_id
+        except Exception as e:
+            log.error(f"Failed to load run_id: {e}")
+        # Generate a run_id if we still don't have one (e.g. turn 1 before NEW_RUN_DETECTION_DATE)
+        if not getattr(ctx.cultivate_detail, 'run_id', None):
+            import uuid
+            run_id = str(uuid.uuid4())
+            ctx.cultivate_detail.run_id = run_id
+            from module.umamusume.persistence import save_run_id, clear_last_turn
+            save_run_id(run_id)
+            clear_last_turn()
+            if hasattr(ctx.cultivate_detail, 'last_logged_date'):
+                delattr(ctx.cultivate_detail, 'last_logged_date')
+
+
 
     from bot.conn.fetch import read_mood
     ctx.cultivate_detail.turn_info.cached_mood = read_mood(img)
 
     if not ctx.cultivate_detail.turn_info.parse_main_menu_finish:
         parse_cultivate_main_menu(ctx, img)
-        
+
+        # Log post-stats for the previous turn now that this turn's stats are parsed
+        # (the newly parsed stats represent the result after the previous turn's action)
+        prev_turn_date = getattr(ctx.cultivate_detail.turn_info, '_prev_turn_date', None)
+        if prev_turn_date is not None:
+            try:
+                from module.umamusume.script.cultivate_task.exporter import export_post_stats
+                from module.umamusume.persistence import append_training_json, get_sanitized_turn
+
+                # Sanitize the previous turn date using the centralized logic
+                sanitized_prev_date = get_sanitized_turn(ctx.cultivate_detail, prev_turn_date)
+
+                post_json = export_post_stats(ctx, sanitized_prev_date)
+                if post_json:
+                    append_training_json(post_json)
+            except Exception as e:
+                log.error(f"Failed to export post-stats: {e}")
+            ctx.cultivate_detail.turn_info._prev_turn_date = None
+
         from module.umamusume.asset.race_data import get_races_for_period
         available_races = get_races_for_period(ctx.cultivate_detail.turn_info.date)
         ctx.cultivate_detail.turn_info.cached_available_races = available_races
@@ -292,7 +344,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 ctx.ctrl.click_by_point(get_race(ctx, summer=is_summer))
                 return
         if energy <= limit:   
-            if is_mant and ctx.cultivate_detail.turn_info.date == 77 and energy >= 20:
+            if is_mant and ctx.cultivate_detail.turn_info.date >= 76 and energy >= 20:
                 log.info("Final turn of MANT but we have some energy, checking training.")
                 base_energy, _, _ = scan_energy(ctx.ctrl)
                 ctx.cultivate_detail.turn_info.base_energy = base_energy
@@ -418,9 +470,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             else:
                 if is_mant(ctx) and race_id == 0:
                     log.info("Bot thinks we're in a Climax race but we're not, resetting to run MANT flow.")
-                    ctx.cultivate_detail.turn_info.turn_operation = None
-                    ctx.cultivate_detail.turn_info.parse_train_info_finish = False
-                    ctx.cultivate_detail.turn_info.parse_main_menu_finish = False
+                    ctx.cultivate_detail.turn_info = None
                     return
                 log.info(f"Proceeding with race operation (race_id: {race_id})")
                 ti = ctx.cultivate_detail.turn_info
