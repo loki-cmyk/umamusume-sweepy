@@ -1068,23 +1068,24 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
     def handle_decision(ctx):
         available_races = getattr(ctx.cultivate_detail.turn_info, 'cached_available_races', [])
         extra_race_this_turn = [rid for rid in ctx.cultivate_detail.extra_race_list if rid in available_races]
+        op_new = TurnOperation()
         if extra_race_this_turn:
             log.info(f"Skipping energy items - racing instead (race {extra_race_this_turn[0]})")
-            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
-            op.race_id = extra_race_this_turn[0]
-            ctx.cultivate_detail.turn_info.turn_operation = op
+            op_new.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
+            op_new.race_id = extra_race_this_turn[0]
+            ctx.cultivate_detail.turn_info.turn_operation = op_new
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
             return
         elif should_use_pal_outing_simple(ctx):
             log.info("Skipping energy items - using pal outing instead")
-            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
-            ctx.cultivate_detail.turn_info.turn_operation = op
+            op_new.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
+            ctx.cultivate_detail.turn_info.turn_operation = op_new
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
             return
         else:
             log.info("Skipping energy items - resting instead")
-            op.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
-            ctx.cultivate_detail.turn_info.turn_operation = op
+            op_new.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
+            ctx.cultivate_detail.turn_info.turn_operation = op_new
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
             return
 
@@ -1126,7 +1127,10 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     recovery_pct_threshold = getattr(mant_cfg, 'recovery_pct_threshold', 35) if mant_cfg else 35
 
                     use_items = False
-                    if _is_summer(_date):
+                    if _date >= 73:
+                        log.info("Climax races period - always using energy items")
+                        use_items = True
+                    elif _is_summer(_date):
                         log.info("Summer camp period - always using energy items")
                         use_items = True
                     elif percentile is not None and percentile >= recovery_pct_threshold:

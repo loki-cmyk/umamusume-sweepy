@@ -256,10 +256,8 @@ def save_megaphone_state(tier, turns, last_tick_date=-1, used_date=-1):
     data = load_persist()
     data['megaphone_tier'] = tier
     data['megaphone_turns'] = turns
-    if last_tick_date != -1:
-        data['megaphone_last_tick_date'] = last_tick_date
-    if used_date != -1:
-        data['megaphone_used_date'] = used_date
+    data['megaphone_last_tick_date'] = last_tick_date
+    data['megaphone_used_date'] = used_date
     save_persist(data)
 
 

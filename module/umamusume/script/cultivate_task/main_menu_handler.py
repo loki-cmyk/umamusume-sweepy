@@ -344,7 +344,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 ctx.ctrl.click_by_point(get_race(ctx, summer=is_summer))
                 return
         if energy <= limit:   
-            if is_mant and ctx.cultivate_detail.turn_info.date == 77 and energy >= 20:
+            if is_mant and ctx.cultivate_detail.turn_info.date >= 76 and energy >= 20:
                 log.info("Final turn of MANT but we have some energy, checking training.")
                 base_energy, _, _ = scan_energy(ctx.ctrl)
                 ctx.cultivate_detail.turn_info.base_energy = base_energy
@@ -470,9 +470,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             else:
                 if is_mant(ctx) and race_id == 0:
                     log.info("Bot thinks we're in a Climax race but we're not, resetting to run MANT flow.")
-                    ctx.cultivate_detail.turn_info.turn_operation = None
-                    ctx.cultivate_detail.turn_info.parse_train_info_finish = False
-                    ctx.cultivate_detail.turn_info.parse_main_menu_finish = False
+                    ctx.cultivate_detail.turn_info = None
                     return
                 log.info(f"Proceeding with race operation (race_id: {race_id})")
                 ti = ctx.cultivate_detail.turn_info

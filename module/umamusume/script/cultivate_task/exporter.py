@@ -174,7 +174,7 @@ def export_run_summary(ctx):
 
     # If the current turn info hasn't had stats parsed yet (e.g. at the finish screen),
     # fall back to the last known stats from the turn history.
-    if sum([uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence]) == 0:
+    if any(s == 0 for s in [uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence]):
         history = getattr(detail, 'turn_info_history', [])
         if history:
             uma = history[-1].uma_attribute
