@@ -29,7 +29,10 @@ Here's what's changed so far that's worth noting, most of the new bot features h
 - Bot will now buy cupcakes to match the number of Royal Kale Juices it has, up to a maximum of 2.
 - Bot will try to race again if it loses the Debut race as soon as it's able to do so.
 - Added a feature under `log_training_data` in `config.yaml` to dump all relevant internal turn data into `training_data.jsonl`.
-  - You can use `analyze_trainings.py` to do a high-level check of what the bot was doing and if it was making good decisions.
+  - You can use `analyze_trainings.py` to get a report on what's happened in your runs as well as some suggestions on settings to tweak.
+  - This provides a statistical analysis of your runs and helps you find instances where suboptimal decisions could have been made.
+    - In this case, we define suboptimal as a case where picked a training which gave less stats.
+    - The analysis gives you a breakdown of what caused this choice to be made (e.g., you're forced to rest, the bot is valuing energy gain too much, etc.)
   - Note: Not every turn is recorded on certain paths, so you may miss some information (due to "fast" path logic).
 - Reverted some awful code written for template matching that was "faster" but broke randomly because it rejected matches too aggressively.
   - This causes some event handling to slow down sometimes, but it's better than the bot picking the wrong choice.
