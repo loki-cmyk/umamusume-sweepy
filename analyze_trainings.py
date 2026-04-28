@@ -380,7 +380,20 @@ def analyze_jsonl(file_path):
             "period_weight": 0,
             "other": 0,
         }
+        override_reasons_by_period = {k: {"Junior": 0, "Classic": 0, "Senior": 0, "Finale": 0} for k in override_reasons}
         total_overrides = 0
+
+        def get_period_name(turn_date):
+            if not isinstance(turn_date, int):
+                return "Unknown"
+            if turn_date <= 24:
+                return "Junior"
+            elif turn_date <= 48:
+                return "Classic"
+            elif turn_date <= 72:
+                return "Senior"
+            else:
+                return "Finale"
 
         for rid in run_snapshots:
             for snap in run_snapshots[rid]:
@@ -416,35 +429,40 @@ def analyze_jsonl(file_path):
 
                 # Try to identify why the scorer deviated
                 chosen_idx = type_names.index(chosen_train) if chosen_train in type_names else -1
-                if chosen_idx == -1:
-                    override_reasons["other"] += 1
-                    continue
+                reason = "other"
+                if chosen_idx != -1:
+                    chosen_ti = trainings[chosen_idx] if chosen_idx < len(trainings) else {}
+                    greedy_ti = trainings[max_stat_idx] if max_stat_idx < len(trainings) else {}
 
-                chosen_ti = trainings[chosen_idx] if chosen_idx < len(trainings) else {}
-                greedy_ti = trainings[max_stat_idx] if max_stat_idx < len(trainings) else {}
+                    # Check for support card differences
+                    chosen_sc = len(chosen_ti.get("support_card_info_list", []))
+                    greedy_sc = len(greedy_ti.get("support_card_info_list", []))
+                    if chosen_sc > greedy_sc:
+                        reason = "support_card_bonus"
+                    elif chosen_ti.get("has_hint", False) and not greedy_ti.get("has_hint", False):
+                        reason = "hint_bonus"
+                    elif (greedy_ti.get("failure_rate", 0) or 0) > (chosen_ti.get("failure_rate", 0) or 0):
+                        reason = "failure_rate"
+                    elif abs(chosen_ti.get("energy_change", 0) or 0) > abs(greedy_ti.get("energy_change", 0) or 0):
+                        reason = "energy_management"
+                    elif chosen_idx == 4:  # Wit chosen over higher stats
+                        reason = "energy_management"
 
-                # Check for support card differences
-                chosen_sc = len(chosen_ti.get("support_card_info_list", []))
-                greedy_sc = len(greedy_ti.get("support_card_info_list", []))
-                if chosen_sc > greedy_sc:
-                    override_reasons["support_card_bonus"] += 1
-                elif chosen_ti.get("has_hint", False) and not greedy_ti.get("has_hint", False):
-                    override_reasons["hint_bonus"] += 1
-                elif (greedy_ti.get("failure_rate", 0) or 0) > (chosen_ti.get("failure_rate", 0) or 0):
-                    override_reasons["failure_rate"] += 1
-                elif abs(chosen_ti.get("energy_change", 0) or 0) > abs(greedy_ti.get("energy_change", 0) or 0):
-                    override_reasons["energy_management"] += 1
-                elif chosen_idx == 4:  # Wit chosen over higher stats
-                    override_reasons["energy_management"] += 1
-                else:
-                    override_reasons["other"] += 1
+                override_reasons[reason] += 1
+                
+                date = ti.get("date", 0)
+                period_name = get_period_name(date)
+                if period_name in override_reasons_by_period[reason]:
+                    override_reasons_by_period[reason][period_name] += 1
 
         if total_overrides > 0:
             print(f"  Total scorer overrides of greedy-optimal: {total_overrides}")
             for reason, count in sorted(override_reasons.items(), key=lambda x: -x[1]):
                 if count > 0:
                     pct = count / total_overrides * 100
-                    print(f"    {reason:<25}: {count:>4} ({pct:.1f}%)")
+                    p_counts = override_reasons_by_period[reason]
+                    p_str = ", ".join(f"{k}:{v}" for k, v in p_counts.items() if v > 0)
+                    print(f"    {reason:<25}: {count:>4} ({pct:.1f}%) [{p_str}]")
         else:
             print("  No scorer overrides detected (scorer always picked highest raw stats).")
 
@@ -487,6 +505,7 @@ def analyze_jsonl(file_path):
                             if total_overrides > 0:
                                 top_reason = max(override_reasons, key=override_reasons.get)
                                 top_pct = override_reasons[top_reason] / total_overrides * 100
+                                
                                 if top_reason == "support_card_bonus":
                                     suggestions.append(
                                         f"  → Support card bonuses cause {top_pct:.0f}% of overrides. "
@@ -510,8 +529,7 @@ def analyze_jsonl(file_path):
                                     suggestions.append(
                                         f"  → Energy management causes {top_pct:.0f}% of overrides. "
                                         "Lower the 'Energy Change (+/-)' (3rd) value in Score Value "
-                                        "for the affected periods. Also check if your rest threshold "
-                                        "is too high."
+                                        "for the affected periods (avoid changing Junior Year values)."
                                     )
                         elif diff < -50:
                             suggestions.append(
