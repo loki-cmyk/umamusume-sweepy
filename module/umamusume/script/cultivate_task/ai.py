@@ -111,8 +111,12 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                 upcoming_races.append(r)
     try:
         if is_mant:
-            from module.umamusume.scenario.mant.inventory import should_skip_fast_path
+            from module.umamusume.scenario.mant.inventory import should_skip_fast_path, has_scheduled_race_this_turn
             mant_skip_fast_path = should_skip_fast_path(ctx)
+            if not mant_skip_fast_path and has_scheduled_race_this_turn(ctx):
+                log.info("Scheduled race this turn - setting mant_skip_fast_path=True")
+                mant_skip_fast_path = True
+
             if not mant_skip_fast_path and mood_raw is not None and mood_val < mood_threshold:
                 if upcoming_races:
                     log.info(f"Upcoming races in next 3 turns: {upcoming_races} - setting mant_skip_fast_path=True for mood")

@@ -278,8 +278,9 @@ def after_hook(ctx: UmamusumeContext):
                     from module.umamusume.script.cultivate_task.exporter import export_cultivate_context
                     from module.umamusume.persistence import append_training_json, get_sanitized_turn
                     fixed_date = get_sanitized_turn(ctx.cultivate_detail, ctx.cultivate_detail.turn_info.date)
-                    json_data = export_cultivate_context(ctx, fixed_date=fixed_date)
-                    append_training_json(json_data)
+                    if fixed_date >= 1:
+                        json_data = export_cultivate_context(ctx, fixed_date=fixed_date)
+                        append_training_json(json_data)
                     ctx.cultivate_detail.turn_info.turn_info_exported = True
                 except Exception as e:
                     log.error(f"Failed to export turn info: {e}")

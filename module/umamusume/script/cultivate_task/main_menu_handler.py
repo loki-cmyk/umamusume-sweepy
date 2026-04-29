@@ -94,6 +94,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             clear_last_turn()
             if hasattr(ctx.cultivate_detail, 'last_logged_date'):
                 delattr(ctx.cultivate_detail, 'last_logged_date')
+            ctx.cultivate_detail.turn_info._prev_turn_date = None
 
     # Restore run_id from persist.json if not in memory (e.g. after bot restart)
     if not getattr(ctx.cultivate_detail, 'run_id', None):
@@ -324,6 +325,24 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             from module.umamusume.scenario.mant.inventory import has_energy_recovery, has_charm
             energy_items_avail = has_energy_recovery(ctx)
             charms_avail = has_charm(ctx)
+
+            if not energy_items_avail and not charms_avail and not getattr(ctx.cultivate_detail.turn_info, 'mant_energy_items_checked', False):
+                ctx.cultivate_detail.turn_info.mant_energy_items_checked = True
+                shop_items = getattr(ctx.cultivate_detail, 'mant_shop_items', [])
+                items_available = {name for name, _, _, turns, buyable in shop_items if buyable}
+                target_items = {"Good-Luck Charm", "Vita 65", "Vita 40", "Vita 20", "Royal Kale Juice"}
+                
+                detected_targets = target_items.intersection(items_available)
+                if detected_targets:
+                    log.info(f"Detected emergency energy items available in shop: {detected_targets}")
+                    from module.umamusume.scenario.mant.main_menu import buy_emergency_energy_item
+                    bought = buy_emergency_energy_item(ctx)
+                    if bought:
+                        log.info("Bought emergency energy item from shop, restarting turn evaluation.")
+                        ctx.cultivate_detail.turn_info.parse_main_menu_finish = False
+                        ctx.cultivate_detail.turn_info.skip_fast_path = True
+                        return
+
             if energy_items_avail or charms_avail:
                 if energy_items_avail:
                     log.info("Energy items available - deferring to check training quality first.")

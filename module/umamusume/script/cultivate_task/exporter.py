@@ -142,7 +142,7 @@ def export_post_stats(ctx, prev_turn_date):
     """
     detail = ctx.cultivate_detail
     turn_info = detail.turn_info
-    if turn_info is None:
+    if turn_info is None or prev_turn_date is None or prev_turn_date < 1:
         return None
 
     uma = turn_info.uma_attribute
