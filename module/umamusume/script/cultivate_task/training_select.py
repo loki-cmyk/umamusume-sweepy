@@ -103,6 +103,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     if force_invalidate:
                         log.info(f"Forcing cache invalidation as requested.")
                         ctx.cultivate_detail.force_invalidate_cache = False
+                        ctx.cultivate_detail.turn_info.skip_fast_path = True
                     elif not stats_match:
                         log.info(f"Cache invalid (stats mismatch): was {cached_stats[:5]}, now {current_stats}, returning to main menu")
                         ctx.cultivate_detail.last_decision_stats = None
@@ -1112,6 +1113,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                         ctx.cultivate_detail.force_invalidate_cache = True
                         ctx.cultivate_detail.turn_info.charm_deferred = False
                         ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
+                        ctx.cultivate_detail.turn_info.skip_fast_path = True
                         return
                     elif not energy_deferred:
                         # No charm used, and energy recovery is not deferred, so make a decision
@@ -1147,6 +1149,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                             ctx.cultivate_detail.force_invalidate_cache = True
                             ctx.cultivate_detail.turn_info.charm_deferred = False
                             ctx.cultivate_detail.turn_info.energy_recovery_deferred = False
+                            ctx.cultivate_detail.turn_info.skip_fast_path = True
                             return
                         else:
                             log.info("No energy items to use - deferring to handle_decision logic")

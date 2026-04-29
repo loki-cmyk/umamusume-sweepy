@@ -496,6 +496,98 @@ def handle_mant_shop_scan(ctx, current_date):
     return True
 
 
+def buy_emergency_energy_item(ctx):
+    """
+    Checks if there are energy items/amulets we can buy to restore energy/mood before training.
+    """
+    from module.umamusume.scenario.mant.shop import (
+        scan_mant_shop, buy_shop_items, SHOP_ITEM_COSTS,
+        BACK_BTN_X, BACK_BTN_Y,
+    )
+    import time as _t
+
+    shop_items = getattr(ctx.cultivate_detail, 'mant_shop_items', [])
+    if not shop_items:
+        return False
+
+    budget = ctx.cultivate_detail.mant_coins
+    items_available = {name: (turns, buyable) for name, _, _, turns, buyable in shop_items if buyable}
+
+    item_counts = {}
+    for name, _, _, _, buyable in shop_items:
+        if buyable:
+            item_counts[name] = item_counts.get(name, 0) + 1
+
+    targets = []
+    if "Good-Luck Charm" in items_available and SHOP_ITEM_COSTS.get("Good-Luck Charm", 9999) <= budget:
+        targets.append("Good-Luck Charm")
+    elif "Vita 65" in items_available and SHOP_ITEM_COSTS.get("Vita 65", 9999) <= budget:
+        targets.append("Vita 65")
+    elif "Vita 40" in items_available and SHOP_ITEM_COSTS.get("Vita 40", 9999) <= budget:
+        targets.append("Vita 40")
+    elif item_counts.get("Vita 20", 0) >= 2 and SHOP_ITEM_COSTS.get("Vita 20", 9999) * 2 <= budget:
+        targets.extend(["Vita 20", "Vita 20"])
+    elif "Royal Kale Juice" in items_available and SHOP_ITEM_COSTS.get("Royal Kale Juice", 9999) <= budget:
+        targets.append("Royal Kale Juice")
+        cupcake_cost = SHOP_ITEM_COSTS.get("Plain Cupcake", 9999)
+        berry_cost = SHOP_ITEM_COSTS.get("Berry Sweet Cupcake", 9999)
+        juice_cost = SHOP_ITEM_COSTS.get("Royal Kale Juice", 9999)
+        if "Plain Cupcake" in items_available and juice_cost + cupcake_cost <= budget:
+            targets.append("Plain Cupcake")
+        elif "Berry Sweet Cupcake" in items_available and juice_cost + berry_cost <= budget:
+            targets.append("Berry Sweet Cupcake")
+
+    if not targets:
+        return False
+
+    scan_result = scan_mant_shop(ctx)
+    if scan_result is None:
+        ctx.ctrl.trigger_decision_reset = True
+        return True
+
+    items_list, ratio, drag_ratio, first_item_gy = scan_result
+    ctx.cultivate_detail.mant_shop_items = items_list
+
+    fresh_counts = {}
+    for name, _, _, _, buyable in items_list:
+        if buyable:
+            fresh_counts[name] = fresh_counts.get(name, 0) + 1
+
+    final_targets = []
+    for tgt in targets:
+        if fresh_counts.get(tgt, 0) > 0:
+            final_targets.append(tgt)
+            fresh_counts[tgt] -= 1
+
+    if "Vita 20" in targets and final_targets.count("Vita 20") < 2:
+        ctx.ctrl.click(BACK_BTN_X, BACK_BTN_Y)
+        _t.sleep(1)
+        return False
+        
+    if not final_targets:
+        ctx.ctrl.click(BACK_BTN_X, BACK_BTN_Y)
+        _t.sleep(1)
+        return False
+
+    log.info(f"Emergency energy shop purchase targets: {final_targets} (budget={ctx.cultivate_detail.mant_coins})")
+    bought, _ = buy_shop_items(ctx, final_targets, items_list, ratio, drag_ratio, first_item_gy)
+    if bought:
+        ctx.cultivate_detail.mant_inventory_rescan_pending = True
+        spent = sum(SHOP_ITEM_COSTS.get(tgt, 0) for tgt in final_targets)
+        ctx.cultivate_detail.mant_coins = max(0, ctx.cultivate_detail.mant_coins - spent)
+        bought_set = set(final_targets)
+        ctx.cultivate_detail.mant_shop_items = [
+            (name, conf, gy, turns, buyable and (name not in bought_set))
+            for name, conf, gy, turns, buyable in items_list
+        ]
+        return True
+    else:
+        ctx.ctrl.click(BACK_BTN_X, BACK_BTN_Y)
+        _t.sleep(1)
+
+    return False
+
+
 def handle_mant_emergency_shop_buys(ctx, current_date):
     if getattr(ctx.cultivate_detail, 'mant_shop_handled_this_turn', False):
         return False

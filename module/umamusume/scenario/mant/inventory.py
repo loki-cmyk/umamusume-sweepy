@@ -1275,15 +1275,9 @@ def handle_charm_simplified(ctx):
 
 def rescan_training(ctx):
     close_items_panel(ctx)
-    ctx.cultivate_detail.turn_info.parse_train_info_finish = False
-    ctx.cultivate_detail.turn_info.turn_operation = None
-    ctx.cultivate_detail.last_decision_stats = None
-    from module.umamusume.asset.point import RETURN_TO_CULTIVATE_MAIN_MENU
-    ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
-    time.sleep(0.5)
-    from module.umamusume.asset.point import TO_TRAINING_SELECT
-    ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
-    time.sleep(0.5)
+    time.sleep(1)
+    ctx.cultivate_detail.force_invalidate_cache = True
+    ctx.cultivate_detail.turn_info.skip_fast_path = True
 
 
 def has_energy_recovery(ctx):
@@ -1321,7 +1315,8 @@ def whistle_loop(ctx, start_date):
     used = handle_training_whistle(ctx)
     if not used:
         return False
-    time.sleep(0.5)
+    time.sleep(1)
+    log.info("Whistle used, force a training rescan")
     rescan_training(ctx)
     return True
 
@@ -1658,7 +1653,9 @@ def handle_megaphone_endgame(ctx):
         if owned_map.get(name, 0) <= 0:
             continue
         if active_turns > 0 and active_tier > 0 and tier <= active_tier:
+            log.info(f"Skipping megaphone {name} - active megaphone is tier {active_tier} for {active_turns} turns.")
             continue
+        log.info(f"Attempting to use megaphone: {name}")
         ok = use_item_and_update_inventory(ctx, name)
         if ok:
             ctx.cultivate_detail.mant_megaphone_tier = tier
@@ -1856,13 +1853,15 @@ def item_loop(ctx):
     # same block in training_select.py that handles energy and charm usage (which calls this).
     start_date = getattr(ctx.cultivate_detail.turn_info, 'date', None)
     sync_max_energy_to_scanner(ctx)
+    whistle_used = False
     if has_whistle(ctx):
-        whistle_loop(ctx, start_date)
+        whistle_used = whistle_loop(ctx, start_date)
 
-    # handle cupcake usage to ensure max mood possible before training
-    handle_cupcake_use(ctx)
-    handle_megaphone(ctx)
-    handle_anklet(ctx)
+    if not whistle_used:
+        # handle cupcake usage to ensure max mood possible before training
+        handle_cupcake_use(ctx)
+        handle_megaphone(ctx)
+        handle_anklet(ctx)
     
 
 def should_skip_fast_path(ctx):
@@ -1871,6 +1870,9 @@ def should_skip_fast_path(ctx):
     has_charm_item = owned_map.get(CHARM_ITEM, 0) > 0
     energy_count = sum(owned_map.get(item, 0) for item in ENERGY_RECOVERY_ITEMS)
     mood_count = sum(owned_map.get(item, 0) for item in MOOD_ITEMS)
+    skip_fast_path = getattr(ctx.cultivate_detail.turn_info, 'skip_fast_path', False)
+    if skip_fast_path:
+        return True
     if has_charm_item:
         return True
     if energy_count >= ENERGY_ITEM_SKIP_FAST_PATH_THRESHOLD:
