@@ -221,6 +221,8 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
             ctx.cultivate_detail.turn_info.turn_operation.race_id = 0
             ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
+            is_summer = is_summer_camp_period(ctx.cultivate_detail.turn_info.date)
+            ctx.ctrl.click_by_point(get_race(ctx, summer=is_summer))
             return
 
     available_races = getattr(ctx.cultivate_detail.turn_info, 'cached_available_races', None)
