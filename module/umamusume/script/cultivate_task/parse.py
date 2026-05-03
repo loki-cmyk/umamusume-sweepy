@@ -293,17 +293,9 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
             if hasattr(ctx.cultivate_detail, 'date_history') and ctx.cultivate_detail.date_history:
                 prev_date = ctx.cultivate_detail.date_history[-1]
                 if prev_date >= 73:
-                    current_turn_count = len(getattr(ctx.cultivate_detail, 'turn_info_history', []))
-                    last_inc_turn = getattr(ctx.cultivate_detail, 'last_climax_increment_turn_count', -1)
-                    if last_inc_turn == current_turn_count:
-                        bumped_date = getattr(ctx.cultivate_detail, 'last_climax_increment_date', prev_date)
-                        return bumped_date
-                    else:
-                        new_date = prev_date + 1
-                        ctx.cultivate_detail.last_climax_increment_turn_count = current_turn_count
-                        ctx.cultivate_detail.last_climax_increment_date = new_date
-                        log.info(f"MANT Climax turn increment: {prev_date} -> {new_date}")
-                        return new_date
+                    new_date = prev_date + 2
+                    log.info(f"MANT Climax turn increment: {prev_date} -> {new_date}")
+                    return new_date
             return 73
 
         # Special handling for "Finale Season" in URA championship
