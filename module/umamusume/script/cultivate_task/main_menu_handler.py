@@ -58,6 +58,7 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
     u2c.IN_CAREER_RUN = True
     if current_date == -1:
         current_date = -(len(ctx.cultivate_detail.turn_info_history) + 1)
+        log.warning(f"Failed to parse date, using previous turn value: {current_date}")
 
     if ctx.cultivate_detail.turn_info is None or current_date != ctx.cultivate_detail.turn_info.date:
         prev_turn_date = None
