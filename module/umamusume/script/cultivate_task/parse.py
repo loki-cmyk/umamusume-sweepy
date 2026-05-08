@@ -292,7 +292,10 @@ def parse_date(img, ctx: UmamusumeContext) -> int:
         if "Climax" in date_text or "TS Climax" in date_text:
             if hasattr(ctx.cultivate_detail, 'date_history') and ctx.cultivate_detail.date_history:
                 prev_date = ctx.cultivate_detail.date_history[-1]
-                if prev_date >= 73:
+                if prev_date >= 78:
+                    log.warning(f"Possible loop detected at MANT Climax, returning previous date {prev_date}")
+                    return prev_date
+                elif prev_date >= 73:
                     new_date = prev_date + 2
                     log.info(f"MANT Climax turn increment: {prev_date} -> {new_date}")
                     return new_date
