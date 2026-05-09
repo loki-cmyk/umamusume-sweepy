@@ -816,7 +816,7 @@ def find_skill(ctx: UmamusumeContext, img, skill: list[str], learn_any_skill: bo
                                     hint_level = best_lvl
                     except Exception as e:
                         log.debug(f"hint level error: {e}")
-                    log.info(f"detected text='{detected_text}' matched skill='{matched_skill}'")
+                    log.debug(f"detected text='{detected_text}' matched skill='{matched_skill}'")
                     target_match = None
                     for target in skill:
                         if (normalize_text_for_match(name_for_match) == normalize_text_for_match(target)
