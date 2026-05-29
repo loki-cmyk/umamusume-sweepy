@@ -1658,13 +1658,14 @@ def handle_megaphone_endgame(ctx):
         log.info(f"Attempting to use megaphone: {name}")
         ok = use_item_and_update_inventory(ctx, name)
         if ok:
+            # duration is 1 turn shorter here because the next turn is a race which does not tick the megaphone
             ctx.cultivate_detail.mant_megaphone_tier = tier
-            ctx.cultivate_detail.mant_megaphone_turns = duration
+            ctx.cultivate_detail.mant_megaphone_turns = duration - 1
             ctx.cultivate_detail.mant_megaphone_used_date = date
-            log.info(f"endgame megaphone dump: tier {tier} for {duration} turns")
+            log.info(f"endgame megaphone dump: tier {tier} for {duration - 1} turns")
             ctx.cultivate_detail.mant_megaphone_last_tick_date = date
             from module.umamusume.persistence import save_megaphone_state
-            save_megaphone_state(tier, duration, date, date)
+            save_megaphone_state(tier, duration - 1, date, date)
         return ok
 
     return False

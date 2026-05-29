@@ -14,6 +14,8 @@ COIN_ROI_NORMAL = (1172, 1197, 402, 500)
 COIN_ROI_SUMMER = (1172, 1199, 321, 417)
 COIN_ROI_CLIMAX = (1125, 1148, 565, 654)
 
+HIGH_COINS_RESCAN_THRESHOLD = 300
+
 RIVAL_COLOR_1 = (0x4E, 0xFF, 0xFF)
 RIVAL_COLOR_2 = (0x30, 0xAD, 0xEB)
 RIVAL_TOLERANCE = 5
@@ -1019,6 +1021,31 @@ def handle_mant_main_menu(ctx, img, current_date):
         return True
 
     if handle_mant_emergency_shop_buys(ctx, current_date):
+        return True
+
+    # If we still have too many coins after the normal shop pass, force a rescan.
+    # This catches OCR misreads, logic gaps, or missed items that left coins unspent.
+    if (is_shop_turn
+            and not getattr(ctx.cultivate_detail.turn_info, 'mant_high_coins_rescan_done', False)
+            and ctx.cultivate_detail.mant_coins >= HIGH_COINS_RESCAN_THRESHOLD):
+        log.warning(
+            f"High unspent coins detected ({ctx.cultivate_detail.mant_coins} >= {HIGH_COINS_RESCAN_THRESHOLD}) "
+            f"- forcing shop rescan this turn"
+        )
+        ctx.cultivate_detail.turn_info.mant_high_coins_rescan_done = True
+        # Reset the chunk and scan guards so handle_mant_shop_scan will re-enter
+        ctx.cultivate_detail.mant_shop_last_chunk = -1
+        ctx.cultivate_detail.mant_shop_scanned_this_turn = False
+        ctx.cultivate_detail.mant_shop_handled_this_turn = False
+        # Re-read coins from the screen to get a fresh OCR reading
+        is_summer = is_summer_camp_period(current_date)
+        is_climax = current_date > 72 or current_date < -72
+        fresh_img = ctx.ctrl.get_screen()
+        if fresh_img is not None:
+            fresh_coins = read_shop_coins(fresh_img, is_summer, is_climax)
+            if fresh_coins > 0:
+                ctx.cultivate_detail.mant_coins = fresh_coins
+                log.info(f"Fresh coin OCR on rescan: {fresh_coins}")
         return True
 
     handle_mant_on_sale(img)

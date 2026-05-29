@@ -945,7 +945,7 @@ def get_skill_list(img, skill: list[str], skill_blacklist: list[str]) -> list:
                                 hint_level = lvl
                 except Exception as e:
                     log.debug(f"hint level error: {e}")
-                log.info(f"detected text='{detected_text}' matched skill='{matched_skill}' Hint: lv {hint_level}")
+                log.debug(f"detected text='{detected_text}' matched skill='{matched_skill}' Hint: lv {hint_level}")
                 normalized_name = normalize_text_for_match(name_for_match)
                 in_blacklist = any(normalized_name == normalize_text_for_match(b) for b in skill_blacklist)
 
