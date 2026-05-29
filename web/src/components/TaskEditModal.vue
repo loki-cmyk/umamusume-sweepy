@@ -1370,6 +1370,15 @@
                 </div>
               </div>
 
+              <div class="form-group mt-1 mb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <button class="btn btn-sm btn--outline" type="button" @click="exportSkillTemplate">Export Skill Template</button>
+                  <button class="btn btn-sm btn--outline" type="button" @click="importSkillTemplate">Import Skill Template</button>
+                  <button class="btn btn-sm btn-outline-danger" type="button" @click="clearSkillTemplate">Clear</button>
+                  <input ref="skillTemplateFileInput" type="file" accept=".json" style="display:none" @change="onSkillTemplateFileSelected">
+                </div>
+              </div>
+
               
               <div class="form-group">
 
@@ -4924,6 +4933,101 @@ export default {
       this.sharePresetText = '';
       const toastBody = document.querySelector('#liveToast .toast-body');
       if (toastBody) toastBody.textContent = 'Preset imported successfully';
+      this.successToast.toast('show');
+    },
+    exportSkillTemplate() {
+      if (!this.selectedSkills.length && !this.blacklistedSkills.length) {
+        const toastBody = document.querySelector('#liveToast .toast-body');
+        if (toastBody) toastBody.textContent = 'No skills selected or blacklisted to export';
+        this.successToast.toast('show');
+        return;
+      }
+      const payload = {
+        skill_template: true,
+        selectedSkills: [...this.selectedSkills],
+        blacklistedSkills: [...this.blacklistedSkills],
+        skillAssignments: { ...this.skillAssignments },
+        activePriorities: [...this.activePriorities]
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'skill_template.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      const toastBody = document.querySelector('#liveToast .toast-body');
+      if (toastBody) toastBody.textContent = `Exported ${this.selectedSkills.length} selected and ${this.blacklistedSkills.length} blacklisted skill(s)`;
+      this.successToast.toast('show');
+    },
+    importSkillTemplate() {
+      this.$refs.skillTemplateFileInput.click();
+    },
+    onSkillTemplateFileSelected(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (!data || data.skill_template !== true) {
+            alert('Invalid skill template file: expected a JSON file exported by Sweepy containing skill data');
+            return;
+          }
+          if (!Array.isArray(data.selectedSkills) || !Array.isArray(data.blacklistedSkills) || !data.skillAssignments || !Array.isArray(data.activePriorities)) {
+            alert('Invalid skill template structure: missing core skill data');
+            return;
+          }
+          this.selectedSkills = [...data.selectedSkills];
+          this.blacklistedSkills = [...data.blacklistedSkills];
+          this.skillAssignments = { ...data.skillAssignments };
+          this.activePriorities = [...data.activePriorities];
+
+          this.skillLearnBlacklist = this.blacklistedSkills.join(", ");
+
+          const skillsByPriority = {};
+          this.selectedSkills.forEach(skillName => {
+            const priority = this.skillAssignments[skillName] || 0;
+            if (!skillsByPriority[priority]) {
+              skillsByPriority[priority] = [];
+            }
+            skillsByPriority[priority].push(skillName);
+          });
+
+          this.skillLearnPriorityList = [{ priority: 0, skills: "" }];
+          this.skillPriorityNum = 1;
+
+          const maxPriority = Math.max(...this.activePriorities, 0);
+          while (this.skillLearnPriorityList.length <= maxPriority) {
+            this.addBox();
+          }
+          for (let pt = 0; pt <= maxPriority; pt++) {
+            if (this.skillLearnPriorityList[pt]) {
+              const prioritySkills = skillsByPriority[pt] || [];
+              this.skillLearnPriorityList[pt].skills = prioritySkills.join(", ");
+            }
+          }
+
+          e.target.value = '';
+          const toastBody = document.querySelector('#liveToast .toast-body');
+          if (toastBody) toastBody.textContent = `Imported ${this.selectedSkills.length} selected and ${this.blacklistedSkills.length} blacklisted skill(s)`;
+          this.successToast.toast('show');
+        } catch (err) {
+          alert('Failed to parse skill template JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    },
+    clearSkillTemplate() {
+      this.selectedSkills = [];
+      this.blacklistedSkills = [];
+      this.skillAssignments = {};
+      this.activePriorities = [0];
+      this.skillLearnBlacklist = "";
+      this.skillLearnPriorityList = [{ priority: 0, skills: "" }];
+      this.skillPriorityNum = 1;
+      const toastBody = document.querySelector('#liveToast .toast-body');
+      if (toastBody) toastBody.textContent = 'Cleared skill settings';
       this.successToast.toast('show');
     },
     onExtraWeightInput(arr, idx) {
