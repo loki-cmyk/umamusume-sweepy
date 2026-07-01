@@ -1,22 +1,24 @@
 # Sweepy — /vg/'s Uma Musume Bot
 
-This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). I'm not pulling in most upstream Sweepy changes by default since most of the time the changes are broken and untested. Feature parity may be delayed or I may not even pull in some changes made if they're too low quality. Half the time you're better off not updating from the upstream repo. I'm 100% skipping the attempted ADB/U2 refactoring work from the upstream because it is completely broken.
+This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). This is the pre-headless fork of Sweepy with fixes I've added.
 
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
 
+Will be looking at adding updated support for URA/Unity where possible.
+
 ## Features Not Implemented Yet
 
-- Option to skip races for training still does not take into account the race grade (G1/G2/G3).
-- Run state is not saved fully when the bot stops currently. This is implemented upstream (poorly) but I'm going to redo it properly.
+- Support for updated URA / Unity.
 
 ## Known Bugs
 
-- URA/Unity are not tested and may not work. This only works for MANT.
+- URA/Unity are not updated for the new scenario updates yet.
 
 ## Added Features / Changes
 
-Here's what's changed so far that's worth noting, most of the new bot features have options to toggle them off in the UI:
+Here's what's changed so far that's worth noting, most of the new bot features have options to toggle them off in the UI.
 
+### MANT
 - Bot now supports retrying specific races in MANT, you can select which races to retry in the UI.
   - It will only retry up to configured clock limit. By default no races are retried, you must enable it yourself.
 - Bot will save two T2/T3 megaphones for summer training instead of wasting them on terrible training.
@@ -47,7 +49,7 @@ This list does not include the changes from [waivegames-oss/umamusume-sweepy](ht
 
 ### A Umamusume bot that handles all aspects of gameplay including training, races, events, skill purchasing, and starting runs. 
 
-MANT support is mostly complete; depending on your deck and who you're training you can expect S+ on average (assuming no retries) - I've almost hit SS rank on Tachyon.
+MANT support is complete; depending on your deck and who you're training you can expect S+ on average (assuming no retries) - I've hit SS rank on a few Umas with this.
 
 ![Uma Musume Auto Trainer](docs/main.png)
 
