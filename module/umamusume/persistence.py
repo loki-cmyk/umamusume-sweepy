@@ -356,3 +356,21 @@ def get_sanitized_turn(detail, requested_date):
             pass
 
     return requested_date
+
+
+def save_contests_tried(contests):
+    data = load_persist()
+    data['contests_tried'] = list(contests)
+    save_persist(data)
+
+
+def load_contests_tried():
+    data = load_persist()
+    return set(data.get('contests_tried', []))
+
+
+def clear_contests_tried():
+    data = load_persist()
+    data.pop('contests_tried', None)
+    save_persist(data)
+

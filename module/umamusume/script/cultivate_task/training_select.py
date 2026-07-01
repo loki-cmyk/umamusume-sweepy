@@ -56,6 +56,14 @@ TYPE_MAP = [
     SupportCardType.SUPPORT_CARD_TYPE_INTELLIGENCE,
 ]
 
+DUEL_AREAS_URA = {
+    "speed": (30, 908, 170, 1110),
+    "stamina": (160, 908, 300, 1110),
+    "power": (290, 908, 420, 1110),
+    "guts": (410, 908, 545, 1110),
+    "wits": (535, 908, 685, 1110),
+}
+
 
 def script_cultivate_training_select(ctx: UmamusumeContext):
     if ctx.cultivate_detail.turn_info is None:
@@ -216,9 +224,14 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         def detect_training_once(ctx, img, train_type, energy_change=None):
             result = TrainingDetectionResult()
             result.facility_name = FACILITY_NAME_MAP.get(train_type)
-            result.scenario_name = "ura" if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_URA else "aoharuhai"
+            _stype = ctx.cultivate_detail.scenario.scenario_type()
+            result.scenario_name = {
+                ScenarioType.SCENARIO_TYPE_URA: "ura",
+                ScenarioType.SCENARIO_TYPE_MANT: "mant",
+            }.get(_stype, "aoharuhai")
             result.stat_results = {}
             result.energy_change = energy_change if energy_change is not None else 0.0
+            result.has_duel_icon = False
             try:
                 if result.facility_name:
                     result.stat_results = scan_facility_stats(img, result.facility_name, result.scenario_name)
@@ -275,6 +288,35 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                                 pass
             except Exception:
                 result.detected_characters = []
+            try:
+                # URA-only: detect the orange "Duel" badge on the training button area.
+                # The badge appears in the bottom portion of the training screen near the training buttons.
+                if result.scenario_name == "ura" and result.facility_name in DUEL_AREAS_URA:
+                    from module.umamusume.asset.template import URA_DUEL_TRAINING_ICON
+                    x1, y1, x2, y2 = DUEL_AREAS_URA[result.facility_name]
+                    tpl_arr = URA_DUEL_TRAINING_ICON.template_image
+                    found_duel = False
+                    if tpl_arr is not None:
+                        th, tw = tpl_arr.shape[:2]
+                        # Because the duel icon moves along with the selection we need to check the screen multiple
+                        # times in order to make sure we see it properly. May not be perfect, but seems to work for now.
+                        for attempt in range(5):
+                            current_img = ctx.ctrl.get_screen() if attempt > 0 else img
+                            if current_img is not None:
+                                duel_strip = current_img[y1:y2, x1:x2]
+                                duel_strip_gray = cv2.cvtColor(duel_strip, cv2.COLOR_BGR2GRAY) if len(duel_strip.shape) == 3 else duel_strip
+                                if duel_strip_gray.shape[0] >= th and duel_strip_gray.shape[1] >= tw:
+                                    tm = cv2.matchTemplate(duel_strip_gray, tpl_arr, cv2.TM_CCOEFF_NORMED)
+                                    _, max_val, _, _ = cv2.minMaxLoc(tm)
+                                    if max_val >= 0.72:
+                                        log.debug(f"Found duel icon for {result.facility_name}: {found_duel}")
+                                        found_duel = True
+                                        break
+                            if attempt < 4:
+                                time.sleep(0.1)
+                    result.has_duel_icon = found_duel
+            except Exception:
+                result.has_duel_icon = False
             return result
 
         def compare_detection_results(result1, result2):
@@ -301,6 +343,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 return False
             if result1.skill_point_incr != result2.skill_point_incr:
                 return False
+            if getattr(result1, 'has_duel_icon', False) != getattr(result2, 'has_duel_icon', False):
+                return False
             return True
 
         def apply_detection_result(ctx, train_type, result):
@@ -317,6 +361,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             til.stat_results = getattr(result, 'stat_results', {})
             til.energy_change = getattr(result, 'energy_change', 0.0)
             til.detected_characters = getattr(result, 'detected_characters', [])
+            til.has_duel_icon = getattr(result, 'has_duel_icon', False)
             tt_map = {
                 TrainingType.TRAINING_TYPE_SPEED: SupportCardType.SUPPORT_CARD_TYPE_SPEED,
                 TrainingType.TRAINING_TYPE_STAMINA: SupportCardType.SUPPORT_CARD_TYPE_STAMINA,
@@ -657,6 +702,17 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 pass
             score += scenario_additive
 
+            # URA-only: apply a small additive bonus when a Duel (Happy Meek) icon is
+            # present on this training. This nudges the score to prefer the duel training
+            # when two options are otherwise close, without causing large score swings.
+            duel_bonus = 0.0
+            try:
+                if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_URA and getattr(til, 'has_duel_icon', False):
+                    duel_bonus = float(getattr(ctx.cultivate_detail, 'ura_duel_bonus', 0.1))
+                    score += duel_bonus
+            except Exception:
+                pass
+
             pre_mult_score = score
 
             pal_mult = 1.0
@@ -764,6 +820,8 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     formula_parts.append(f"hint(selected):+{hint_bonus:.3f}")
                 else:
                     formula_parts.append(f"hint:+{hint_bonus:.3f}")
+            if duel_bonus > 0:
+                formula_parts.append(f"duel:+{duel_bonus:.3f}")
             formula_parts.extend(scenario_formula_parts)
             
             mult_parts = []

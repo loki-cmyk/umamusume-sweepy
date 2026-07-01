@@ -1,4 +1,4 @@
-﻿from bot.base.resource import Template
+from bot.base.resource import Template
 from bot.base.common import Area, ImageMatchConfig
 from module.umamusume.define import ScenarioType
 
@@ -10,6 +10,8 @@ UMAMUSUME_SCENARIO_TEMPLATE_PATH = "/umamusume/scenario"
 
 UMAMUSUME_UI_AOHARUHAI_TEMPLATE_PATH = "/umamusume/ui/aoharuhai"
 UMAMUSUME_REF_AOHARUHAI_TEMPLATE_PATH = "/umamusume/ref/aoharuhai"
+
+UMAMUSUME_UI_URA_TEMPLATE_PATH = "/umamusume/ui/ura"
 
 
 UI_INFO = Template("INFO", UMAMUSUME_UI_TEMPLATE_PATH)
@@ -217,6 +219,14 @@ REF_ENERGY = Template("energy", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(ma
 REF_FULL_NRG = Template("fullNRG", UMAMUSUME_REF_TEMPLATE_PATH)
 
 REF_MANT_PLUS = Template("mant_plus", UMAMUSUME_REF_TEMPLATE_PATH)
+
+# URA scenario: Happy Meek duel detection templates
+URA_DUEL_TRAINING_ICON = Template("duel_training_icon", UMAMUSUME_UI_URA_TEMPLATE_PATH)
+URA_DUEL_LEVEL_NOT_MAX = Template("duel_level_not_max", UMAMUSUME_UI_URA_TEMPLATE_PATH)
+URA_DUEL_LEVEL_MAX = Template("duel_level_max", UMAMUSUME_UI_URA_TEMPLATE_PATH)
+URA_DOUBLE_CIRCLE = Template("double_circle", UMAMUSUME_UI_URA_TEMPLATE_PATH)
+URA_SINGLE_CIRCLE = Template("single_circle", UMAMUSUME_UI_URA_TEMPLATE_PATH)
+URA_TRIANGLE = Template("triangle", UMAMUSUME_UI_URA_TEMPLATE_PATH)
 
 URA_DATE_1 = Template("URA_DATE_1", UMAMUSUME_REF_TEMPLATE_PATH)
 URA_DATE_2 = Template("URA_DATE_2", UMAMUSUME_REF_TEMPLATE_PATH)
