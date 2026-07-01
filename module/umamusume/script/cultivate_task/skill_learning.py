@@ -397,10 +397,11 @@ def script_cultivate_finish(ctx: UmamusumeContext):
     import bot.conn.u2_ctrl as u2c
     u2c.IN_CAREER_RUN = False
     try:
-        from module.umamusume.persistence import clear_used_buffs, clear_megaphone_state, clear_clock_used
+        from module.umamusume.persistence import clear_used_buffs, clear_megaphone_state, clear_clock_used, clear_contests_tried
         clear_used_buffs()
         clear_megaphone_state()
         clear_clock_used()
+        clear_contests_tried()
     except Exception as e:
         log.error(f"Failed to clear career state: {e}")
     # Log run summary on career finish

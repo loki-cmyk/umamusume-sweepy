@@ -16253,7 +16253,7 @@
     "prerequisites": [],
     "description": "Burn bright with team spirit, increasing velocity in proportion to the total Speed of racing team members mid-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Burning_Spirit_GUTS",
@@ -16264,7 +16264,7 @@
     "prerequisites": [],
     "description": "Burn bright with team spirit, increasing vigor in proportion to the total Guts of racing team members late-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Ignited_Spirit_STA",
@@ -16286,7 +16286,7 @@
     "prerequisites": [],
     "description": "Burn bright with team spirit, recovering endurance in proportion to the total Stamina of racing team members mid-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Ignited_Spirit_PWR",
@@ -16308,7 +16308,7 @@
     "prerequisites": [],
     "description": "Burn bright with team spirit, increasing acceleration in proportion to the total Power of racing team members late-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Ignited_Spirit_WIT",
@@ -16330,7 +16330,7 @@
     "prerequisites": [],
     "description": "Burn bright with team spirit, increasing strategic navigation for a medium duration in proportion to the total Wit of racing team members early-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Glittering_Star",
@@ -16352,7 +16352,7 @@
     "prerequisites": [],
     "description": "Control breathing and kick forward in the second half of the race. Effect is increased in proportion to number of career wins.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Halfway_to_a_Dream",
@@ -16388,8 +16388,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Essence_of_RacingSpeed",
-    "name": "Essence of Racing・Speed",
+    "skill_id": "A_Racing_Spirit_Speed",
+    "name": "Racing Spirit: Speed",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16399,8 +16399,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Essence_of_RacingStamina",
-    "name": "Essence of Racing・Stamina",
+    "skill_id": "A_Racing_Spirit_Stamina",
+    "name": "Racing Spirit: Stamina",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16410,8 +16410,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Essence_of_RacingPower",
-    "name": "Essence of Racing・Power",
+    "skill_id": "A_Racing_Spirit_Power",
+    "name": "Racing Spirit: Power",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16421,8 +16421,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Essence_of_RacingWisdom",
-    "name": "Essence of Racing・Wisdom",
+    "skill_id": "A_Racing_Spirit_Wit",
+    "name": "Racing Spirit: Wit",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16443,8 +16443,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Essence_of_RacingGuts",
-    "name": "Essence of Racing・Guts",
+    "skill_id": "A_Racing_Spirit_Guts",
+    "name": "Racing Spirit: Guts",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16454,8 +16454,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Essence_of_RacingEnergy",
-    "name": "Essence of Racing・Energy",
+    "skill_id": "A_Racing_Spirit_Mood",
+    "name": "Racing Spirit: Mood",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],

@@ -2340,11 +2340,11 @@ export default {
         tactic_actions: [],
         extraWeight: [],
       },
-      selectedExecuteMode: 3,
+      selectedExecuteMode: 1,
       expectTimes: 0,
       cron: "* * * * *",
 
-      selectedScenario: 3,
+      selectedScenario: 1,
       selectedUmamusumeTaskType: undefined,
       selectedSupportCard: undefined,
       extraRace: [],
@@ -4313,7 +4313,7 @@ export default {
     },
     loadFromTask: function (task) {
       const data = task.attachment_data || task.detail || {};
-      this.selectedExecuteMode = task.task_execute_mode || 3;
+      this.selectedExecuteMode = task.task_execute_mode || 1;
       this.selectedScenario = data.scenario || 1;
       this.cureAsapConditions = data.cure_asap_conditions || this.cureAsapConditions;
       if (data.expect_attribute && data.expect_attribute.length >= 5) {

@@ -4,19 +4,38 @@ This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sw
 
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
 
-Will be looking at adding updated support for URA/Unity where possible.
+Will be looking at adding updated support for Unity where possible.
 
 ## Features Not Implemented Yet
 
-- Support for updated URA / Unity.
+- Support for updated Unity.
 
 ## Known Bugs
 
-- URA/Unity are not updated for the new scenario updates yet.
+- Updated URA support seems to work but I'm still in the process of testing it.
+- Unity support is not finished for Purple Spirit Bursts; I haven't tested it yet.
 
 ## Added Features / Changes
 
 Here's what's changed so far that's worth noting, most of the new bot features have options to toggle them off in the UI.
+
+### General
+- Safety click checks have been added for Rest and Recreation. This was due to the old code using unsafe areas to click on.
+- You can now install the Python dependencies in `venv` and just run `start.bat` without polluting your core Python install.
+- Added a feature under `log_training_data` in `config.yaml` to dump all relevant internal turn data into `training_data.jsonl`.
+  - You can use `analyze_trainings.py` to get a report on what's happened in your runs as well as some suggestions on settings to tweak.
+  - This provides a statistical analysis of your runs and helps you find instances where suboptimal decisions could have been made.
+    - In this case, we define suboptimal as a case where picked a training which gave less stats.
+    - The analysis gives you a breakdown of what caused this choice to be made (e.g., you're forced to rest, the bot is valuing energy gain too much, etc.)
+  - Note: Not every turn is recorded on certain paths, so you may miss some information (due to "fast" path logic).
+- Reverted some awful code written for template matching that was "faster" but broke randomly because it rejected matches too aggressively.
+  - This causes some event handling to slow down sometimes, but it's better than the bot picking the wrong choice.
+
+### URA
+- Bot will attempt to duel Happy Meek when the training is good enough. By default it adds a 0.1 score on trainings she appears on.
+- Bot will auto-select the highest contest type available when dueling with Happy Meek.
+- Bot will also ensure it selects new contests when it can; for example, if it has selected Power once and there is both Speed+Power, it will select Speed.
+  - It is not smart enough to not train skills it has already bought; to avoid this make sure you set the skill point limit high enough.
 
 ### MANT
 - Bot now supports retrying specific races in MANT, you can select which races to retry in the UI.
@@ -30,26 +49,16 @@ Here's what's changed so far that's worth noting, most of the new bot features h
 - Bot now only uses Royal Kale Juice if it has a cupcake available to use or if mood is already Great without no other energy items available.
 - Bot will now buy cupcakes to match the number of Royal Kale Juices it has, up to a maximum of 2.
 - Bot will try to race again if it loses the Debut race as soon as it's able to do so.
-- Added a feature under `log_training_data` in `config.yaml` to dump all relevant internal turn data into `training_data.jsonl`.
-  - You can use `analyze_trainings.py` to get a report on what's happened in your runs as well as some suggestions on settings to tweak.
-  - This provides a statistical analysis of your runs and helps you find instances where suboptimal decisions could have been made.
-    - In this case, we define suboptimal as a case where picked a training which gave less stats.
-    - The analysis gives you a breakdown of what caused this choice to be made (e.g., you're forced to rest, the bot is valuing energy gain too much, etc.)
-  - Note: Not every turn is recorded on certain paths, so you may miss some information (due to "fast" path logic).
-- Reverted some awful code written for template matching that was "faster" but broke randomly because it rejected matches too aggressively.
-  - This causes some event handling to slow down sometimes, but it's better than the bot picking the wrong choice.
 - Updated the MANT tier defaults because I was tired of updating the tiers and moving items around to make them sane.
 - Fixed some bugs with TS Climax races where it tried to go to race early, wouldn't use hammer cleats, and other weirdness.
 - Fixed a bug with megaphone turn tracking that was causing it to double decrement and messing up the turn logic.
 - Fixed a bug with using too many energy items and amulets because it wasn't checking the new failure rate.
-- Safety click checks have been added for Rest and Recreation. This was due to the old code using unsafe areas to click on.
-- You can now install the Python dependencies in `venv` and just run `start.bat` without polluting your core Python install.
 
 This list does not include the changes from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy) which were primarily fixes for event handling and the MANT shop.
 
 ### A Umamusume bot that handles all aspects of gameplay including training, races, events, skill purchasing, and starting runs. 
 
-MANT support is complete; depending on your deck and who you're training you can expect S+ on average (assuming no retries) - I've hit SS rank on a few Umas with this.
+MANT support is complete; depending on your deck and who you're training you can expect S+ on average (assuming no retries) - I've hit SS rank on a few Umas with this. URA is updated for the anniversary changes and I will be looking at doing Unity if I have the time.
 
 ![Uma Musume Auto Trainer](docs/main.png)
 

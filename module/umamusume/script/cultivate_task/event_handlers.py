@@ -12,7 +12,9 @@ from module.umamusume.asset.template import (
     UI_CULTIVATE_EVENT_UMAMUSUME,
     UI_CULTIVATE_EVENT_SUPPORT_CARD,
     UI_CULTIVATE_EVENT_SCENARIO,
+    URA_DOUBLE_CIRCLE, URA_SINGLE_CIRCLE, URA_TRIANGLE,
 )
+import numpy as np
 from module.umamusume.script.cultivate_task.event.manifest import get_event_choice
 from module.umamusume.script.cultivate_task.parse import parse_cultivate_event, get_canonical_skill_name
 
@@ -118,6 +120,74 @@ def detect_hint_after_event(ctrl, event_name):
         pass
 
 
+def parse_duel_event(img, contests_tried):
+    if img is None:
+        return None, None
+    h, w = img.shape[:2]
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    def get_all_matches(target, template_obj, accuracy=0.85):
+        arr = getattr(template_obj, 'template_img', None)
+        if arr is None:
+            arr = getattr(template_obj, 'template_image', None)
+        if arr is None:
+            return []
+        res = cv2.matchTemplate(target, arr, cv2.TM_CCOEFF_NORMED)
+        loc = np.where(res >= accuracy)
+        pts = list(zip(*loc[::-1]))
+        grouped = []
+        th, tw = arr.shape[:2]
+        for pt in pts:
+            is_new = True
+            for g in grouped:
+                if abs(pt[0] - g[0]) < 10 and abs(pt[1] - g[1]) < 10:
+                    is_new = False
+                    break
+            if is_new:
+                grouped.append((pt[0] + tw // 2, pt[1] + th // 2))
+        return grouped
+
+    matches = get_all_matches(gray, URA_DOUBLE_CIRCLE)
+    if not matches:
+        matches = get_all_matches(gray, URA_SINGLE_CIRCLE)
+    if not matches:
+        matches = get_all_matches(gray, URA_TRIANGLE)
+
+    if not matches:
+        return None, None
+
+    matches.sort(key=lambda p: p[1])
+    selected_pt = None
+    selected_type = None
+
+    for pt in matches:
+        py = pt[1]
+        y_start = max(0, py - 45)
+        y_end = min(h, py + 45)
+        slice_img = img[y_start:y_end, :]
+        slice_text = ocr_line(slice_img, lang="en") or ""
+        m_type = re.search(r"Contest of ([^!]+)!", slice_text, re.IGNORECASE)
+        c_type = m_type.group(1).strip() if m_type else ""
+        
+        if c_type and c_type not in contests_tried:
+            selected_pt = pt
+            selected_type = c_type
+            break
+
+    if not selected_pt:
+        selected_pt = matches[0]
+        py = selected_pt[1]
+        y_start = max(0, py - 45)
+        y_end = min(h, py + 45)
+        slice_img = img[y_start:y_end, :]
+        slice_text = ocr_line(slice_img, lang="en") or ""
+        m_type = re.search(r"Contest of ([^!]+)!", slice_text, re.IGNORECASE)
+        if m_type:
+            selected_type = m_type.group(1).strip()
+
+    return selected_pt, selected_type
+
+
 def script_cultivate_event(ctx: UmamusumeContext):
     try:
         cd = getattr(ctx.cultivate_detail, 'event_cooldown_until', 0)
@@ -184,6 +254,26 @@ def script_cultivate_event(ctx: UmamusumeContext):
         time.sleep(1.0)
         ctx.cultivate_detail.event_cooldown_until = time.time() + 3.0
         return
+
+    # URA Duel Event
+    if isinstance(event_name, str) and "Happy Meek's Challenge!" in event_name:
+        if not hasattr(ctx.cultivate_detail, 'contests_tried'):
+            from module.umamusume.persistence import load_contests_tried
+            ctx.cultivate_detail.contests_tried = load_contests_tried()
+
+        selected_pt, selected_type = parse_duel_event(img, ctx.cultivate_detail.contests_tried)
+        if selected_pt:
+            if selected_type:
+                ctx.cultivate_detail.contests_tried.add(selected_type)
+                from module.umamusume.persistence import save_contests_tried
+                save_contests_tried(ctx.cultivate_detail.contests_tried)
+
+            log.info(f"Happy Meek Challenge: choosing {selected_type or 'unknown'} at {selected_pt}")
+            ctx.ctrl.click(selected_pt[0], selected_pt[1], "Happy Meek Challenge choice")
+            threading.Thread(target=detect_hint_after_event, args=(ctx.ctrl, event_name), daemon=True).start()
+            ctx.cultivate_detail.event_cooldown_until = time.time() + 3.0
+            ctx.cultivate_detail.last_clicked_event_name = event_name
+            return
 
     # Check if we're stuck on the same event
     event_name_clean = event_name.strip()
