@@ -4,7 +4,7 @@ This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sw
 
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
 
-Will be looking at adding updated support for Unity where possible.
+Will be looking at adding updated support for Unity eventually. It's a bit more complicated since it needs to support retries like in MANT for Team Races.
 
 ## Features Not Implemented Yet
 
@@ -33,9 +33,11 @@ Here's what's changed so far that's worth noting, most of the new bot features h
 
 ### URA
 - Bot will attempt to duel Happy Meek when the training is good enough. By default it adds a 0.1 score on trainings she appears on.
-- Bot will auto-select the highest contest type available when dueling with Happy Meek.
-- Bot will also ensure it selects new contests when it can; for example, if it has selected Power once and there is both Speed+Power, it will select Speed.
-  - It is not smart enough to not train skills it has already bought; to avoid this make sure you set the skill point limit high enough.
+  - This means it will not select poor quality trainings unless the score adjustment is enough.
+  - For example, if you have an amazing training and another with a Duel on it, it will pick the amazing training.
+- Bot will auto-select the highest success choice when dueling against Happy Meek.
+- Bot will also ensure it selects new duels when it can; for example, if it has selected Power once and there is both Speed and Power, it will select Speed.
+  - It does not consider skills that have been bought already, so adjust your skill point limits accordingly.
 
 ### MANT
 - Bot now supports retrying specific races in MANT, you can select which races to retry in the UI.
@@ -89,9 +91,9 @@ MANT support is complete; depending on your deck and who you're training you can
 - Able to generate over a dozen 3* parents a week if left to run
 
 ### Scenario Support
-- URA Finals scenario
-- Unity Cup (Aoharu)
-- partial Mant
+- URA
+- Unity
+- MANT
 
 ### Comprehensive Customization
 - Literally everything that can be detected is detected and used for customization.
@@ -106,7 +108,7 @@ MANT support is complete; depending on your deck and who you're training you can
 
 - Python 3.10
 - Visual C++ Redistributable ([Download](https://aka.ms/vs/17/release/vc_redist.x64.exe))
-- Android emulator (MuMu Player recommended) bluestacks sucks dont use it it will break screenshots for reasons i dont understand
+- Android emulator (MuMu Player recommended)
 
 ---
 
