@@ -252,8 +252,8 @@ REF_MANT_FINAL_END = Template("mant_final_end", UMAMUSUME_REF_TEMPLATE_PATH, Ima
 REF_MANT_RESET_CLOCK = Template("reset_clock", UMAMUSUME_REF_TEMPLATE_PATH)
 REF_MANT_RACE_TRY_AGAIN = Template("mant_try_again", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(60, 1130, 360, 1230), match_accuracy=0.70))
 REF_MANT_TRY_AGAIN_POP_UP = Template("try_again_pop_up", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(365, 1130, 675, 1235), match_accuracy=0.80))
-REF_MANT_SHOP_TITLE = Template("shop_title", UMAMUSUME_REF_MANT_SHOP_PATH, ImageMatchConfig(match_area=Area(17, 8, 78, 35)))
-REF_SHOP_MANT_CHECK = Template("shop_mant_check", UMAMUSUME_REF_MANT_SHOP_PATH, ImageMatchConfig(match_area=Area(23, 10, 74, 31), match_accuracy=0.83))
+REF_MANT_SHOP_TITLE = Template("shop_title", UMAMUSUME_REF_MANT_SHOP_PATH, ImageMatchConfig(match_area=Area(0, 0, 78, 35)))
+REF_SHOP_MANT_CHECK = Template("shop_mant_check", UMAMUSUME_REF_MANT_SHOP_PATH, ImageMatchConfig(match_area=Area(0, 0, 85, 40), match_accuracy=0.83))
 REF_MANT_SHOP_CHECKMARK = Template("mant_shop_checkmark", UMAMUSUME_REF_MANT_SHOP_PATH)
 
 REF_MANT_REWARD_ITEMS = Template("items", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(224, 797, 326, 817), match_accuracy=0.76))
