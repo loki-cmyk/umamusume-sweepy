@@ -3,10 +3,11 @@ bot:
     adb:
       delay: 0.38
       device_name: 127.0.0.1:16384
+      screenshot_method: droidcast_raw
     cpu_alloc: 4
   gpu:
     device_id: 0
     enabled: auto
     memory_fraction: 0.3
   log_training_data: false
-version: 0.1.0
+version: 1.0.0

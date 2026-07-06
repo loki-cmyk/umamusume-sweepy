@@ -504,14 +504,6 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         facility_mults = [1.0] * 5
 
         pre_highest_stat_idx = None
-        try:
-            d_pre = int(ctx.cultivate_detail.turn_info.date)
-            if isinstance(d_pre, int) and d_pre > 48 and d_pre <= 72:
-                uma_pre = ctx.cultivate_detail.turn_info.uma_attribute
-                stats_pre = [uma_pre.speed, uma_pre.stamina, uma_pre.power, uma_pre.will, uma_pre.intelligence]
-                pre_highest_stat_idx = int(np.argmax(stats_pre)) if len(stats_pre) == 5 else None
-        except Exception:
-            pass
 
         stat_mult = getattr(ctx.cultivate_detail, 'stat_value_multiplier', DEFAULT_STAT_VALUE_MULTIPLIER)
         if not isinstance(stat_mult, (list, tuple)) or len(stat_mult) < 6:
@@ -645,10 +637,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     contrib = sv_val * stat_mult[sk_idx]
                     stat_score += contrib
                     stat_contributions[idx][sk_idx] = contrib
-                    if pre_highest_stat_idx is not None and sk_idx == pre_highest_stat_idx:
-                        stat_parts.append(f"{sk}:{sv_val} (-5% score)")
-                    else:
-                        stat_parts.append(f"{sk}:{sv_val}")
+                    stat_parts.append(f"{sk}:{sv_val}")
             
             score += stat_score
             stat_scores[idx] = stat_score
@@ -909,26 +898,6 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         for idx in range(5):
             if extra_weight[idx] == -1:
                 computed_scores[idx] = -float('inf')
-
-        try:
-            d = int(ctx.cultivate_detail.turn_info.date)
-        except Exception:
-            d = -1
-        highest_stat_idx = None
-        if isinstance(d, int) and d > 48 and d <= 72:
-            try:
-                uma = ctx.cultivate_detail.turn_info.uma_attribute
-                stats = [uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence]
-                highest_stat_idx = int(np.argmax(stats)) if len(stats) == 5 else None
-                if highest_stat_idx is not None:
-                    computed_scores[highest_stat_idx] *= 0.95
-                    facility_mults[highest_stat_idx] *= 0.95
-                    for i in range(5):
-                        penalty = stat_contributions[i][highest_stat_idx] * 0.05
-                        if penalty > 0:
-                            computed_scores[i] -= penalty
-            except Exception:
-                pass
 
         ctx.cultivate_detail.turn_info.cached_computed_scores = list(computed_scores)
         ctx.cultivate_detail.turn_info.cached_facility_mults = list(facility_mults)

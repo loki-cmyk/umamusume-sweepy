@@ -14,12 +14,18 @@ Will be looking at adding updated support for Unity eventually. It's a bit more 
 
 - Updated URA support seems to work but I'm still in the process of testing it.
 - Unity support is not finished for Purple Spirit Bursts; I haven't tested it yet.
+- Fixing broken UI detection screens as I find them after the 7/1 patch.
 
 ## Added Features / Changes
 
 Here's what's changed so far that's worth noting, most of the new bot features have options to toggle them off in the UI.
 
 ### General
+- Added support for [Droidcast](https://github.com/Torther/DroidCastS) raw screen capture (implementation taken from [AzurLaneAutoScript](https://github.com/LmeSzinc/AzurLaneAutoScript)).
+  - Droidcast Raw runs significantly faster than ADB at ~30-60ms per screenshot versus 100-200ms for ADB.
+  - When enabled, it will push the APK package to your emulator and start a server to communicate with the bot.
+  - If you encounter issues with Droidcast, update `screenshot_method` in `config.yaml` back to `adb`.
+  - If errors occur, the bot will fall back to using ADB.
 - Safety click checks have been added for Rest and Recreation. This was due to the old code using unsafe areas to click on.
 - You can now install the Python dependencies in `venv` and just run `start.bat` without polluting your core Python install.
 - Added a feature under `log_training_data` in `config.yaml` to dump all relevant internal turn data into `training_data.jsonl`.
