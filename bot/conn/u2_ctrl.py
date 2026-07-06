@@ -14,6 +14,7 @@ import threading
 
 from bot.base.point import ClickPoint, ClickPointType
 from bot.conn.ctrl import AndroidController
+from bot.conn.droidcast import DroidCastCapture
 from bot.recog.image_matcher import template_match, image_match
 from config import CONFIG, Config
 from dataclasses import dataclass, field
@@ -29,6 +30,7 @@ IN_CAREER_RUN = False
 class U2AndroidConfig:
     _device_name: str
     delay: float
+    screenshot_method: str = "droidcast_raw"
     bluestacks_config_path: Optional[str] = None
     bluestacks_config_keyword: Optional[str] = None
 
@@ -59,6 +61,7 @@ class U2AndroidConfig:
         return U2AndroidConfig(
             _device_name=config.bot.auto.adb.device_name,
             delay=config.bot.auto.adb.delay,
+            screenshot_method=getattr(config.bot.auto.adb, 'screenshot_method', None) or 'droidcast_raw',
             bluestacks_config_path=config.bot.auto.adb.bluestacks_config_path,
             bluestacks_config_keyword=config.bot.auto.adb.bluestacks_config_keyword,
         )
@@ -103,6 +106,14 @@ class U2AndroidController(AndroidController):
 
         self._pool_sock = None
         self._pool_lock = threading.Lock()
+
+        # DroidCast_raw capture backend
+        self._droidcast = None
+        if self.config.screenshot_method == 'droidcast_raw':
+            log.info("Screenshot method: DroidCast_raw")
+            self._droidcast = DroidCastCapture(self.path, self.config.device_name)
+        else:
+            log.info(f"Screenshot method: ADB screencap")
         
         try:
             from bot.base.runtime_state import load_persisted
@@ -200,7 +211,18 @@ class U2AndroidController(AndroidController):
         now = time.time()
         if self._cached_frame is not None and (now - self._cache_time) < self._cache_max_age:
             return self._cached_frame
-        
+
+        # -- DroidCast_raw path --
+        if self._droidcast is not None:
+            img = self._droidcast.capture()
+            if img is not None:
+                self._cached_frame = img
+                self._cache_time = time.time()
+                return img
+            # Fall through to ADB on failure
+            log.warning("DroidCast capture failed, falling back to ADB screencap")
+
+        # -- ADB screencap path (original) --
         for attempt in range(3):
             raw = self._capture_via_socket()
             
@@ -601,3 +623,8 @@ class U2AndroidController(AndroidController):
     def destroy(self):
         self._cached_frame = None
         self._close_pool_sock()
+        if self._droidcast is not None:
+            try:
+                self._droidcast.stop()
+            except Exception:
+                pass

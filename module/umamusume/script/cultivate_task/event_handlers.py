@@ -188,6 +188,35 @@ def parse_duel_event(img, contests_tried):
     return selected_pt, selected_type
 
 
+def extract_event_name(ctx: UmamusumeContext, img=None):
+    if img is None or getattr(img, 'size', 0) == 0:
+        img = ctx.ctrl.get_screen()
+        if img is None or getattr(img, 'size', 0) == 0:
+            for _ in range(3):
+                time.sleep(0.2)
+                img = ctx.ctrl.get_screen()
+                if img is not None and getattr(img, 'size', 0) > 0:
+                    break
+    if img is None or getattr(img, 'size', 0) == 0:
+        log.warning("Failed to get screen")
+        return None, None
+
+    h, w = img.shape[:2]
+    y1, y2, x1, x2 = 237, 283, 111, 480
+    y1 = max(0, min(h, y1)); y2 = max(y1, min(h, y2))
+    x1 = max(0, min(w, x1)); x2 = max(x1, min(w, x2))
+    event_name_img = img[y1:y2, x1:x2]
+
+    event_name = ocr_line(event_name_img, lang="en")
+
+    if not event_name or not event_name.strip():
+        h, w = event_name_img.shape[:2]
+        event_name_img_upscaled = cv2.resize(event_name_img, (w * 2, h * 2), interpolation=cv2.INTER_CUBIC)
+        event_name = ocr_line(event_name_img_upscaled, lang="en")
+
+    return event_name, img
+
+
 def script_cultivate_event(ctx: UmamusumeContext):
     try:
         cd = getattr(ctx.cultivate_detail, 'event_cooldown_until', 0)
@@ -209,28 +238,9 @@ def script_cultivate_event(ctx: UmamusumeContext):
     if not hasattr(ctx.cultivate_detail, 'event_tried_selectors'):
         ctx.cultivate_detail.event_tried_selectors = set()
 
-    img = ctx.ctrl.get_screen()
-    if img is None or getattr(img, 'size', 0) == 0:
-        for _ in range(3):
-            time.sleep(0.2)
-            img = ctx.ctrl.get_screen()
-            if img is not None and getattr(img, 'size', 0) > 0:
-                break
-    if img is None or getattr(img, 'size', 0) == 0:
-        log.warning("Failed to get screen")
+    event_name, img = extract_event_name(ctx)
+    if img is None:
         return
-    h, w = img.shape[:2]
-    y1, y2, x1, x2 = 237, 283, 111, 480
-    y1 = max(0, min(h, y1)); y2 = max(y1, min(h, y2))
-    x1 = max(0, min(w, x1)); x2 = max(x1, min(w, x2))
-    event_name_img = img[y1:y2, x1:x2]
-
-    event_name = ocr_line(event_name_img, lang="en")
-
-    if not event_name or not event_name.strip():
-        h, w = event_name_img.shape[:2]
-        event_name_img_upscaled = cv2.resize(event_name_img, (w * 2, h * 2), interpolation=cv2.INTER_CUBIC)
-        event_name = ocr_line(event_name_img_upscaled, lang="en")
     if isinstance(event_name, str) and len(event_name.strip()) <= 1:
         # OCR failed to get event name, but we're clearly on an event screen
         # Try to find selectors and click the first one as fallback
@@ -480,10 +490,23 @@ def script_cultivate_event(ctx: UmamusumeContext):
                     still_on_event = True
                     break
             if still_on_event:
-                log.warning(f"Event '{event_name_clean}' still visible after click - may need retry")
-                # Don't mark as successfully clicked yet
-                ctx.cultivate_detail.event_cooldown_until = time.time() + 2.0
-                return
+                # OCR the new event title and compare with original
+                new_event_name, _ = extract_event_name(ctx, verify_img)
+                is_same_event = True
+                if new_event_name and new_event_name.strip():
+                    new_event_clean = new_event_name.strip()
+                    is_same_event = (new_event_clean == event_name_clean)
+
+                if is_same_event:
+                    log.warning(f"Event '{event_name_clean}' still visible after click - may need retry")
+                    # Don't mark as successfully clicked yet
+                    ctx.cultivate_detail.event_cooldown_until = time.time() + 2.0
+                    return
+                else:
+                    log.info(f"Event title changed from '{event_name_clean}' to '{new_event_clean}' after click")
+                    log.info(f"Event '{event_name_clean}' cleared after click")
+                    ctx.cultivate_detail.last_clicked_event_name = event_name_clean
+                    threading.Thread(target=detect_hint_after_event, args=(ctx.ctrl, event_name), daemon=True).start()
             else:
                 log.info(f"Event '{event_name_clean}' cleared after click")
                 ctx.cultivate_detail.last_clicked_event_name = event_name_clean
