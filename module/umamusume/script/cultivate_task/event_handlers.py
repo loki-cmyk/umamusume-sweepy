@@ -373,7 +373,7 @@ def script_cultivate_event(ctx: UmamusumeContext):
     if len(selectors) == 0:
         log.warning("No selectors found for event '{}' - attempting recovery click".format(event_name))
         # Try clicking in the center area where event buttons typically appear
-        ctx.ctrl.click(360, 900, "Event recovery click (no selectors)")
+        ctx.ctrl.click(360, 888, "Event recovery click (no selectors)")
         time.sleep(1.0)
         ctx.cultivate_detail.event_cooldown_until = time.time() + 3.0
         ctx.cultivate_detail.last_clicked_event_name = event_name_clean
@@ -450,7 +450,7 @@ def script_cultivate_event(ctx: UmamusumeContext):
     if choice_index > 5:
         choice_index = 2
 
-    if choice_source == "database" and expected_count >= 2:
+    if expected_count >= 2:
         min_required = min(2, expected_count)
         deadline = time.time() + 3.0
         while time.time() < deadline:
@@ -473,12 +473,42 @@ def script_cultivate_event(ctx: UmamusumeContext):
         idx = int(choice_index)
         if idx < 1:
             idx = 1
+
+        # Mismatch: we want choice N but only see fewer selectors
+        if idx > len(selectors) and expected_count > len(selectors):
+            log.warning(
+                f"Selector mismatch for '{event_name_clean}': "
+                f"want choice {idx}, have {len(selectors)} selectors, "
+                f"expected {expected_count} — retrying parse"
+            )
+            for retry in range(3):
+                time.sleep(0.5)
+                retry_img = ctx.ctrl.get_screen()
+                if retry_img is not None and getattr(retry_img, 'size', 0) > 0:
+                    _, retry_selectors = parse_cultivate_event(ctx, retry_img)
+                    if isinstance(retry_selectors, list) and len(retry_selectors) >= idx:
+                        selectors = retry_selectors
+                        log.info(f"Retry {retry+1}: got {len(selectors)} selectors, proceeding")
+                        break
+                    elif isinstance(retry_selectors, list) and len(retry_selectors) > len(selectors):
+                        selectors = retry_selectors
+                        log.info(f"Retry {retry+1}: improved to {len(selectors)} selectors")
+
+            # After retries, if still mismatched, defer to next cycle instead of clicking wrong button
+            if idx > len(selectors):
+                log.warning(
+                    f"Still only {len(selectors)} selectors after retries for '{event_name_clean}' "
+                    f"(need {idx}) — deferring to next cycle"
+                )
+                ctx.cultivate_detail.event_cooldown_until = time.time() + 2.0
+                return
+
         if idx > len(selectors):
             idx = len(selectors)
 
         target_pt = selectors[idx - 1]
-        log.info(f"Clicking option {idx}/{len(selectors)} (source={choice_source}, retry)")
-        ctx.ctrl.click(int(target_pt[0]), int(target_pt[1]), f"Event option-{idx} (retry)")
+        log.info(f"Clicking option {idx}/{len(selectors)} (source={choice_source})")
+        ctx.ctrl.click(int(target_pt[0]), int(target_pt[1]), f"Event option-{idx}")
         # Wait and verify click registered
         time.sleep(1.5)
         verify_img = ctx.ctrl.get_screen()

@@ -387,7 +387,9 @@ def get_event_choice(ctx: UmamusumeContext, event_name: str):
                 choice = int(overrides[event_name])
                 if choice > 0:
                     log.info(f"User overwrite: Choice {choice}")
-                    return choice, "override", 0
+                    # Look up expected count from DB so selector wait logic works
+                    _, db_count = get_local_event_choice_with_count(ctx, event_name)
+                    return choice, "override", max(db_count, 0)
             try:
                 keys = list(overrides.keys())
                 matched = find_similar_text(event_name, keys, 0.85)
@@ -395,7 +397,9 @@ def get_event_choice(ctx: UmamusumeContext, event_name: str):
                     choice = int(overrides[matched])
                     if choice > 0:
                         log.info(f"User overwrite: Choice {choice}")
-                        return choice, "override", 0
+                        # Look up expected count from DB so selector wait logic works
+                        _, db_count = get_local_event_choice_with_count(ctx, event_name)
+                        return choice, "override", max(db_count, 0)
             except Exception:
                 pass
     except Exception:
