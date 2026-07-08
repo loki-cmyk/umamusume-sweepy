@@ -15,7 +15,7 @@ from module.umamusume.asset.point import (
 from module.umamusume.asset.template import (
     REF_RACE_LIST, REF_RACE_LIST_GOAL_RACE, REF_RACE_LIST_URA_RACE,
     REF_SUITABLE_RACE, REF_TRAIN_BTN,
-    REF_MANT_RACE_TRY_AGAIN, REF_MANT_TRY_AGAIN_POP_UP
+    REF_RACE_TRY_AGAIN, REF_TRY_AGAIN_POP_UP
 )
 from module.umamusume.script.cultivate_task.parse import parse_date, find_race
 
@@ -376,35 +376,15 @@ def script_cultivate_race_result(ctx: UmamusumeContext):
                 clocks_used = ctx.cultivate_detail.clock_used or 0
                 clock_limit = ctx.cultivate_detail.clock_use_limit or 0
                 if clocks_used < clock_limit:
-                    # The difference between enabled/disabled is too small to be detectable in grayscale, so
-                    # what we do here instead is try to click the Try Again button. If it's enabled, we'll
-                    # be taken to the appropriate screen. If it's disabled, nothing will pop up and we assume 
-                    # we either won or we're out of retries for this current run.
                     log.info(f"Checking if we can retry {race_id} (Clocks: {clocks_used}/{clock_limit})")
                     img = getattr(ctx, 'current_screen_gray', None)
                     if img is None:
                         img = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
-                    enabled_res = image_match(img, REF_MANT_RACE_TRY_AGAIN)
-                    if enabled_res.find_match:
-                        cx, cy = enabled_res.center_point
-                        ctx.ctrl.click(cx, cy, "Check MANT race retry")
-                        time.sleep(1.0)
-                        img_after_click = cv2.cvtColor(ctx.ctrl.get_screen(), cv2.COLOR_BGR2GRAY)
-                        try_again_pop_up_match = image_match(img_after_click, REF_MANT_TRY_AGAIN_POP_UP)
-                        if try_again_pop_up_match.find_match:
-                            log.info(f"Race {race_id} is retryable, retrying.")
-                            ctx.cultivate_detail.clock_used = clocks_used + 1
-                            from module.umamusume.persistence import save_clock_used
-                            save_clock_used(ctx.cultivate_detail.clock_used)
-                            ctx.ctrl.click(520, 1180, "MANT race retry confirm")
-                            time.sleep(2.0)
-                            return
-                        else:
-                            log.info("No option to try again, clicking Next.")
-                            ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
-                            return
+                    from module.umamusume.script.cultivate_task.helpers import handle_clock_retry
+                    if handle_clock_retry(ctx, img):
+                        return
                     else:
-                        log.info("Did not find Try Again button, continuing...")
+                        log.info("No option to try again, clicking Next.")
                         ctx.ctrl.click_by_point(RACE_RESULT_CONFIRM)
                         return
                 else:

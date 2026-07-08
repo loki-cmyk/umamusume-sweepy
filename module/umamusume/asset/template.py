@@ -86,7 +86,7 @@ REF_AOHARUHAI_TEAM_NAME_3 = Template("AOHARUHAI_TEAM_NAME_3", UMAMUSUME_REF_AOHA
 REF_AOHARUHAI_TEAM_NAME = [REF_AOHARUHAI_TEAM_NAME_0, REF_AOHARUHAI_TEAM_NAME_1,
                            REF_AOHARUHAI_TEAM_NAME_2, REF_AOHARUHAI_TEAM_NAME_3]
 
-REF_AOHARU_RACE = Template("race_aoharu", UMAMUSUME_REF_TEMPLATE_PATH)
+REF_AOHARU_RACE = Template("race_aoharu", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(290, 980, 380, 1030), match_accuracy=0.80))
 
 REF_ROUND_1 = Template("round_1", UMAMUSUME_REF_TEMPLATE_PATH)
 REF_ROUND_2 = Template("round_2", UMAMUSUME_REF_TEMPLATE_PATH)
@@ -204,6 +204,9 @@ REF_ALL_RES = Template("all_res", UMAMUSUME_REF_TEMPLATE_PATH)
 REF_RACE_END = Template("race_end", UMAMUSUME_REF_TEMPLATE_PATH)
 REF_RACE_END2 = Template("race_end2", UMAMUSUME_REF_TEMPLATE_PATH)
 REF_TEAM_SHOWDOWN = Template("team_showdown", UMAMUSUME_REF_TEMPLATE_PATH)
+REF_BEGIN_SHOWDOWN = Template("begin_showdown", UMAMUSUME_REF_TEMPLATE_PATH)
+REF_UNITY_FINALS = Template("unity_finals", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(300, 320, 420, 400), match_accuracy=0.80))
+REF_RACE_UNITY_ZENITH = Template("race_unity_zenith", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(275, 1005, 305, 1070), match_accuracy=0.80))
 REF_NEXT = Template("next", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(0, 640, 720, 1280), match_accuracy=0.79))
 REF_SEE_RESULTS = Template("see_results", UMAMUSUME_REF_TEMPLATE_PATH)
 REF_RESUME_CAREER = Template("resume_career", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(548, 375, 632, 422)))
@@ -250,8 +253,8 @@ REF_MANT_ON_SALE = Template("mant_on_sale", UMAMUSUME_REF_TEMPLATE_PATH, ImageMa
 REF_BLUE_LINE = Template("blue_line", UMAMUSUME_REF_TEMPLATE_PATH)
 REF_MANT_FINAL_END = Template("mant_final_end", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(280, 10, 450, 90), match_accuracy=0.80))
 REF_MANT_RESET_CLOCK = Template("reset_clock", UMAMUSUME_REF_TEMPLATE_PATH)
-REF_MANT_RACE_TRY_AGAIN = Template("mant_try_again", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(60, 1130, 360, 1230), match_accuracy=0.70))
-REF_MANT_TRY_AGAIN_POP_UP = Template("try_again_pop_up", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(365, 1130, 675, 1235), match_accuracy=0.80))
+REF_RACE_TRY_AGAIN = Template("mant_try_again", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(60, 1130, 360, 1230), match_accuracy=0.70))
+REF_TRY_AGAIN_POP_UP = Template("try_again_pop_up", UMAMUSUME_REF_TEMPLATE_PATH, ImageMatchConfig(match_area=Area(365, 1130, 675, 1235), match_accuracy=0.80))
 REF_MANT_SHOP_TITLE = Template("shop_title", UMAMUSUME_REF_MANT_SHOP_PATH, ImageMatchConfig(match_area=Area(0, 0, 78, 35)))
 REF_SHOP_MANT_CHECK = Template("shop_mant_check", UMAMUSUME_REF_MANT_SHOP_PATH, ImageMatchConfig(match_area=Area(0, 0, 85, 40), match_accuracy=0.83))
 REF_MANT_SHOP_CHECKMARK = Template("mant_shop_checkmark", UMAMUSUME_REF_MANT_SHOP_PATH)

@@ -20,7 +20,7 @@ export default {
       if (this.task.detail?.scenario === 1) {
         return 'URA';
       } else if (this.task.detail?.scenario === 2) {
-        return 'Aoharu Cup';
+        return 'Unity';
       } else if (this.task.detail?.scenario === 3) {
         return 'MANT (in progress)';
       }

@@ -7,8 +7,8 @@ from module.umamusume.task import UmamusumeTask, UmamusumeTaskType
 from module.umamusume.define import *
 from module.umamusume.types import TurnInfo
 from module.umamusume.constants.scoring_constants import (
-    DEFAULT_BASE_SCORES, DEFAULT_SPIRIT_EXPLOSION, DEFAULT_PAL_FRIENDSHIP_SCORES,
-    DEFAULT_PAL_CARD_MULTIPLIER, DEFAULT_NPC_SCORE_VALUE,
+    DEFAULT_BASE_SCORES, DEFAULT_SPIRIT_EXPLOSION, DEFAULT_PURPLE_SPIRIT_EXPLOSION,
+    DEFAULT_PAL_FRIENDSHIP_SCORES, DEFAULT_PAL_CARD_MULTIPLIER, DEFAULT_NPC_SCORE_VALUE,
     DEFAULT_SUMMER_SCORE_THRESHOLD, DEFAULT_STAT_VALUE_MULTIPLIER,
     DEFAULT_WIT_SPECIAL_MULTIPLIER
 )
@@ -280,6 +280,12 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
             detail.spirit_explosion = list(se) if se else list(DEFAULT_SPIRIT_EXPLOSION)
         except Exception:
             detail.spirit_explosion = list(DEFAULT_SPIRIT_EXPLOSION)
+
+        try:
+            pse = getattr(task.detail, 'purple_spirit_explosion', DEFAULT_PURPLE_SPIRIT_EXPLOSION)
+            detail.purple_spirit_explosion = list(pse) if pse else list(DEFAULT_PURPLE_SPIRIT_EXPLOSION)
+        except Exception:
+            detail.purple_spirit_explosion = list(DEFAULT_PURPLE_SPIRIT_EXPLOSION)
         
      
         detail.rest_threshold = getattr(task.detail, 'rest_threshold', getattr(task.detail, 'rest_treshold', getattr(task.detail, 'fast_path_energy_limit', 48)))

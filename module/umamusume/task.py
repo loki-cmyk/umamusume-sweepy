@@ -25,6 +25,7 @@ class TaskDetail:
     cultivate_progress_info: dict
     extra_weight: list
     spirit_explosion: list
+    purple_spirit_explosion: list
     manual_purchase_at_end: bool
     override_insufficient_fans_forced_races: bool
     use_last_parents: bool
@@ -102,6 +103,7 @@ def build_task(task_execute_mode: TaskExecuteMode, task_type: int,
     td.allow_recover_tp = attachment_data['allow_recover_tp']
     td.extra_weight = attachment_data['extra_weight']
     td.spirit_explosion = attachment_data.get('spirit_explosion', [0.16, 0.16, 0.16, 0.06, 0.11])
+    td.purple_spirit_explosion = attachment_data.get('purple_spirit_explosion', [0.24, 0.24, 0.24, 0.09, 0.165])
     td.compensate_failure = attachment_data.get('compensate_failure', True)
     td.manual_purchase_at_end = attachment_data['manual_purchase_at_end']
     td.override_insufficient_fans_forced_races = attachment_data.get('override_insufficient_fans_forced_races', False)

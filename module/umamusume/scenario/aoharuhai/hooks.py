@@ -1,10 +1,12 @@
 import time
+import sys
 from bot.recog.image_matcher import image_match
 from module.umamusume.asset.template import (
     REF_AOHARU_RACE, REF_SELECT_OPP2, REF_ALL_RES, REF_RACE_END, REF_RACE_END2,
     REF_TEAM_SHOWDOWN, REF_NEXT, REF_ROUND_1, REF_ROUND_2, REF_ROUND_3, REF_ROUND_4,
-    REF_AOHARUHAI_TEAM_NAME_0, REF_AOHARUHAI_TEAM_NAME_1,
-    REF_AOHARUHAI_TEAM_NAME_2, REF_AOHARUHAI_TEAM_NAME_3
+    REF_AOHARUHAI_TEAM_NAME_0, REF_AOHARUHAI_TEAM_NAME_1, REF_AOHARUHAI_TEAM_NAME_2,
+    REF_AOHARUHAI_TEAM_NAME_3, REF_RACE_TRY_AGAIN, REF_TRY_AGAIN_POP_UP, REF_BEGIN_SHOWDOWN, REF_UNITY_FINALS,
+    REF_RACE_UNITY_ZENITH
 )
 import bot.base.log as logger
 
@@ -12,14 +14,14 @@ log = logger.get_logger(__name__)
 
 
 def aoharuhai_after_hook(ctx, img):
-    if image_match(img[984:1025, 297:365], REF_AOHARU_RACE).find_match:
+    if image_match(img, REF_AOHARU_RACE).find_match:
         try:
             cd = getattr(getattr(ctx, 'cultivate_detail', None), 'event_cooldown_until', 0)
             if isinstance(cd, (int, float)) and time.time() < cd:
                 return True
         except Exception:
             pass
-        
+
         try:
             h, w = img.shape[:2]
             team_roi_x1, team_roi_y1, team_roi_x2, team_roi_y2 = 70, 315, 162, 811
@@ -41,19 +43,24 @@ def aoharuhai_after_hook(ctx, img):
             ti = getattr(getattr(ctx, 'cultivate_detail', None), 'turn_info', None)
             roi = img[343:389, 443:485]
             refs = [REF_ROUND_1, REF_ROUND_2, REF_ROUND_3, REF_ROUND_4]
+            found = False
             for i, tpl in enumerate(refs):
                 try:
                     if image_match(roi, tpl).find_match:
                         if ti is not None:
                             ti.aoharu_race_index = i
+                        found = True
                         break
                 except Exception:
                     continue
         except Exception:
             pass
+        if not found and image_match(img, REF_UNITY_FINALS).find_match:
+            ti.aoharu_race_index = 4
+            log.info("Unity Finals detected.")
         ctx.ctrl.click(344, 1091, 'Aoharu race')
         return True
-    
+
     if image_match(img[1089:1113, 318:376], REF_SELECT_OPP2).find_match:
         try:
             sc = getattr(ctx.task.detail, 'scenario_config', None)
@@ -64,47 +71,73 @@ def aoharuhai_after_hook(ctx, img):
             if isinstance(idx, int) and isinstance(prs, (list, tuple)) and 0 <= idx < len(prs):
                 sel = prs[idx]
                 if sel == 1:
-                    ctx.ctrl.click(339, 278, 'select opp')
+                    log.info("Selected opponent #1")
+                    ctx.ctrl.click(339, 278, 'Select opponent #1')
                     time.sleep(0.5)
                 elif sel == 2:
-                    ctx.ctrl.click(335, 574, 'select opp')
+                    log.info("Selected opponent #2")
+                    ctx.ctrl.click(335, 574, 'Select opponent #2')
                     time.sleep(0.5)
                 elif sel == 3:
-                    ctx.ctrl.click(339, 830, 'select opp')
+                    log.info("Selected opponent #3")
+                    ctx.ctrl.click(339, 830, 'Select opponent #3')
                     time.sleep(0.5)
         except Exception:
             pass
-        ctx.ctrl.click(355, 1082, 'select opp2')
+        ctx.ctrl.click(355, 1082, 'Click Select Opponent button')
         time.sleep(0.5)
-        ctx.ctrl.click(522, 930, 'select opp2 cont')
+        ctx.ctrl.click(522, 930, 'Select Begin Showdown')
         time.sleep(0.17)
-        ctx.ctrl.click(522, 930, 'select opp2 cont')
+        ctx.ctrl.click(522, 930, 'Select Begin Showdown (retry)')
         return True
-    
+
     if image_match(img[1204:1219, 476:597], REF_ALL_RES).find_match:
-        ctx.ctrl.click(536, 1211, 'all res')
+        ctx.ctrl.click(536, 1211, 'Select All Results button')
         return True
-    
+
+    from module.umamusume.script.cultivate_task.helpers import handle_clock_retry
+    if handle_clock_retry(ctx, img):
+        return True
+
     if image_match(img[43:72, 123:411], REF_RACE_END).find_match:
-        ctx.ctrl.click(351, 1112, 'race end')
-        return True
-    
-    if image_match(img[1204:1228, 319:399], REF_RACE_END2).find_match:
-        ctx.ctrl.click(350, 1199, 'race end2')
-        return True
-    
-    if image_match(img[1200:1222, 467:553], REF_RACE_END2).find_match:
-        ctx.ctrl.click(508, 1196, 'race end2 b')
-        return True
-    
-    if image_match(img[7:31, 24:180], REF_TEAM_SHOWDOWN).find_match:
-        ctx.ctrl.click(354, 961, 'team showdown')
         time.sleep(0.5)
-        ctx.ctrl.click(522, 930, 'select opp2 cont')
+        ctx.ctrl.click(351, 1112, 'Close race result panel')
         return True
-    
+
+    if image_match(img[1204:1228, 319:399], REF_RACE_END2).find_match:
+        time.sleep(0.5)
+        ctx.ctrl.click(350, 1199, 'Close race result panel')
+        return True
+
+    if image_match(img[1200:1222, 467:553], REF_RACE_END2).find_match:
+        ctx.ctrl.click(508, 1196, 'Close race result panel')
+        return True
+
+    if image_match(img[365:675, 865:965], REF_BEGIN_SHOWDOWN).find_match:
+        time.sleep(0.5)
+        ctx.ctrl.click(522, 930, 'Select Begin Showdown')
+        return True
+
+    if image_match(img, REF_RACE_UNITY_ZENITH).find_match:
+        log.info("Starting final race (Zenith)")
+        ctx.ctrl.click(354, 961, 'Team Zenith Race button')
+        time.sleep(0.5)
+        ctx.ctrl.click(522, 930, 'Select Opponent')
+        return True
+
+    # Fallback in case image mathing on Team Zenith fails
+    if image_match(img[0:33, 0:180], REF_TEAM_SHOWDOWN).find_match:
+        ti = getattr(getattr(ctx, 'cultivate_detail', None), 'turn_info', None)
+        idx = getattr(ti, 'aoharu_race_index', None)
+        if idx == 4:
+            log.info("Starting final race (fallback)")
+            ctx.ctrl.debug_click(354, 961, 'Team Zenith Race button')
+            time.sleep(0.5)
+            ctx.ctrl.debug_click(522, 930, 'Select Opponent')
+        return True
+
     if image_match(img[1097:1124, 327:393], REF_NEXT).find_match:
-        ctx.ctrl.click(360, 1112, 'next')
+        ctx.ctrl.click(360, 1112, 'Click Next')
         return True
-    
+
     return False

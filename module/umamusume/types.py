@@ -17,6 +17,7 @@ class SupportCardInfo:
     has_event: bool
     can_incr_special_training: bool
     spirit_explosion: bool
+    purple_spirit_explosion: bool
 
     def __init__(self,
                 name: str = "support_card",
@@ -25,6 +26,7 @@ class SupportCardInfo:
                 has_event: bool = False,
                 can_incr_special_training: bool = False,
                 spirit_explosion: bool = False,
+                purple_spirit_explosion: bool = False,
                 center: tuple[int, int] | None = None):
         self.name = name
         self.card_type = card_type
@@ -32,6 +34,7 @@ class SupportCardInfo:
         self.has_event = has_event
         self.can_incr_special_training = can_incr_special_training
         self.spirit_explosion = spirit_explosion
+        self.purple_spirit_explosion = purple_spirit_explosion
         self.center = center
 
 
@@ -179,6 +182,7 @@ class CultivateContextDetail:
     parse_factor_done: bool
     extra_weight: list
     spirit_explosion: list
+    purple_spirit_explosion: list
     motivation_threshold_year1: int
     motivation_threshold_year2: int
     motivation_threshold_year3: int
@@ -212,6 +216,7 @@ class CultivateContextDetail:
         self.parse_factor_done = False
         self.extra_weight = []
         self.spirit_explosion = [0.16, 0.16, 0.16, 0.06, 0.11]
+        self.purple_spirit_explosion = [0.24, 0.24, 0.24, 0.09, 0.165]
         self.motivation_threshold_year1 = 3  # Default values
         self.motivation_threshold_year2 = 4
         self.motivation_threshold_year3 = 4
