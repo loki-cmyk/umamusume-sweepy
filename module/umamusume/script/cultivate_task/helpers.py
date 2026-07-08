@@ -352,3 +352,35 @@ def execute_group_card_recreation(ctx: UmamusumeContext, trip_click_point=None) 
     ctx.cultivate_detail.group_card_last_date = ctx.cultivate_detail.turn_info.date
     ctx.cultivate_detail.group_card_available_dates = []
     return True
+
+
+def handle_clock_retry(ctx: UmamusumeContext, img=None) -> bool:
+    try:
+        from module.umamusume.asset.template import REF_RACE_TRY_AGAIN, REF_TRY_AGAIN_POP_UP
+        if img is None:
+            img = getattr(ctx, 'current_screen_gray', None)
+            if img is None:
+                img = cv2.cvtColor(ctx.current_screen, cv2.COLOR_BGR2GRAY)
+        enabled_res = image_match(img, REF_RACE_TRY_AGAIN)
+        # TODO: We can add HSV matching here to detect enabled/disabled, but this works fine as is for now.
+        if enabled_res.find_match:
+            clocks_used = getattr(ctx.cultivate_detail, 'clock_used', 0)
+            clock_limit = getattr(ctx.cultivate_detail, 'clock_use_limit', 0)
+            if clocks_used < clock_limit:
+                cx, cy = enabled_res.center_point
+                ctx.ctrl.click(cx, cy, "Try Again")
+                time.sleep(1.0)
+                img_after_click = cv2.cvtColor(ctx.ctrl.get_screen(), cv2.COLOR_BGR2GRAY)
+                if image_match(img_after_click, REF_TRY_AGAIN_POP_UP).find_match:
+                    log.info(f"Retrying race (Clocks: {clocks_used + 1}/{clock_limit})")
+                    ctx.cultivate_detail.clock_used = clocks_used + 1
+                    from module.umamusume.persistence import save_clock_used
+                    save_clock_used(ctx.cultivate_detail.clock_used)
+                    ctx.ctrl.click(522, 1180, "Confirm Retry")
+                    time.sleep(2.0)
+                    return True
+            else:
+                log.info(f"Clock usage exceeded, not retrying. {clocks_used}/{clock_limit}")
+    except Exception as e:
+        log.warning(f"Error in handle_clock_retry helper: {e}")
+    return False

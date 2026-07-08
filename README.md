@@ -4,16 +4,16 @@ This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sw
 
 Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
 
-Will be looking at adding updated support for Unity eventually. It's a bit more complicated since it needs to support retries like in MANT for Team Races.
+The bot has support for updated URA/Unity and MANT if you want to still run that.
 
 ## Features Not Implemented Yet
 
-- Support for updated Unity.
+- Spark reroll is not supported. May add a function allowing you to manually review sparks in the future.
+  - For now, if you want the bot to stop before the final result screen, enable manual skill purchasing.
 
 ## Known Bugs
 
-- Updated URA support seems to work but I'm still in the process of testing it.
-- Unity support is not finished for Purple Spirit Bursts; I haven't tested it yet.
+- Initial support for updated Unity is done, I'm currently testing it.
 - Fixing broken UI detection screens as I find them after the 7/1 patch.
 
 ## Added Features / Changes
@@ -44,6 +44,11 @@ Here's what's changed so far that's worth noting, most of the new bot features h
 - Bot will auto-select the highest success choice when dueling against Happy Meek.
 - Bot will also ensure it selects new duels when it can; for example, if it has selected Power once and there is both Speed and Power, it will select Speed.
   - It does not consider skills that have been bought already, so adjust your skill point limits accordingly.
+
+### Unity
+- Bot now detects and scores Purple Spirit Bursts (Extreme Spirit Bursts) in training evaluations.
+  - Purple bursts are scored using a scaled bonus weight (1.5x of normal spirit bursts).
+- Bot will automatically retry Unity Team Races up to your configured clock limit.
 
 ### MANT
 - Bot now supports retrying specific races in MANT, you can select which races to retry in the UI.

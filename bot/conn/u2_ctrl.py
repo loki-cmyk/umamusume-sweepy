@@ -457,6 +457,34 @@ class U2AndroidController(AndroidController):
         self.recent_point = point
         self.recent_operation_time = time.time()
 
+    def debug_click(self, x, y, name="", random_offset=True, max_x=720, max_y=1280, hold_duration=0):
+        log.info(f"debug_click: '{name}' at ({x}, {y})")
+        try:
+            img = self.get_screen()
+            if img is not None:
+                annotated = img.copy()
+                # Draw red circle around the click coordinates
+                cv2.circle(annotated, (int(x), int(y)), 15, (0, 0, 255), 2)
+                # Draw small green center dot
+                cv2.circle(annotated, (int(x), int(y)), 2, (0, 255, 0), -1)
+                # Annotate with the action name
+                cv2.putText(annotated, name, (int(x) + 20, int(y) + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+                
+                scratch_dir = "scratch"
+                import os as python_os
+                if not python_os.path.exists(scratch_dir):
+                    python_os.makedirs(scratch_dir)
+                
+                timestamp = int(time.time() * 1000)
+                filename = f"click_{timestamp}_{name.replace(' ', '_').lower()}.png"
+                filepath = python_os.path.join(scratch_dir, filename)
+                cv2.imwrite(filepath, annotated)
+                log.info(f"Saved annotated screen: {filepath}")
+        except Exception as e:
+            log.warning(f"Failed to save debug_click annotation image: {e}")
+        
+        self.click(x, y, name, random_offset, max_x, max_y, hold_duration)
+
     def click(self, x, y, name="", random_offset=True, max_x=720, max_y=1280, hold_duration=0):
         if INPUT_BLOCKED:
             return

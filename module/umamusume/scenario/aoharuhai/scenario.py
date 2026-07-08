@@ -54,8 +54,11 @@ ORANGE_LO = np.array([8, 180, 180], dtype=np.uint8)
 ORANGE_HI = np.array([20, 255, 255], dtype=np.uint8)
 TEAL_LO = np.array([80, 180, 180], dtype=np.uint8)
 TEAL_HI = np.array([100, 255, 255], dtype=np.uint8)
+PURPLE_LO = np.array([140, 50, 100], dtype=np.uint8)
+PURPLE_HI = np.array([165, 255, 255], dtype=np.uint8)
 ORANGE_MIN_COUNT = 40
 TEAL_MIN_COUNT = 100
+PURPLE_MIN_COUNT = 100
 
 
 @register(ScenarioType.SCENARIO_TYPE_AOHARUHAI)
@@ -117,8 +120,11 @@ class AoharuHaiScenario(URAScenario):
             can_incr_special_training = int(np.count_nonzero(cv2.inRange(arrow_hsv, ORANGE_LO, ORANGE_HI))) >= ORANGE_MIN_COUNT
 
             spirit_explosion = False
+            purple_spirit_explosion = False
             if not can_incr_special_training:
                 spirit_explosion = int(np.count_nonzero(cv2.inRange(arrow_hsv, TEAL_LO, TEAL_HI))) >= TEAL_MIN_COUNT
+                if not spirit_explosion:
+                    purple_spirit_explosion = int(np.count_nonzero(cv2.inRange(arrow_hsv, PURPLE_LO, PURPLE_HI))) >= PURPLE_MIN_COUNT
 
             favor_process_check_list = [roi[106, 56], roi[106, 60]]
             support_card_favor_process = SupportCardFavorLevel.SUPPORT_CARD_FAVOR_LEVEL_UNKNOWN
@@ -158,7 +164,8 @@ class AoharuHaiScenario(URAScenario):
                 card_type=support_card_type,
                 favor=support_card_favor_process,
                 can_incr_special_training=can_incr_special_training,
-                spirit_explosion=spirit_explosion
+                spirit_explosion=spirit_explosion,
+                purple_spirit_explosion=purple_spirit_explosion
             )
             info.center = (cx, cy)
             support_card_list_info_result.append(info)

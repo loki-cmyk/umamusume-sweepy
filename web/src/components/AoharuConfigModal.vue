@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content" @click.stop>
         <div class="modal-header d-flex align-items-center justify-content-between">
-          <h5 class="mb-0">Aoharu Cup Configuration</h5>
+          <h5 class="mb-0">Unity Configuration</h5>
           <div>
             <button class="btn btn-sm btn-outline-secondary me-2" @click="$emit('update:show', false)">Cancel</button>
             <button class="btn btn-sm btn--primary" @click="confirm">Confirm</button>
@@ -75,7 +75,7 @@
               </div>
             </div>
             <div class="col-7 section-card p-3">
-              <h6 class="mb-3">Select Aoharu Team Name</h6>
+              <h6 class="mb-3">Select Team Name</h6>
               <div class="form-group">
                 <div class="form-check mb-3 ps-0">
                   <input class="form-check-input" type="radio" id="team_taiki" :value="0" v-model.number="internalAoharuTeamNameSelection">

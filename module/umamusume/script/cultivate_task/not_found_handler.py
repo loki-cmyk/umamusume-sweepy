@@ -1,5 +1,6 @@
 import cv2
 import random
+import time
 
 import bot.base.log as logger
 from bot.recog.ocr import ocr_line
@@ -37,6 +38,10 @@ def script_not_found_ui(ctx: UmamusumeContext):
         log.debug(f"NOT_FOUND_UI - Screen shape: {ctx.current_screen.shape}")
 
         if has_home_coin(ctx):
+            return
+
+        from module.umamusume.script.cultivate_task.helpers import handle_clock_retry
+        if handle_clock_retry(ctx):
             return
 
         try:

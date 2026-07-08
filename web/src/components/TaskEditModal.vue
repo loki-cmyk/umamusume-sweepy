@@ -36,7 +36,7 @@
                     <label for="selectScenario">Scenario Selection</label>
                     <select v-model.number="selectedScenario" class="form-control" id="selectScenario">
                       <option :value="1">URA</option>
-                      <option :value="2">Aoharu Cup</option>
+                      <option :value="2">Unity</option>
                       <option :value="3">MANT</option>
                     </select>
                   </div>
@@ -84,7 +84,7 @@
               <div class="row" v-if="selectedScenario === 2">
                 <div class="col-4">
                   <div class="form-group">
-                    <span class="btn auto-btn" style="width:100%" v-on:click="openAoharuConfigModal">Aoharu Cup Configuration</span>
+                    <span class="btn auto-btn" style="width:100%" v-on:click="openAoharuConfigModal">Unity Configuration</span>
                   </div>
                 </div>
               </div>
@@ -2427,7 +2427,7 @@ export default {
       skillEventWeight: [0, 0, 0],
       resetSkillEventWeightList: '',
 
-      preliminaryRoundSelections: [2, 1, 1, 1],
+      preliminaryRoundSelections: [1, 1, 1, 1],
       aoharuTeamNameSelection: 4,
       showAoharuConfigModal: false,
       showSupportCardSelectModal: false,
@@ -4260,7 +4260,7 @@ export default {
         this.preliminaryRoundSelections = [...this.presetsUse.auharuhai_config.preliminaryRoundSelections];
         this.aoharuTeamNameSelection = this.presetsUse.auharuhai_config.aoharuTeamNameSelection;
       } else {
-        this.preliminaryRoundSelections = [2, 1, 1, 1];
+        this.preliminaryRoundSelections = [1, 1, 1, 1];
         this.aoharuTeamNameSelection = 4;
       }
       if ('mant_config' in this.presetsUse && this.presetsUse.mant_config.item_tiers) {
@@ -4505,7 +4505,7 @@ export default {
           : (data.ura_config.resetSkillEventWeightList || '');
       }
       if (data.aoharu_config) {
-        this.preliminaryRoundSelections = [...(data.aoharu_config.preliminaryRoundSelections || [2, 1, 1, 1])];
+        this.preliminaryRoundSelections = [...(data.aoharu_config.preliminaryRoundSelections || [1, 1, 1, 1])];
         this.aoharuTeamNameSelection = data.aoharu_config.aoharuTeamNameSelection || 4;
       }
       if (data.mant_config && data.mant_config.item_tiers) {

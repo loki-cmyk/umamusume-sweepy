@@ -14,6 +14,9 @@ class AndroidController(metaclass=ABCMeta):
     def click(self, x, y, name):
         pass
 
+    def debug_click(self, x, y, name):
+        pass
+
     def swipe(self, x1, y1, x2, y2, duration, name):
         pass
 
