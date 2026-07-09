@@ -297,6 +297,10 @@ def script_info(ctx: UmamusumeContext):
             if result_complete.find_match:
                 log.info("Recreation complete")
                 ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND_COMPLETE)
+                # Reset pal stage/date cache because clicking recreation changes/completes its state, forcing a recheck next turn
+                ctx.cultivate_detail.pal_event_stage = 0
+                if hasattr(ctx.cultivate_detail, 'pal_last_detection_date'):
+                    delattr(ctx.cultivate_detail, 'pal_last_detection_date')
             else:
                 result = image_match(img_gray, UI_FRIEND_RECREATION)
                 log.info(f"Friend recreation match: {result.find_match}")
@@ -309,6 +313,10 @@ def script_info(ctx: UmamusumeContext):
                 elif result.find_match:
                     log.info("Friend recreation - clicking CULTIVATE_TRIP_WITH_FRIEND")
                     ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND)
+                    # Reset pal stage/date cache because clicking recreation changes its state, forcing a recheck next turn
+                    ctx.cultivate_detail.pal_event_stage = 0
+                    if hasattr(ctx.cultivate_detail, 'pal_last_detection_date'):
+                        delattr(ctx.cultivate_detail, 'pal_last_detection_date')
                 else:
                     log.info("Regular recreation")
                     ctx.ctrl.click_by_point(CULTIVATE_OPERATION_COMMON_CONFIRM)
@@ -392,6 +400,10 @@ def script_info(ctx: UmamusumeContext):
 
         if title_text == TITLE[14]:
             ctx.ctrl.click_by_point(CULTIVATE_TRIP_WITH_FRIEND)
+            # Reset pal stage/date cache because clicking recreation changes its state, forcing a recheck next turn
+            ctx.cultivate_detail.pal_event_stage = 0
+            if hasattr(ctx.cultivate_detail, 'pal_last_detection_date'):
+                delattr(ctx.cultivate_detail, 'pal_last_detection_date')
         if title_text == TITLE[15]:  # Skip Confirmation
             # Check if this might be a skill confirmation by looking for the template
             img = ctx.current_screen

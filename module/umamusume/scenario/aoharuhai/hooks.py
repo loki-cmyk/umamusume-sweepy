@@ -61,7 +61,7 @@ def aoharuhai_after_hook(ctx, img):
         ctx.ctrl.click(344, 1091, 'Aoharu race')
         return True
 
-    if image_match(img[1089:1113, 318:376], REF_SELECT_OPP2).find_match:
+    if image_match(img, REF_SELECT_OPP2).find_match:
         try:
             sc = getattr(ctx.task.detail, 'scenario_config', None)
             aoharu_cfg = getattr(sc, 'aoharu_config', None)
@@ -91,7 +91,7 @@ def aoharuhai_after_hook(ctx, img):
         ctx.ctrl.click(522, 930, 'Select Begin Showdown (retry)')
         return True
 
-    if image_match(img[1204:1219, 476:597], REF_ALL_RES).find_match:
+    if image_match(img, REF_ALL_RES).find_match:
         ctx.ctrl.click(536, 1211, 'Select All Results button')
         return True
 
@@ -99,21 +99,19 @@ def aoharuhai_after_hook(ctx, img):
     if handle_clock_retry(ctx, img):
         return True
 
-    if image_match(img[43:72, 123:411], REF_RACE_END).find_match:
+    if image_match(img, REF_RACE_END).find_match:
         time.sleep(0.5)
         ctx.ctrl.click(351, 1112, 'Close race result panel')
         return True
 
-    if image_match(img[1204:1228, 319:399], REF_RACE_END2).find_match:
+    race_end2_res = image_match(img, REF_RACE_END2)
+    if race_end2_res.find_match:
+        cx, cy = race_end2_res.center_point
         time.sleep(0.5)
-        ctx.ctrl.click(350, 1199, 'Close race result panel')
+        ctx.ctrl.click(cx, cy, 'Close race result panel')
         return True
 
-    if image_match(img[1200:1222, 467:553], REF_RACE_END2).find_match:
-        ctx.ctrl.click(508, 1196, 'Close race result panel')
-        return True
-
-    if image_match(img[365:675, 865:965], REF_BEGIN_SHOWDOWN).find_match:
+    if image_match(img, REF_BEGIN_SHOWDOWN).find_match:
         time.sleep(0.5)
         ctx.ctrl.click(522, 930, 'Select Begin Showdown')
         return True

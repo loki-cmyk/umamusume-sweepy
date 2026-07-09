@@ -158,6 +158,15 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         from module.umamusume.scenario.mant.inventory import should_skip_fast_path
         mant_skip = should_skip_fast_path(ctx)
 
+    unity_skip = False
+    try:
+        if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_AOHARUHAI:
+            unity_skip = getattr(ctx.cultivate_detail.turn_info, 'unity_spirit_burst_available', False)
+    except Exception:
+        pass
+
+    skip_rest_fast_path = mant_skip or unity_skip
+
     if not getattr(ctx.cultivate_detail, 'career_data_loaded', False):
         try:
             from module.umamusume.persistence import load_career_data
@@ -177,7 +186,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             energy = read_energy()
     ctx.cultivate_detail.turn_info.cached_energy = energy
 
-    if energy <= limit and not mant_skip:
+    if energy <= limit and not skip_rest_fast_path:
         turn_info = ctx.cultivate_detail.turn_info
         date = turn_info.date
         from module.umamusume.asset.race_data import get_races_for_period
@@ -779,6 +788,12 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                 score *= weight_mult
 
             computed_scores[idx] = score
+
+            # Spirit burst override: zero out trainings with failure rate > 5%
+            if unity_skip:
+                fr_val = int(getattr(til, 'failure_rate', -1))
+                if fr_val > 5:
+                    computed_scores[idx] = 0.0
             original_scores[idx] = pre_fail_score
             facility_mults[idx] = score / pre_mult_score if abs(pre_mult_score) > 1e-12 else 0.0
             
@@ -901,6 +916,19 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
 
         ctx.cultivate_detail.turn_info.cached_computed_scores = list(computed_scores)
         ctx.cultivate_detail.turn_info.cached_facility_mults = list(facility_mults)
+
+        # Spirit burst fallback: if we came here for a spirit burst but no training
+        # has <= 5% failure rate (all scores are 0), give up and return to main menu.
+        if unity_skip:
+            max_safe_score = max(computed_scores) if len(computed_scores) == 5 else 0.0
+            if max_safe_score <= 0.0:
+                log.info("Unity spirit burst check: no training has <= 5% failure rate. Returning to main menu.")
+                ctx.cultivate_detail.turn_info.unity_spirit_burst_checked = True
+                ctx.cultivate_detail.turn_info.unity_spirit_burst_available = False
+                ctx.cultivate_detail.turn_info.turn_operation = None
+                ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
+                return
+
 
         max_score = max(computed_scores) if len(computed_scores) == 5 else 0.0
         

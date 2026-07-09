@@ -99,6 +99,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
         mood_threshold = ctx.cultivate_detail.motivation_threshold_year3
 
     is_mant = ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_MANT
+    # TODO: update this to also skip the fast path on unity
     mant_skip_fast_path = False
     # calculate upcoming races for MANT
     upcoming_races = []
@@ -124,7 +125,16 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     except Exception:
         pass
 
-    if ctx.cultivate_detail.turn_info.medic_room_available and energy <= ENERGY_FAST_MEDIC and not mant_skip_fast_path:
+    unity_skip = False
+    try:
+        if ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_AOHARUHAI:
+            unity_skip = getattr(ctx.cultivate_detail.turn_info, 'unity_spirit_burst_available', False)
+    except Exception:
+        pass
+
+    skip_fast_path = mant_skip_fast_path or unity_skip
+
+    if ctx.cultivate_detail.turn_info.medic_room_available and energy <= ENERGY_FAST_MEDIC and not skip_fast_path:
         from module.umamusume.scenario.mant.inventory import has_scheduled_race_this_turn
         if not has_scheduled_race_this_turn(ctx):
             log.info(f"Fast path: Low stamina ({energy}) - prioritizing medic")
@@ -133,7 +143,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
         else:
             log.info(f"Scheduled race this turn - skipping medic fast path (energy: {energy})")
 
-    if (mood_raw is not None) and energy < ENERGY_FAST_TRIP and mood_val < mood_threshold and not mant_skip_fast_path:
+    if (mood_raw is not None) and energy < ENERGY_FAST_TRIP and mood_val < mood_threshold and not skip_fast_path:
         if not has_scheduled_race_this_turn(ctx):
             if getattr(ctx.cultivate_detail, 'prioritize_recreation', False) and ctx.cultivate_detail.pal_event_stage > 0:
                 try:
@@ -160,7 +170,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
     limit = getattr(ctx.cultivate_detail, 'rest_threshold', getattr(ctx.cultivate_detail, 'rest_treshold', getattr(ctx.cultivate_detail, 'fast_path_energy_limit', 48)))
     if limit == 0:
         energy = 100
-    if energy <= limit and not mant_skip_fast_path:
+    if energy <= limit and not skip_fast_path:
         from module.umamusume.scenario.mant.inventory import has_scheduled_race_this_turn
         if not has_scheduled_race_this_turn(ctx):
             if getattr(ctx.cultivate_detail, 'prioritize_recreation', False) and ctx.cultivate_detail.pal_event_stage > 0:
@@ -295,9 +305,9 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                 else:
                     trip = True
             rest = False
-            if energy <= limit and not mant_skip_fast_path:
+            if energy <= limit and not skip_fast_path:
                 rest = True
-            elif (ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and energy < ENERGY_REST_EXTRA_DAY and not mant_skip_fast_path:
+            elif (ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and energy < ENERGY_REST_EXTRA_DAY and not skip_fast_path:
                 rest = True
             if rest:
                 if getattr(ctx.cultivate_detail, 'prioritize_recreation', False) and ctx.cultivate_detail.pal_event_stage > 0:
@@ -428,7 +438,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
         log.info("Checking if outing is better than rest")
 
     rest = False
-    if energy <= limit and not mant_skip_fast_path:
+    if energy <= limit and not skip_fast_path:
         if trip and limit < 90 and energy > 26:
             rest = False
         elif getattr(ctx.cultivate_detail, 'prioritize_recreation', False) and ctx.cultivate_detail.pal_event_stage > 0:
@@ -468,7 +478,7 @@ def get_operation(ctx: UmamusumeContext) -> TurnOperation | None:
                 rest = True
         else:
             rest = True
-    elif (ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and energy < ENERGY_REST_EXTRA_DAY and not mant_skip_fast_path:
+    elif (ctx.cultivate_detail.turn_info.date == 36 or ctx.cultivate_detail.turn_info.date == 60) and energy < ENERGY_REST_EXTRA_DAY and not skip_fast_path:
         rest = True
 
     expect_operation_type = TurnOperationType.TURN_OPERATION_TYPE_UNKNOWN
