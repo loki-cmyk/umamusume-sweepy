@@ -1,5 +1,6 @@
 import time
 import cv2
+import numpy as np
 
 import bot.base.log as logger
 from bot.recog.image_matcher import image_match
@@ -35,6 +36,13 @@ def is_mant(ctx):
         return False
 
 
+def is_unity(ctx):
+    try:
+        return ctx.cultivate_detail.scenario.scenario_type() == ScenarioType.SCENARIO_TYPE_AOHARUHAI
+    except Exception:
+        return False
+
+
 def get_trip(ctx):
     return CULTIVATE_TRIP_MANT if is_mant(ctx) else CULTIVATE_TRIP
 
@@ -49,6 +57,32 @@ def get_medic(ctx, summer=False):
     if is_mant(ctx):
         return CULTIVATE_MEDIC_MANT_SUMMER if summer else CULTIVATE_MEDIC_MANT
     return CULTIVATE_MEDIC_SUMMER if summer else CULTIVATE_MEDIC
+
+
+def check_unity_spirit_burst(ctx, img) -> bool:
+    """Detect teal/purple spirit burst badge on the Training button of the main screen."""
+    try:
+        if ctx.cultivate_detail.scenario.scenario_type() != ScenarioType.SCENARIO_TYPE_AOHARUHAI:
+            return False
+        ti = ctx.cultivate_detail.turn_info
+        if getattr(ti, 'unity_spirit_burst_checked', False):
+            return False
+        # Bounding box for the spirit burst indicator badge (top-right of Training button)
+        y1, y2, x1, x2 = 940, 988, 440, 490
+        roi = img[y1:y2, x1:x2]
+        hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+        teal_lo = np.array([80, 180, 180])
+        teal_hi = np.array([100, 255, 255])
+        purple_lo = np.array([140, 50, 100])
+        purple_hi = np.array([165, 255, 255])
+        t_cnt = np.sum(cv2.inRange(hsv, teal_lo, teal_hi) > 0)
+        p_cnt = np.sum(cv2.inRange(hsv, purple_lo, purple_hi) > 0)
+        if p_cnt >= 150 or t_cnt >= 150:
+            log.info(f"Detected Unity spirit burst on main screen (Teal: {t_cnt}, Purple: {p_cnt})")
+            return True
+    except Exception as e:
+        log.warning(f"Error checking Unity spirit burst: {e}")
+    return False
 
 
 def script_cultivate_main_menu(ctx: UmamusumeContext):
@@ -73,9 +107,6 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         ctx.cultivate_detail.mant_shop_scanned_this_turn = False
         if current_date > 0:
             ctx.cultivate_detail.group_card_available_dates = []
-            ctx.cultivate_detail.pal_event_stage = 0
-            if hasattr(ctx.cultivate_detail, 'pal_last_detection_date'):
-                delattr(ctx.cultivate_detail, 'pal_last_detection_date')
 
         if is_mant(ctx):
             from module.umamusume.scenario.mant.main_menu import handle_mant_turn_start
@@ -86,6 +117,9 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
             ctx.cultivate_detail.manual_purchase_completed = False
             if hasattr(ctx.cultivate_detail, 'manual_purchase_initiated'):
                 delattr(ctx.cultivate_detail, 'manual_purchase_initiated')
+            ctx.cultivate_detail.pal_event_stage = 0
+            if hasattr(ctx.cultivate_detail, 'pal_last_detection_date'):
+                delattr(ctx.cultivate_detail, 'pal_last_detection_date')
             # Generate and persist a new run_id for this career
             import uuid
             run_id = str(uuid.uuid4())
@@ -365,6 +399,18 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
                 is_summer = is_summer_camp_period(ctx.cultivate_detail.turn_info.date)
                 ctx.ctrl.click_by_point(get_race(ctx, summer=is_summer))
                 return
+        # Unity spirit burst override: if a spirit burst indicator is visible, bypass rest and go inspect training even when energy is low.
+        if is_unity(ctx) and energy <= limit:
+            if not getattr(ctx.cultivate_detail.turn_info, 'unity_spirit_burst_checked', False):
+                if check_unity_spirit_burst(ctx, img):
+                    ctx.cultivate_detail.turn_info.unity_spirit_burst_available = True
+                    log.info("Unity spirit burst available, bypassing energy checks to inspect training.")
+                    base_energy, _, _ = scan_energy(ctx.ctrl)
+                    ctx.cultivate_detail.turn_info.base_energy = base_energy
+                    ctx.ctrl.click_by_point(TO_TRAINING_SELECT)
+                    return
+            else:
+                log.info("Unity spirit burst was available, but has already been checked this run.")
         if energy <= limit:   
             if is_mant(ctx) and ctx.cultivate_detail.turn_info.date >= 76 and energy >= 20:
                 log.info("Final turn of MANT but we have some energy, checking training.")

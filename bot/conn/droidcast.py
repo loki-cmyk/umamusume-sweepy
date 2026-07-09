@@ -28,17 +28,21 @@ import cv2
 import numpy as np
 
 import bot.base.log as logger
+from config import CONFIG
 
 log = logger.get_logger(__name__)
 
 _APK_LOCAL = os.path.join("deps", "droidcast", "DroidCast_raw-release-1.0.apk")
 _APK_REMOTE = "/data/local/tmp/DroidCast_raw.apk"
 _DROIDCAST_CLASS = "ink.mol.droidcast_raw.Main"
-_DEVICE_PORT = 53516
+_DEVICE_PORT = getattr(CONFIG.bot.auto.adb, 'droidcast_port', 53516) or 53516
 
 
 def _http_get_bytes(host: str, port: int, path: str, timeout: float = 3.0) -> Optional[bytes]:
     """Minimal HTTP/1.0 GET without the ``requests`` dependency."""
+    if port != _DEVICE_PORT:
+        log.warning(f"Connection to port {port} blocked: not the configured DroidCast port ({_DEVICE_PORT}).")
+        return None
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
@@ -106,29 +110,46 @@ class DroidCastCapture:
         # Check for existing forwards first
         result = self._adb_cmd("forward", "--list")
         for line in result.stdout.decode().splitlines():
-            if f"tcp:{_DEVICE_PORT}" in line:
-                parts = line.split()
-                for part in parts:
-                    if part.startswith("tcp:") and part != f"tcp:{_DEVICE_PORT}":
-                        self._local_port = int(part.split(":")[1])
-                        log.info(f"Reusing existing forward on port {self._local_port}")
-                        return
+            parts = line.split()
+            if len(parts) >= 3:
+                device_serial, local_spec, remote_spec = parts[0], parts[1], parts[2]
+                if device_serial == self._device:
+                    if remote_spec == f"tcp:{_DEVICE_PORT}":
+                        local_port_str = local_spec.split(":")[1]
+                        if local_port_str.isdigit():
+                            local_port = int(local_port_str)
+                            # Safeguard: only reuse if the local port is equal to our configured port
+                            if local_port == _DEVICE_PORT:
+                                self._local_port = local_port
+                                log.info(f"Reusing existing forward on port {self._local_port}")
+                                return
+                            else:
+                                log.warning(f"Ignoring existing forward on port {local_port} for {self._device} as it is not the configured port {_DEVICE_PORT}")
 
         # Create new forward
         self._local_port = _DEVICE_PORT
         result = self._adb_cmd("forward", f"tcp:{self._local_port}", f"tcp:{_DEVICE_PORT}")
         if result.returncode != 0:
-            log.error(f"adb forward failed: {result.stderr.decode()}")
-            raise RuntimeError("adb forward failed")
+            log.warning(f"adb forward failed, trying to remove existing forward and retry...")
+            # If it failed (likely already bound or stale), remove any existing forward for our port and try again
+            self._adb_cmd("forward", "--remove", f"tcp:{self._local_port}")
+            result = self._adb_cmd("forward", f"tcp:{self._local_port}", f"tcp:{_DEVICE_PORT}")
+            if result.returncode != 0:
+                log.error(f"adb forward failed after cleanup: {result.stderr.decode()}")
+                raise RuntimeError("adb forward failed")
         log.info(f"ADB forward set: localhost:{self._local_port} → device:{_DEVICE_PORT}")
 
     def _remove_forward(self):
         """Remove the adb forward rule."""
         if self._local_port:
+            if self._local_port != _DEVICE_PORT:
+                log.warning(f"Blocked removing forward for unconfigured port: {self._local_port}")
+                return
             try:
                 self._adb_cmd("forward", "--remove", f"tcp:{self._local_port}")
             except Exception:
                 pass
+            self._local_port = 0
 
     def _kill_server(self):
         """Kill any running DroidCast processes on the device."""
@@ -151,6 +172,9 @@ class DroidCastCapture:
 
             log.info("Starting DroidCast_raw server …")
             self._kill_server()
+            # If there's an issue and we're restarting/starting, remove the existing forward rule first
+            if self._local_port:
+                self._remove_forward()
             self.push_apk()
 
             # Launch via app_process

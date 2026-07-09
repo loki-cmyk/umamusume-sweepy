@@ -3,6 +3,7 @@ bot:
     adb:
       delay: 0.38
       device_name: 127.0.0.1:16384
+      droidcast_port: 53516
       screenshot_method: droidcast_raw
     cpu_alloc: 4
   gpu:
