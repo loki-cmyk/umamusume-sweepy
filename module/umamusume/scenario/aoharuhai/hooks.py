@@ -131,9 +131,9 @@ def aoharuhai_after_hook(ctx, img):
         idx = getattr(ti, 'aoharu_race_index', None)
         if idx == 4:
             log.info("Starting final race (fallback)")
-            ctx.ctrl.debug_click(354, 961, 'Team Zenith Race button')
+            ctx.ctrl.click(354, 961, 'Team Zenith Race button')
             time.sleep(0.5)
-            ctx.ctrl.debug_click(522, 930, 'Select Opponent')
+            ctx.ctrl.click(522, 930, 'Select Opponent')
         return True
 
     if image_match(img[1097:1124, 327:393], REF_NEXT).find_match:
