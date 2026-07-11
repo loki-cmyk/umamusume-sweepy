@@ -154,8 +154,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Exchange_Races",
-    "name": "Exchange Races",
+    "skill_id": "A_Collaborative_Graded_Races",
+    "name": "Collaborative Graded Races",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -165,8 +165,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Skillful_Step",
-    "name": "Skillful Step",
+    "skill_id": "A_Solid_Steps",
+    "name": "Solid Steps",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -176,8 +176,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Mud_Play",
-    "name": "Mud Play",
+    "skill_id": "A_Muddy",
+    "name": "Muddy",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -187,8 +187,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Gambling_Spirit",
-    "name": "Gambling Spirit",
+    "skill_id": "A_Risk-Taker",
+    "name": "Risk-Taker",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -198,8 +198,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Short-Distance_Racing_Passion",
-    "name": "Short-Distance Racing Passion",
+    "skill_id": "A_Sprint_Race_Enthusiast",
+    "name": "Sprint Race Enthusiast",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -210,8 +210,8 @@
     "distance": "Sprint"
   },
   {
-    "skill_id": "A_Self-Assured",
-    "name": "Self-Assured",
+    "skill_id": "A_Confident",
+    "name": "Confident",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -222,8 +222,8 @@
     "distance": "Mile"
   },
   {
-    "skill_id": "A_Inquisitive_Mind",
-    "name": "Inquisitive Mind",
+    "skill_id": "A_Adventurer",
+    "name": "Adventurer",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -406,8 +406,8 @@
     "rarity": "Rare"
   },
   {
-    "skill_id": "A_Exchange_Races_Demon",
-    "name": "Exchange Races Demon",
+    "skill_id": "A_Collaborative_Graded_Races_Demon",
+    "name": "Collaborative Graded Races Demon",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -818,8 +818,8 @@
     "distance": "Long"
   },
   {
-    "skill_id": "A_Kawasaki_Racetrack",
-    "name": "Kawasaki Racetrack",
+    "skill_id": "A_Kawasaki_Racecourse",
+    "name": "Kawasaki Racecourse",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -829,8 +829,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Funabashi_Racetrack",
-    "name": "Funabashi Racetrack",
+    "skill_id": "A_Funabashi_Racecourse",
+    "name": "Funabashi Racecourse",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -840,8 +840,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Morioka_Racetrack",
-    "name": "Morioka Racetrack",
+    "skill_id": "A_Morioka_Racecourse",
+    "name": "Morioka Racecourse",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -925,7 +925,7 @@
     "prerequisites": [],
     "description": "In Kyoto, your Speed, Stamina, and Wisdom stats are increased by 80Mejiro Dober (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique"
+    "rarity": "Evolved"
   },
   {
     "skill_id": "A_Blessing_of_Yodo",
@@ -1014,7 +1014,7 @@
     "prerequisites": [],
     "description": "Increase performance on firm ground, boosting Power and Speed.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Bad_Track_Demon",
@@ -1127,8 +1127,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Dirt_Racing_Passion",
-    "name": "Dirt Racing Passion",
+    "skill_id": "A_Dirt_Race_Enthusiast",
+    "name": "Dirt Race Enthusiast",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -1232,8 +1232,8 @@
     "distance": "Medium"
   },
   {
-    "skill_id": "A_Nocturnal",
-    "name": "Nocturnal",
+    "skill_id": "A_Night_Races",
+    "name": "Night Races",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -1243,8 +1243,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Tight_Turns",
-    "name": "Tight Turns",
+    "skill_id": "A_Sharp_Turns",
+    "name": "Sharp Turns",
     "tier": "A",
     "skill_type": "Passive",
     "prerequisite_of": [],
@@ -2177,7 +2177,7 @@
     "prerequisites": [],
     "description": "Leader・At a random point during the Middle Leg, if you're in the first half of the pack, your speed will increase and your stamina recoverFuji Kiseki (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Pace Chaser"
   },
   {
@@ -2414,7 +2414,7 @@
     "prerequisites": [],
     "description": "Betweener・At a random point during the Middle Leg, if you're not in the front, your speed will slightly increase and your stamina will recoverManhattan Cafe (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Late Surger"
   },
   {
@@ -2545,7 +2545,7 @@
     "prerequisites": [],
     "description": "Chaser・During any downhill beyond the first 10 seconds of the race, your speed will slightly increase and your stamina will recoverSweep Tosho (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "End Closer"
   },
   {
@@ -2615,7 +2615,7 @@
     "prerequisites": [],
     "description": "During the Middle Leg, if someone overtakes you, you speed will slightly increase and your stamina recoverHaru Urara (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique"
+    "rarity": "Evolved"
   },
   {
     "skill_id": "A_Im_Not_Giving_Up",
@@ -2637,7 +2637,7 @@
     "prerequisites": [],
     "description": "At a random point on any corner, your speed will slightly increase and your stamina recoverMeisho Doto (Halloween)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique"
+    "rarity": "Evolved"
   },
   {
     "skill_id": "A_Going_My_Way",
@@ -2754,7 +2754,7 @@
     "prerequisites": [],
     "description": "Betweener・During the first half of the Middle Leg, your stamina will greatly recoverMatikanetannhauser (Sports Festival)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Late Surger"
   },
   {
@@ -3854,8 +3854,8 @@
     "distance": "Mile"
   },
   {
-    "skill_id": "A_Mold_Breaker",
-    "name": "Mold Breaker",
+    "skill_id": "A_Break_the_Mold",
+    "name": "Break the Mold",
     "tier": "A",
     "skill_type": "Speed",
     "prerequisite_of": [],
@@ -5140,7 +5140,7 @@
     "prerequisites": [],
     "description": "Increase velocity on a corner with skilled turning.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Beeline_Burst",
@@ -5151,7 +5151,7 @@
     "prerequisites": [],
     "description": "Increase velocity on a straight.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Its_On",
@@ -5162,7 +5162,7 @@
     "prerequisites": [],
     "description": "Increase velocity when passing another runner mid-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_In_Body_and_Mind",
@@ -5173,7 +5173,7 @@
     "prerequisites": [],
     "description": "Increase velocity in the last spurt.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Escape_Artist",
@@ -5184,7 +5184,7 @@
     "prerequisites": [],
     "description": "Increase ability to go to the front mid-race. (Front Runner)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Front Runner"
   },
   {
@@ -5196,7 +5196,7 @@
     "prerequisites": [],
     "description": "Increase ability to break out of the pack on the final corner. (Pace Chaser)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -5208,7 +5208,7 @@
     "prerequisites": [],
     "description": "Increase velocity mid-race. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -5220,7 +5220,7 @@
     "prerequisites": [],
     "description": "Increase velocity when passing another runner on the outside on the final corner. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -5232,7 +5232,7 @@
     "prerequisites": [],
     "description": "Move up in preparation to close the gap when positioned toward the back late-race. (End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "End Closer"
   },
   {
@@ -5244,7 +5244,7 @@
     "prerequisites": [],
     "description": "Increase spurting ability when positioned toward the back late-race. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -5256,7 +5256,7 @@
     "prerequisites": [],
     "description": "Widen the margin when positioned toward the front early-race. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -5268,7 +5268,7 @@
     "prerequisites": [],
     "description": "Increase positioning ability when positioned toward the front mid-race. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5280,7 +5280,7 @@
     "prerequisites": [],
     "description": "Increase ability to fight back when passed by another runner on the final corner. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5292,7 +5292,7 @@
     "prerequisites": [],
     "description": "Increase velocity when near the inner rail on the final corner. (Long)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long"
   },
   {
@@ -5304,7 +5304,7 @@
     "prerequisites": [],
     "description": "Increase ability to maintain the lead when leading by a large margin mid-race. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -5316,7 +5316,7 @@
     "prerequisites": [],
     "description": "Increase passing ability when positioned toward the front mid-race. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -5328,7 +5328,7 @@
     "prerequisites": [],
     "description": "Increase passing ability. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -5340,7 +5340,7 @@
     "prerequisites": [],
     "description": "Increase ability to maintain the lead when leading by a fair margin mid-race. (Long)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long"
   },
   {
@@ -5352,7 +5352,7 @@
     "prerequisites": [],
     "description": "Increase velocity when passing another runner late-race. (Long)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long"
   },
   {
@@ -5364,7 +5364,7 @@
     "prerequisites": [],
     "description": "Increase velocity on an uphill. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -5376,7 +5376,7 @@
     "prerequisites": [],
     "description": "Increase velocity when engaged in a challenge mid-race. (Dirt)",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Superstan",
@@ -5387,7 +5387,7 @@
     "prerequisites": [],
     "description": "Increase velocity when close to many runners.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Come_What_May",
@@ -5398,7 +5398,7 @@
     "prerequisites": [],
     "description": "Increase velocity when well-positioned on a straight in the last spurt. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5410,7 +5410,7 @@
     "prerequisites": [],
     "description": "Increase velocity after activating many skills mid-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Dream_Run",
@@ -5421,7 +5421,7 @@
     "prerequisites": [],
     "description": "Increase velocity on the final straight due to a strong desire to cross the finish line carrying everyone's hopes and dreams.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Headliner",
@@ -5432,7 +5432,7 @@
     "prerequisites": [],
     "description": "Increase velocity when positioned toward the front upon approaching late-race. (Long)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long"
   },
   {
@@ -5444,7 +5444,7 @@
     "prerequisites": [],
     "description": "Moderately increase velocity for a medium duration when positioned toward the back mid-race. (End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "End Closer"
   },
   {
@@ -5456,7 +5456,7 @@
     "prerequisites": [],
     "description": "Greatly increase velocity in the second half of the race, but also greatly increase fatigue sometimes.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Flash_Forward",
@@ -5467,7 +5467,7 @@
     "prerequisites": [],
     "description": "Increase velocity on a straight. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5479,7 +5479,7 @@
     "prerequisites": [],
     "description": "Increase velocity when positioned toward the front upon approaching late-race. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -5491,7 +5491,7 @@
     "prerequisites": [],
     "description": "Increase velocity on a straight. (Long)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long"
   },
   {
@@ -5503,7 +5503,7 @@
     "prerequisites": [],
     "description": "Increase ability to pass or challenge another runner early-race or mid-race. (Front Runner)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Front Runner"
   },
   {
@@ -5515,7 +5515,7 @@
     "prerequisites": [],
     "description": "When engaged in a challenge midpack mid-race, moderately recover endurance and moderately increase velocity. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5527,7 +5527,7 @@
     "prerequisites": [],
     "description": "When positioned toward the back mid-race, increase velocity. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5539,7 +5539,7 @@
     "prerequisites": [],
     "description": "When positioned toward the back on the final corner, increase velocity. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -5551,7 +5551,7 @@
     "prerequisites": [],
     "description": "When positioned in the midpack during the second half of the race, increase velocity and very slightly increase acceleration. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -5563,7 +5563,7 @@
     "prerequisites": [],
     "description": "When positioned toward the front mid-race, increase velocity and slightly decrease the velocity of runners behind the skill user. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5575,7 +5575,7 @@
     "prerequisites": [],
     "description": "Increase velocity when followed by another runner directly behind for a long time.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Keep_Going",
@@ -5586,7 +5586,7 @@
     "prerequisites": [],
     "description": "Greatly consume endurance mid-race and greatly increase velocity. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -5598,7 +5598,7 @@
     "prerequisites": [],
     "description": "Increase velocity on straights. (End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "End Closer"
   },
   {
@@ -5610,7 +5610,7 @@
     "prerequisites": [],
     "description": "Increase velocity on corners. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -5677,7 +5677,7 @@
     "prerequisites": [],
     "description": "Leader・At a random point during the Middle Leg, your speed will increase",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -5701,7 +5701,7 @@
     "prerequisites": [],
     "description": "Runner・At a random point during the first half of the Middle Leg, use some extra stamina to greatly increase your speed",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Evolved",
     "strategy": "Front Runner"
   },
   {
@@ -5740,8 +5740,8 @@
     "strategy": "Pace Chaser"
   },
   {
-    "skill_id": "A_Steady_Advance",
-    "name": "Steady Advance",
+    "skill_id": "A_Steady_Gait",
+    "name": "Steady Gait",
     "tier": "A",
     "skill_type": "Speed",
     "prerequisite_of": [],
@@ -5773,7 +5773,7 @@
     "prerequisites": [],
     "description": "Betweener・On the Final Straight, if you're not in lead but also not more than 10 meters from it, your speed will increase significantly",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -5797,7 +5797,7 @@
     "prerequisites": [],
     "description": "Leader/Betweener・If you try to overtake someone in the second half of the race, your speed will increase",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -5892,7 +5892,7 @@
     "prerequisites": [],
     "description": "At a random point in the second half of the race, you will get a speed boost and your stamina will slightly recover",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_One-shot",
@@ -5915,7 +5915,7 @@
     "prerequisites": [],
     "description": "Betweener・Long・If you have surplus strength during the first half of the Final Leg, your speed will increase",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long",
     "strategy": "Late Surger"
   },
@@ -5928,7 +5928,7 @@
     "prerequisites": [],
     "description": "Medium・If you've activated at least 13 skills in the race, you will get a speed boost",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -7961,7 +7961,7 @@
     "prerequisites": [],
     "description": "I'll tackle this with everything I've got!",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
     "skill_id": "A_Adventure_of_564",
@@ -9748,7 +9748,7 @@
     "prerequisites": [],
     "description": "Mile・If you're in the first half of the pack during the second half of the Opening Leg, your speed will greatly increaseTaiki Shuttle (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Mile"
   },
   {
@@ -9772,7 +9772,7 @@
     "prerequisites": [],
     "description": "Medium・At a random point during the Final Leg, your speed will greatly increaseGrass Wonder (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Medium"
   },
   {
@@ -9843,7 +9843,7 @@
     "prerequisites": [],
     "description": "Betweener・During the Final Corner, if you overtake someone from the outside, your speed will increaseEl Condor Pasa (Fantasy)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Late Surger"
   },
   {
@@ -9905,15 +9905,15 @@
     "rarity": "Unique"
   },
   {
-    "skill_id": "A_BLAZING_WOLF",
-    "name": "BLAZING WOLF",
+    "skill_id": "A_Blazing_Wolf",
+    "name": "Blazing Wolf",
     "tier": "A",
     "skill_type": "Speed",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "Leader・Betweener・If you try to overtake someone in the second half of the race, your speed will increaseNarita Brian (Blaze)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Pace Chaser"
   },
   {
@@ -10041,7 +10041,7 @@
     "prerequisites": [],
     "description": "Runner・If you've been overtaken or are being blocked from the side during the early stages of the race, your speed will increase and your stamina will slightly recoverSeiun Sky (Ballroom)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Front Runner"
   },
   {
@@ -10099,7 +10099,7 @@
     "prerequisites": [],
     "description": "Leader・At a random point on the Final Corner, if you're in the first half of the pack, your speed will greatly increaseFine Motion (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Pace Chaser"
   },
   {
@@ -10240,7 +10240,7 @@
     "prerequisites": [],
     "description": "Long・If you're running near the inner fence during the Final Leg, your speed will greatly increaseInari One (Festival)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Long"
   },
   {
@@ -10252,7 +10252,7 @@
     "prerequisites": [],
     "description": "Betweener・At a random point during the Middle Leg, if you're not in the front, your speed will increase and your stamina will slightly increaseWinning Ticket (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Late Surger"
   },
   {
@@ -10300,7 +10300,7 @@
     "prerequisites": [],
     "description": "Chaser・At a random point on a random straight, your speed will increase and you will get a slight speed boostAir Shakur (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "End Closer"
   },
   {
@@ -10351,15 +10351,15 @@
     "strategy": "Late Surger"
   },
   {
-    "skill_id": "A_Bakushin_Lead",
-    "name": "Bakushin Lead!",
+    "skill_id": "A_Bakushin_LEAD",
+    "name": "Bakushin LEAD!",
     "tier": "A",
     "skill_type": "Speed",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "Short・If you lead the race by at least three lengths during the Middle Leg, your speed will greatly increaseSakura Bakushin O (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Sprint"
   },
   {
@@ -10451,7 +10451,7 @@
     "prerequisites": [],
     "description": "Medium/Long・At a random point on any corner, your speed will greatly increaseZenno Rob Roy (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Medium"
   },
   {
@@ -10474,7 +10474,7 @@
     "prerequisites": [],
     "description": "Chaser・If you're in the second half of the pack at a random point during the Middle Leg, your speed and lane movement speed will increaseNarita Taishin (Steampunk)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "End Closer"
   },
   {
@@ -11033,7 +11033,7 @@
     "prerequisites": [],
     "description": "Mile・At a random point on a random corner, your speed will increase, and you will slightly increase speed of all your teammatesNishino Flower (Wedding)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Mile"
   },
   {
@@ -13374,8 +13374,8 @@
     "distance": "Medium"
   },
   {
-    "skill_id": "A_Full_of_Zeal",
-    "name": "Full of Zeal",
+    "skill_id": "A_Got_the_Spirit",
+    "name": "Got the Spirit!",
     "tier": "A",
     "skill_type": "Acceleration",
     "prerequisite_of": [],
@@ -13385,8 +13385,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Rapid_Ascent",
-    "name": "Rapid Ascent",
+    "skill_id": "A_Rapid_Gain",
+    "name": "Rapid Gain",
     "tier": "A",
     "skill_type": "Acceleration",
     "prerequisite_of": [],
@@ -13408,8 +13408,8 @@
     "distance": "Sprint"
   },
   {
-    "skill_id": "A_Devil-May-Care",
-    "name": "Devil-May-Care",
+    "skill_id": "A_Scramble",
+    "name": "Scramble",
     "tier": "A",
     "skill_type": "Acceleration",
     "prerequisite_of": [],
@@ -13421,8 +13421,8 @@
     "strategy": "Late Surger"
   },
   {
-    "skill_id": "A_True_Worth",
-    "name": "True Worth",
+    "skill_id": "A_My_True_Strength",
+    "name": "My True Strength",
     "tier": "A",
     "skill_type": "Acceleration",
     "prerequisite_of": [],
@@ -13458,8 +13458,8 @@
     "distance": "Mile"
   },
   {
-    "skill_id": "A_Early_Bird",
-    "name": "Early Bird",
+    "skill_id": "A_Goin_First",
+    "name": "Goin' First",
     "tier": "A",
     "skill_type": "Acceleration",
     "prerequisite_of": [],
@@ -13756,7 +13756,7 @@
     "prerequisites": [],
     "description": "Increase acceleration on a corner with masterful turning.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Rushing_Gale",
@@ -13767,7 +13767,7 @@
     "prerequisites": [],
     "description": "Increase acceleration on a straight.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_No_Stopping_Me",
@@ -13778,7 +13778,7 @@
     "prerequisites": [],
     "description": "Increase maneuverability when the way ahead is blocked in the last spurt.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Taking_the_Lead",
@@ -13789,7 +13789,7 @@
     "prerequisites": [],
     "description": "Increase ability to go to the front early-race. (Front Runner)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Front Runner"
   },
   {
@@ -13801,7 +13801,7 @@
     "prerequisites": [],
     "description": "Increase ability to keep the lead on the final corner. (Front Runner)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Front Runner"
   },
   {
@@ -13813,7 +13813,7 @@
     "prerequisites": [],
     "description": "Increase acceleration late-race. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -13825,7 +13825,7 @@
     "prerequisites": [],
     "description": "Increase acceleration on a straight in the last spurt. (End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "End Closer"
   },
   {
@@ -13837,7 +13837,7 @@
     "prerequisites": [],
     "description": "Increase acceleration on a straight. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -13849,7 +13849,7 @@
     "prerequisites": [],
     "description": "Increase passing ability when positioned toward the back late-race. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -13861,7 +13861,7 @@
     "prerequisites": [],
     "description": "Increase passing ability when positioned toward the front upon approaching late-race. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -13873,7 +13873,7 @@
     "prerequisites": [],
     "description": "Increase acceleration when passing another runner mid-race. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -13885,7 +13885,7 @@
     "prerequisites": [],
     "description": "Increase acceleration when not in the lead mid-race. (Front Runner)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Front Runner"
   },
   {
@@ -13897,7 +13897,7 @@
     "prerequisites": [],
     "description": "Moderately increase ability to navigate smoothly. (Pace Chaser)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -13909,7 +13909,7 @@
     "prerequisites": [],
     "description": "Moderately improve running on a downhill. (Pace Chaser)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -13921,7 +13921,7 @@
     "prerequisites": [],
     "description": "Moderately increase acceleration when positioned toward the back mid-race. (Pace Chaser)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -13933,7 +13933,7 @@
     "prerequisites": [],
     "description": "Moderately increase acceleration for a medium duration when trying to pass another runner. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -13945,7 +13945,7 @@
     "prerequisites": [],
     "description": "If positioned toward the back late-race, increase acceleration. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -13957,7 +13957,7 @@
     "prerequisites": [],
     "description": "Increase acceleration when positioned toward the front late-race. (Pace Chaser)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -14064,7 +14064,7 @@
     "prerequisites": [],
     "description": "Mile・If you're in the first half of the pack during the first half of the Final Leg, your acceleration will increase",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -14621,15 +14621,15 @@
     "strategy": "Pace Chaser"
   },
   {
-    "skill_id": "A_I_Copy",
-    "name": "I Copy!",
+    "skill_id": "A_I_copy",
+    "name": "I copy!",
     "tier": "A",
     "skill_type": "Acceleration",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "If there's another girl right in front of you during the Last Spurt, your acceleration and lane movement speed will increase, and your stamina will slightly recoverMayano Top Gun (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique"
+    "rarity": "Evolved"
   },
   {
     "skill_id": "A_Overclocking",
@@ -14746,19 +14746,19 @@
     "prerequisites": [],
     "description": "Betweener・During the first half of the Final Leg, if you're not in the front, your acceleration and FoV will increaseGold City (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "strategy": "Late Surger"
   },
   {
-    "skill_id": "A_Bakushin_Sprint",
-    "name": "Bakushin Sprint!",
+    "skill_id": "A_Bakushin_SPRINT",
+    "name": "Bakushin SPRINT!",
     "tier": "A",
     "skill_type": "Acceleration",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "Short・At a random point during the Final Leg, your acceleration will increase and your speed will slightly increaseSakura Bakushin O (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Sprint"
   },
   {
@@ -15841,7 +15841,7 @@
     "prerequisites": [],
     "description": "Greatly increase navigation early-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Lane_Legerdemain",
@@ -15852,7 +15852,7 @@
     "prerequisites": [],
     "description": "Increase navigation late-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Perfect_Prep",
@@ -15863,7 +15863,7 @@
     "prerequisites": [],
     "description": "Prepare to make for the finish line for a medium duration mid-race. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -15875,7 +15875,7 @@
     "prerequisites": [],
     "description": "Avoid becoming surrounded for a medium duration when positioned toward the back mid-race. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -15887,7 +15887,7 @@
     "prerequisites": [],
     "description": "Avoid becoming surrounded early-race. (Front Runner)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Front Runner"
   },
   {
@@ -15899,7 +15899,7 @@
     "prerequisites": [],
     "description": "Prepare to aim for the front late-race. (Dirt)",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Teio_Step",
@@ -15910,7 +15910,7 @@
     "prerequisites": [],
     "description": "Medium・At a random point during the Middle Leg, your speed, acceleration, and lane movement speed will slightly increaseTokai Teio (Original)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique",
+    "rarity": "Evolved",
     "distance": "Medium"
   },
   {
@@ -16011,7 +16011,7 @@
     "prerequisites": [],
     "description": "Decrease time lost to slow starts.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Gatekept",
@@ -16147,7 +16147,7 @@
     "prerequisites": [],
     "description": "Widen field of view with heightened observation early-race. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -16159,7 +16159,7 @@
     "prerequisites": [],
     "description": "Widen field of view with heightened observation mid-race. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -16171,7 +16171,7 @@
     "prerequisites": [],
     "description": "Moderately widen field of view with situational awareness when moving sideways. (End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "End Closer"
   },
   {
@@ -16183,7 +16183,7 @@
     "prerequisites": [],
     "description": "Widen field of view when positioned toward the back late-race. (End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "End Closer"
   },
   {
@@ -16341,7 +16341,7 @@
     "prerequisites": [],
     "description": "Very slightly control breathing and kick forward in the second half of the race. Effect is increased in proportion to number of career wins.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Evolved"
   },
   {
     "skill_id": "A_Radiant_Star",
@@ -16355,8 +16355,8 @@
     "rarity": "Rare"
   },
   {
-    "skill_id": "A_Halfway_to_a_Dream",
-    "name": "Halfway to a Dream",
+    "skill_id": "A_On_the_Way_to_Our_Dream",
+    "name": "On the Way to Our Dream",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16377,8 +16377,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Eyes_on_the_Horizon",
-    "name": "Eyes on the Horizon",
+    "skill_id": "A_Eyes_on_the_Goal",
+    "name": "Eyes on the Goal",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16465,8 +16465,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Blessing_of_the_Sun",
-    "name": "Blessing of the Sun",
+    "skill_id": "A_Suns_Blessing",
+    "name": "Sun's Blessing",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16476,8 +16476,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Blessing_of_the_Land",
-    "name": "Blessing of the Land",
+    "skill_id": "A_Earths_Blessing",
+    "name": "Earth's Blessing",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -16495,7 +16495,7 @@
     "prerequisites": [],
     "description": "During the Middle Leg, if you've been blocked from the side for at least 2 seconds, your speed will increase based on the number of skills you have (up to 20)",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Wisdom_of_the_Land",
@@ -16509,8 +16509,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Blessing_of_the_Ocean",
-    "name": "Blessing of the Ocean",
+    "skill_id": "A_Seas_Blessing",
+    "name": "Sea's Blessing",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
@@ -17222,8 +17222,8 @@
     "strategy": "End Closer"
   },
   {
-    "skill_id": "A_Cloud_of_Dust",
-    "name": "Cloud of Dust",
+    "skill_id": "A_Dust_Cloud",
+    "name": "Dust Cloud",
     "tier": "A",
     "skill_type": "Debuff",
     "prerequisite_of": [],
@@ -17233,8 +17233,8 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Pressing_Feeling",
-    "name": "Pressing Feeling",
+    "skill_id": "A_Oppression",
+    "name": "Oppression",
     "tier": "A",
     "skill_type": "Debuff",
     "prerequisite_of": [],
@@ -17252,7 +17252,7 @@
     "prerequisites": [],
     "description": "Moderately steal velocity from runners behind when positioned toward the front mid-race. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -17264,7 +17264,7 @@
     "prerequisites": [],
     "description": "Decrease velocity of runners ahead when positioned toward the back late-race. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -17276,7 +17276,7 @@
     "prerequisites": [],
     "description": "Unnerve runners in focus late-race. (End Closer)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "End Closer"
   },
   {
@@ -17288,7 +17288,7 @@
     "prerequisites": [],
     "description": "Intimidate runners behind when positioned toward the front early-race. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -17382,7 +17382,7 @@
     "prerequisites": [],
     "description": "Dull movement for runners ahead when positioned toward the back early-race. (Mile)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Mile"
   },
   {
@@ -17608,7 +17608,7 @@
     "prerequisites": [],
     "description": "Cause panic in and moderately dull movement for runners ahead when positioned toward the back early-race. (Sprint)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Sprint"
   },
   {
@@ -17620,7 +17620,7 @@
     "prerequisites": [],
     "description": "Disturb runners directly ahead mid-race. (Medium)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Medium"
   },
   {
@@ -17632,7 +17632,7 @@
     "prerequisites": [],
     "description": "Slightly steal endurance from runners ahead when positioned toward the back mid-race. (Long)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long"
   },
   {
@@ -17644,7 +17644,7 @@
     "prerequisites": [],
     "description": "Startle other runners late-race. (Late Surger)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Late Surger"
   },
   {
@@ -17656,7 +17656,7 @@
     "prerequisites": [],
     "description": "Increase fatigue for rushed runners behind when positioned toward the front mid-race.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Rare"
   },
   {
     "skill_id": "A_Stunning_Trick",
@@ -17667,7 +17667,7 @@
     "prerequisites": [],
     "description": "During the Middle Leg, if you're in the first half of the pack, you will tire out girls that are behind you and distracted, and your speed will increaseFuji Kiseki (Ballroom)'s evolved skill",
     "purchase_option": "Direct",
-    "rarity": "Unique"
+    "rarity": "Evolved"
   },
   {
     "skill_id": "A_Snow_White_Whisper",
@@ -17797,7 +17797,7 @@
     "prerequisites": [],
     "description": "Narrow the field of view for runners ahead late-race. (Long)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "distance": "Long"
   },
   {
@@ -17809,7 +17809,7 @@
     "prerequisites": [],
     "description": "Moderately narrow the field of view for runners behind when positioned toward the front late-race. (Pace Chaser)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Pace Chaser"
   },
   {
@@ -17833,7 +17833,7 @@
     "prerequisites": [],
     "description": "Attempt to gain an especially large lead and keep it until the finish. (Front Runner)",
     "purchase_option": "Direct",
-    "rarity": "Normal",
+    "rarity": "Rare",
     "strategy": "Front Runner"
   },
   {
@@ -17845,7 +17845,7 @@
     "prerequisites": [],
     "description": "Gain +{0}% Carnival Points. This skill will disappear when the event ends.",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
     "skill_id": "A_Carnival_Bonus_obsolete",
@@ -17859,26 +17859,26 @@
     "rarity": "Normal"
   },
   {
-    "skill_id": "A_Voltage_Hero",
-    "name": "Voltage Hero",
+    "skill_id": "A_Energetic_Hero",
+    "name": "Energetic Hero",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "If your motivation is Perfect, your acceleration will permanently marginally increase, you will get a bonus of 60 to all base stats, and you will become immune to debuffs",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
-    "skill_id": "A_Sunrise_Hero",
-    "name": "Sunrise Hero",
+    "skill_id": "A_Sunny_Hero",
+    "name": "Sunny Hero",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "If it's sunny and the track condition is good, your acceleration will permanently marginally increase, and you will get a bonus of 80 to all base stats",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
     "skill_id": "A_Rainy_Hero",
@@ -17889,51 +17889,51 @@
     "prerequisites": [],
     "description": "If it's raining and the track condition is bad, your acceleration will permanently slightly increase, and you will get a bonus of 100 to Speed and Stamina stats",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
-    "skill_id": "A_Outside_Hero",
-    "name": "Outside Hero",
+    "skill_id": "A_Outer_Hero",
+    "name": "Outer Hero",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "If you've started the race in gate block 6, 7, or 8, you will get a bonus of 100 to Speed, Stamina, and Power, and then during the Final Leg, your acceleration will slightly increase",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
-    "skill_id": "A_Linkage_Hero",
-    "name": "Linkage Hero",
+    "skill_id": "A_Friendly_Hero",
+    "name": "Friendly Hero",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "During the Final Leg, if your team has activated at least 6 skills combined during the race, your acceleration will increase and your stamina will recover; bonus effect if the skill count is 10 or more",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
-    "skill_id": "A_Inside_Hero",
-    "name": "Inside Hero",
+    "skill_id": "A_Inner_Hero",
+    "name": "Inner Hero",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "If you've started the race in gate block 1, 2, or 3, your speed and acceleration will slightly increase at the start, and then during the Final Leg, your acceleration will slightly increase and your stamina will recover",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
-    "skill_id": "A_Spurt_Hero",
-    "name": "Spurt Hero",
+    "skill_id": "A_Dashing_Hero",
+    "name": "Dashing Hero",
     "tier": "A",
     "skill_type": "Others",
     "prerequisite_of": [],
     "prerequisites": [],
     "description": "During the Final Leg, your acceleration will slightly increase, you'll get a great speed boost, and your stamina will recover",
     "purchase_option": "Direct",
-    "rarity": "Normal"
+    "rarity": "Unique"
   },
   {
     "skill_id": "A_Best_in_Japan",
@@ -17982,5 +17982,3984 @@
     "purchase_option": "Direct",
     "rarity": "Unique",
     "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Strong_Steps",
+    "name": "Strong Steps",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase Speed when the Power attribute exceeds a certain amount. If Power greatly exceeds that amount, increase Speed greatly instead. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Maestro_of_the_Mud",
+    "name": "Maestro of the Mud",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase performance on soft and heavy ground, increasing Speed and Power. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Risk-Maker",
+    "name": "Risk-Maker",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Occasionally tap into untold inner strength, greatly increasing Speed, Power, and Guts. More likely to activate when skill user is unfavored.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Part_the_Clouds",
+    "name": "Part the Clouds",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase Speed and Power when both attributes exceed a certain amount. (Mile/Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Summer_Gust",
+    "name": "Summer Gust",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase performance in summer races, increasing Speed and Power.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Autumn_Grace",
+    "name": "Autumn Grace",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase performance in autumn races, greatly increasing Speed and Power.Symboli Rudolf (Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Mischevious_Maestro",
+    "name": "Mischevious Maestro",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase performance on soft and heavy ground, greatly increasing Speed and Power. (Dirt)Shinko Windy (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Takin_Each_Gamble",
+    "name": "Takin' Each Gamble",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Occasionally tap into untold inner strength, massively increasing Speed, Power, and Guts. More likely to activate when skill user is unfavored.Nakayama Festa (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Sakura_Blossoms_in_the_Breeze",
+    "name": "Sakura Blossoms in the Breeze",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase performance in spring, greatly increasing Speed and Power.King Halo (Cheerleader)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Rondo_to_the_Right",
+    "name": "Rondo to the Right",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Improve performance on right-handed tracks, greatly increasing Speed and Power.Satono Diamond (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_The_Sakura_Bloom_Regally_Today",
+    "name": "The Sakura Bloom Regally Today",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase performance in spring, greatly increasing Speed and Power.Sakura Chiyono O (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Longmai_Pulse",
+    "name": "Longmai Pulse",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase Speed when the Power attribute exceeds a certain amount. If Power greatly exceeds that amount, increase Speed massively instead.Copano Rickey (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Intoxicate_the_World",
+    "name": "Intoxicate the World",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase Speed and Power when both attributes exceed a certain amount. (Mile/Medium)Tanino Gimlet (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Devils_Laplace",
+    "name": "Devil's Laplace",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase Speed when the Speed attribute greatly exceeds a certain amount. If the Wit attribute also greatly exceeds that amount, increase Speed massively instead. (Pace, Medium)Agnes Tachyon (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Gonna_Be_Ur_1_FRFR",
+    "name": "Gonna Be Ur #1 FRFR",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Press coverage goes to the skill user's head, moderately increasing chance of rushing.",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_Lucky_Number_Seven",
+    "name": "Lucky Number Seven",
+    "tier": "A",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Great things may happen when in bracket 7.Matikanefukukitaru (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Heart_All_Set",
+    "name": "Heart All Set",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "If the skill user began the race without a late start, greatly recover endurance in the early part of mid-race. (Pace, Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_All_Set",
+    "name": "All Set",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "If the skill user began the race without a late start, moderately recover endurance in the early part of mid-race. (Pace, Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_Gluttonous_Ruler",
+    "name": "Gluttonous Ruler",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity mid-race. (Pace Chaser)Special Week (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Racing_Prodigy",
+    "name": "Racing Prodigy",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front mid-race. (Pace Chaser)Tokai Teio (Anime Collab)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_To_the_Ends_of_the_Earth",
+    "name": "To the Ends of the Earth",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when moving sideways. (Medium)Tokai Teio (Anime Collab)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_You_Cant_Handle_Me_☆",
+    "name": "You Can't Handle Me ☆",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance on an uphill. (Front Runner)Maruzensky (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Kasamatsus_Bottomless_Pit",
+    "name": "Kasamatsu's Bottomless Pit",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance mid-race. (Pace Chaser)Oguri Cap (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Full_Belly_Full_Energy",
+    "name": "Full Belly, Full Energy",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance mid-race. (Pace Chaser)Oguri Cap (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Its_All_Goin_Downhill_from_Here",
+    "name": "It's All Goin' Downhill from Here!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity on a downhill. (End Closer)Gold Ship (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_A_Swig_of_Strength",
+    "name": "A Swig of Strength",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when entering a mid-race straight.Vodka (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_First_Place_Is_MINE",
+    "name": "First Place Is MINE!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front mid-race. (Pace Chaser)Daiwa Scarlet (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Rough_Queen",
+    "name": "Rough Queen",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance on an uphill. (Front Runner)Daiwa Scarlet (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Comforting_Heal",
+    "name": "Comforting Heal",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity mid-race. (Long)Grass Wonder (Fantasy)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_The_Magic_of_Courage",
+    "name": "The Magic of Courage",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned midpack or further back mid-race. (Late Surger)Grass Wonder (Fantasy)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Top-Class_Composure",
+    "name": "Top-Class Composure",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front upon approaching mid-race. (Pace Chaser)Mejiro McQueen (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Rigorous_Rest",
+    "name": "Rigorous Rest",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity mid-race. (Long)Mejiro McQueen (Anime Collab)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_An_Earnest_Breather",
+    "name": "An Earnest Breather",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "If the skill user began the race without a late start, massively recover endurance in the early part of mid-race. (Pace, Long)Mejiro McQueen (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Performing_Perfecto",
+    "name": "Performing Perfecto!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front upon approaching mid-race. (Pace Chaser)El Condor Pasa (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Maestro_of_the_Waltz",
+    "name": "Maestro of the Waltz",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance on a corner.TM Opera O (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Unwavering_Expression",
+    "name": "Unwavering Expression",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance when positioned toward the front upon approaching mid-race. (Pace Chaser)Symboli Rudolf (Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_All_According_to_Plan",
+    "name": "All According to Plan",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance when positioned toward the front upon approaching mid-race. (Pace Chaser)Biwa Hayahide (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Strategic_Cooldown",
+    "name": "Strategic Cooldown",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance mid-race. (Long)Biwa Hayahide (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Very_Important_Positioning",
+    "name": "Very Important Positioning",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance when trying to pass another runner. (Long)Biwa Hayahide (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_You_copy",
+    "name": "You copy",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance on a straight mid-race.Mayano Top Gun (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Barrel_Roll",
+    "name": "Barrel Roll!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance with flawless cornering.Mayano Top Gun (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Overcome_Any_Strife",
+    "name": "Overcome Any Strife",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front mid-race. (Medium)Mihono Bourbon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Always_Hungry_for_More",
+    "name": "Always Hungry for More!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity mid-race. (Pace Chaser)Hishi Akebono (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Dark_Assassin",
+    "name": "Dark Assassin",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity mid-race. (Long)Rice Shower (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_I_Can_Do_This",
+    "name": "I Can Do This!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front upon approaching mid-race. (Pace Chaser)Rice Shower (Halloween)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Stubborn_Sis",
+    "name": "Stubborn Sis",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity on an uphill. (Front Runner)Ines Fujin (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Efficient_Rest_Methodology",
+    "name": "Efficient Rest Methodology",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front mid-race. (Pace Chaser)Agnes Tachyon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Quiet_Promise",
+    "name": "Quiet Promise",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when following directly behind a runner. (End Closer)Admire Vega (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Expert_on_the_Dirt",
+    "name": "Expert on the Dirt",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and greatly recover endurance when positioned toward the back mid-race. (Dirt)Inari One (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Geared_to_Strike",
+    "name": "Geared to Strike",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned midpack or further back upon approaching mid-race. (Late Surger)Gold City (Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Motherly_Maestro",
+    "name": "Motherly Maestro",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance with flawless cornering.Super Creek (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Halfway_to_Heroism",
+    "name": "Halfway to Heroism",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance when positioned toward the front mid-race. (Pace Chaser)Zenno Rob Roy (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Trendsetter",
+    "name": "Trendsetter",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity mid-race. (Pace/Late)Tosen Jordan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Cutting-Edge_Senses",
+    "name": "Cutting-Edge Senses",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned around the very back mid-race. (End Closer)Narita Taishin (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Ill_Keep_Trying",
+    "name": "I'll Keep Trying!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase navigation and greatly recover endurance when the way ahead is jammed early or mid-race.Haru Urara (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_I-Im_Doing_My_Best",
+    "name": "I-I'm Doing My Best!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when passed mid-race.Meisho Doto (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Goin_My_Way",
+    "name": "Goin' My Way!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when surrounded mid-race.Matikanetannhauser (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Indestructable",
+    "name": "Indestructable",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned midpack or further back upon approaching mid-race. (Late Surger)Satono Diamond (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Eternal_Light",
+    "name": "Eternal Light",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front mid-race. (Pace Chaser)Mejiro Ardan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Ladylike_Resolve",
+    "name": "Ladylike Resolve",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance when passed mid-race.Mejiro Bright (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Thinkin_About_Tomakomai_Food",
+    "name": "Thinkin' About Tomakomai Food",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity when positioned toward the front upon approaching mid-race. (Pace Chaser)Hokko Tarumae (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Light-Footed_as_a_Hare",
+    "name": "Light-Footed as a Hare",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and moderately increase velocity mid-race. (Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Undistracted",
+    "name": "Undistracted",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly recover endurance and very slightly increase velocity mid-race. (Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Elegant_Phosphorescence",
+    "name": "Elegant Phosphorescence",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and slightly increase velocity upon approaching late-race. (Pace Chaser)Mejiro Ardan (Ballroom)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_No_Pressure_No_Rush",
+    "name": "No Pressure, No Rush",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly recover endurance when positioned midpack or further back mid-race. (Late Surger)Hishi Miracle (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Sunny_Sign",
+    "name": "Sunny Sign",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned toward the front upon approaching late-race. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_Comeback",
+    "name": "Comeback",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned toward the back mid-race. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_Full_Tilt",
+    "name": "Full Tilt",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned toward the front in the last spurt. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_Rational",
+    "name": "Rational",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned toward the back in the early part of mid-race after recovering endurance with a skill. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_On_the_Attack",
+    "name": "On the Attack",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity mid-race. (Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Breakin_Out",
+    "name": "Breakin' Out",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity and slightly increase navigation when positioned around the very back mid-race. (End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Mad_Dash",
+    "name": "Mad Dash",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly expend endurance and moderately increase velocity in the early part of mid-race. (Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Aspire",
+    "name": "Aspire",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Very slightly increase velocity for a medium duration when positioned 2nd or later and within 2 lengths of the lead just before late-race. (Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Pedal_to_the_Metal",
+    "name": "Pedal to the Metal",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity when positioned 2nd or further back within 4 lengths of the lead on the final straight. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Latch_On",
+    "name": "Latch On",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when trying to pass another runner in the second half of the race. (Pace/Late)",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_No_Looking_Back",
+    "name": "No Looking Back",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned toward the front upon approaching late-race. (Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Graceful_Gait",
+    "name": "Graceful Gait",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity mid-race. (Mile/Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_High_Speed",
+    "name": "High Speed",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly surge ahead and minimally recover endurance sometime during the second half of the race.",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_Locked_On",
+    "name": "Locked On",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned toward the back upon approaching late-race. (Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Hurry_Up",
+    "name": "Hurry Up!",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "If still going strong, slightly surge ahead in the early part of late-race. (Late, Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal"
+  },
+  {
+    "skill_id": "A_Unrestrained_Passion",
+    "name": "Unrestrained Passion",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned midpack or further back upon approaching mid-race. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Start_the_Charge",
+    "name": "Start the Charge",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity when positioned midpack or further back upon approaching late-race. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_First_Step",
+    "name": "First Step",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Very slightly increase velocity for a medium duration when positioned midpack mid-race. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Rising_Heat",
+    "name": "Rising Heat",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly surge ahead when positioned midpack in the early part of late-race. (Medium/Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Pop_Off",
+    "name": "Pop Off!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity and very slightly recover endurance mid-race. (Long)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Chance_of_Victory",
+    "name": "Chance of Victory",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned toward the front upon approaching late-race. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Cant_Keep_Me_Down",
+    "name": "Can't Keep Me Down",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned toward the back mid-race. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Full_Speed",
+    "name": "Full Speed!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned toward the front in the last spurt. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Crystal_Clear",
+    "name": "Crystal Clear",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned toward the back in the early part of mid-race after recovering endurance with a skill. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Dancer_in_the_Dirt",
+    "name": "Dancer in the Dirt",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when following directly behind a runner. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Breakin_Ahead",
+    "name": "Breakin' Ahead",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and increase navigation when positioned around the very back mid-race. (End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Givin_It_1000%",
+    "name": "Givin' It 1000%",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly expend endurance and greatly increase velocity in the early part of mid-race. (Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Shocking_Flash",
+    "name": "Shocking Flash",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity on a straight. (Sprint)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Perfect_Spot",
+    "name": "Perfect Spot!",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Reduce wind resistance when following directly behind a runner.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Ambitious_Breeze",
+    "name": "Ambitious Breeze",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity for a medium duration when positioned 2nd or later and within 2 lengths of the lead just before late-race. (Pace Chaser)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Solid_Strike",
+    "name": "Solid Strike",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity and acceleration upon approaching late-race when leading or within 4 lengths of the lead. (Pace, Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Sharp_Streak",
+    "name": "Sharp Streak",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity on a straight. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Cant_Even_Catch_My_Shadow",
+    "name": "Can't Even Catch My Shadow",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when leading on the final straight and there's another runner within 1 length behind. (Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Reckless_Charge",
+    "name": "Reckless Charge",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned toward the front upon approaching late-race. (Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Crescent_Gale",
+    "name": "Crescent Gale",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity on a corner. (Front Runner)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Sharp_Arc",
+    "name": "Sharp Arc",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity on a corner. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Master_of_Declines",
+    "name": "Master of Declines",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity on a downhill.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Beautiful_Form",
+    "name": "Beautiful Form",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Surge ahead when positioned toward the back on a third corner just before the final corner. (Medium/Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Superb_Gait",
+    "name": "Superb Gait",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity mid-race. (Mile/Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Sure_Shot",
+    "name": "Sure Shot",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned toward the back upon approaching late-race. (Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_A_Journey_in_a_Step",
+    "name": "A Journey in a Step",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity for a medium duration when positioned midpack mid-race. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Rising_Pulse",
+    "name": "Rising Pulse",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Surge ahead when positioned midpack in the early part of late-race. (Medium/Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Crescent_Gust",
+    "name": "Crescent Gust",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity on a corner. (Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Send_It_☆",
+    "name": "Send It! ☆",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and moderately recover endurance mid-race. (Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Rampaging_Passion",
+    "name": "Rampaging Passion",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned midpack or further back upon approaching late-race. (Late Surger)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_I_Can_Win_Sometimes_Right",
+    "name": "I Can Win Sometimes, Right",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity with an arousal of fighting spirit when positioned 3rd and about to lose late-race.Nice Nature (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_564_Escapades",
+    "name": "564 Escapades",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity sometime in the second half of the race. If you've got any cool rare skills lying around, go ahead and activate 2 regardless of their conditions—it's on the house.Gold Ship (Summer)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Your_Smile_Sparkles_as_the_Waves",
+    "name": "Your Smile Sparkles as the Waves",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "When positioned in the front part of the pack in the second half of the race, start a long spurt based on remaining endurance, slightly increasing velocity continuously.Mejiro McQueen (Summer)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Luck_Runs_My_Way",
+    "name": "Luck Runs My Way",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity sometime upon approaching late-race, then increase velocity and acceleration based on how many passive skills the skill user has in effect.Copano Rickey (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Ticket_to_Your_Dreams",
+    "name": "Ticket to Your Dreams!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity steadily when in midpack or further back on the final straight in the last spurt. Effect increases when activating a skill (up to 3 times).Winning Ticket (Steampunk)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Hephaestus",
+    "name": "Hephaestus",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Aim higher, increasing velocity from midpack upon approaching the final straight late-race.Narita Taishin (Steampunk)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Snow_Bright_Snow_Flight",
+    "name": "Snow Bright, Snow Flight",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "With 300m or less remaining, increase velocity when leading or positioned toward the front close to the lead runner.Yukino Bijin (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Im_Possible",
+    "name": "I'm Possible!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned 2nd or later within 4 lengths of the lead with 200m remaining. If within 2 lengths, increase velocity greatly instead.Seeking the Pearl (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_THE_MOE_AAAA_Thanks_for_My_Life",
+    "name": "THE MOE AAAA Thanks for My Life",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Simp hard and increase velocity when positioned midpack or further back on a mid-race corner and there are at least 3 beautiful radiant Umamusume nearby.Agnes Digital (Halloween)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Lightning_Flare",
+    "name": "Lightning Flare",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity continuously when the skill user activates 2 skills mid-race. Increase this skill's effectiveness if the user activates another skill while it's active (up to 2 times).Tamamo Cross (Festival)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Firelight",
+    "name": "Firelight",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity on the final straight after pressuring a runner toward the back on a corner late-race. Effect increases for each time the user passed a runner on a corner late-race.Inari One (Festival)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Laugh_at_the_Odds",
+    "name": "Laugh at the Odds",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when well-positioned with 400m or less remaining after trying to pass another runner on the final corner or later. If unfavored, greatly increase velocity instead.Nakayama Festa (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Raise_My_Souls_Blade",
+    "name": "Raise My Soul's Blade!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned toward the front late-race with 400m remaining. Increase velocity greatly instead if it's a G1 or similarly major race and the skill user is favored.Zenno Rob Roy (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Free_From_the_Ashes",
+    "name": "Free From the Ashes",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when in the front part of the pack on the latter half of the final corner late-race. If the race is long and the user engaged in a challenge mid-race, massively increase instead.Narita Brian (Blaze)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Rain_Cloud_Bolt",
+    "name": "Rain Cloud Bolt",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Shine brilliantly, increasing velocity and moderately recovering endurance when positioned midpack around halfway through the race.Satono Diamond (New Year)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Bring_on_the_Banquet",
+    "name": "Bring on the Banquet!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Surge ahead for a moderate duration and very slightly increase acceleration when positioned toward the front on a late-race corner far from the finish.Kitasan Black (New Year)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Hands_in_the_Air_Like_Ya_Dont_Care",
+    "name": "Hands in the Air Like Ya Don't Care!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately crank the velocity when vibing toward the front sometime upon approaching late-race. If it's like a sprint or mile race or smth, moderately crank the velocity CONTINUOUSLY!Daitaku Helios (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_A_Warm_Cup_for_You",
+    "name": "A Warm Cup for You",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a moderate duration when 2nd or worse and within 4 lengths of the lead on a downhill just before late-race. If the race is medium, also very slightly increase acceleration.Mejiro Ryan (Valentine)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Fresh☆Parlor",
+    "name": "Fresh☆Parlor",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity continuously when positioned toward the front in the early part of mid-race. Oh, and have a dollop of moderate endurance recovery too!Ines Fujin (Valentine)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Ding_Dong_Boo",
+    "name": "Ding Dong, Boo!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity when dueling. If it's a dirt race, chomp on fiercely to also increase acceleration.Shinko Windy (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Engines_LIT",
+    "name": "Engines LIT!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Very slightly increase velocity continuously for an extremely long duration when leading by a fair margin halfway through mid-race, but very slightly lose steam at the end of late-race.Twin Turbo (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Lyrical_Journey",
+    "name": "Lyrical Journey",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity continuously when toward the back sometime upon approaching late-race. Effect increases if far from the lead and the race is medium or long.Mr. C.B. (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Turbo_BLAST",
+    "name": "Turbo BLAST!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase velocity continuously for an extremely long duration when leading by a fair margin halfway through mid-race, but very slightly lose steam at the end of late-race.Twin Turbo (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_World_in_Bloom",
+    "name": "World in Bloom",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity when positioned midpack halfway through the race. If it's a long-distance race, increase this skill's duration and greatly recover endurance.Sakura Laurel (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Tumbly_Power_Drive",
+    "name": "Tumbly Power Drive!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity for a duration based on remaining endurance when in midpack on a second-half corner. If the race is medium, also very slightly increase acceleration.Matikanetannhauser (Sports Festival)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Bang_Miracle_Shot_☆",
+    "name": "Bang! Miracle Shot ☆",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity continuously when in midpack on the latter half of the final corner. If unfavored and the race is long, greatly increase velocity continuously instead.Hishi Miracle (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Sublimated_Thunder",
+    "name": "Sublimated Thunder",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Unleash dark power to surge ahead on the final straight after being toward the back late-race. If it's a medium-distance race at Tokyo Racecourse, surge ahead massively instead.Tanino Gimlet (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_First_Bite_of_the_Feast",
+    "name": "First Bite of the Feast!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and very slightly increase acceleration for a moderate duration when toward the back on a downhill just before late-race after passing another runner 3 times mid-race.Hishi Amazon (Wedding)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Magical☆Marvelous★World",
+    "name": "Magical☆Marvelous★World",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when close to another runner midpack around halfway through the race. Increase this skill's effectiveness if at least 4 runners are in view.Marvelous Sunday (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Us_Girlies_Keep_Winnin_♪",
+    "name": "Us Girlies Keep Winnin'! ♪",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity continuously when positioned midpack around halfway through the race. Increase this skill's effectiveness when the user's mood is great.Tosen Jordan (Summer Trip)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Scorching_Summer_Tech",
+    "name": "Scorching Summer Tech!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity when positioned toward the front with 200m remaining. Increase velocity greatly instead if it's a sprint and the skill user passed another runner late-race.Bamboo Memory (Summer Trip)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Sunrise_Banner—Katsuragi_Ace",
+    "name": "Sunrise Banner—Katsuragi Ace!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase velocity and moderately recover endurance when leading on the third corner. If it's a medium-distance race at Tokyo Racecourse, increase this skill's duration.Katsuragi Ace (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Ahead_of_the_Horizon",
+    "name": "Ahead of the Horizon",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately surge ahead when leading at the start of late-race. If it's on the third corner and the skill user led by a large margin mid-race, greatly surge ahead instead.Silence Suzuka (Summer)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Accelerating_to_My_Dreams",
+    "name": "Accelerating to My Dreams!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity during the last spurt.Special Week (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Sunshine_n_Spirit",
+    "name": "Sunshine 'n' Spirit!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned midpack or further back mid-race. (Late Surger)Special Week (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Ruler_of_Summer",
+    "name": "Ruler of Summer",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration after passing another runner mid-race.Special Week (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Overwhelming_Advance",
+    "name": "Overwhelming Advance",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity, very slightly increase acceleration, and slightly recover endurance after passing another runner late-race. (Long)Special Week (Commander)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Lets_Floor_It_Baby",
+    "name": "Let's Floor It, Baby!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Mile)Maruzensky (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Revved_Up_Red-Hot",
+    "name": "Revved Up Red-Hot",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when leading in the second half of the race. (Mile)Maruzensky (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Queen_of_the_Stage",
+    "name": "Queen of the Stage",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front upon approaching mid-race. (Mile)Maruzensky (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Dazzling_Star",
+    "name": "Dazzling Star",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when trying to pass another runner. (Mile)Fuji Kiseki (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Holiday_Miracle",
+    "name": "Holiday Miracle",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when near the inner rail on the final corner. (Long)Oguri Cap (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Golshis_Out-of-Body_Experience",
+    "name": "Golshi's Out-of-Body Experience",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when near the inner rail on the final corner. (Long)Gold Ship (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Have_Some_Squid_Kid",
+    "name": "Have Some Squid, Kid!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the back mid-race. (Medium)Gold Ship (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Kick_It_into_Top_Gear",
+    "name": "Kick It into Top Gear!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Massively increase velocity when positioned 2nd or later within 4 lengths of the lead on the final straight. (Late Surger)Vodka (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Perfectly_Tuned",
+    "name": "Perfectly Tuned",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when positioned toward the front mid-race. (Medium)Daiwa Scarlet (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Door_to_My_Dream",
+    "name": "Door to My Dream",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Massively increase velocity when leading on the final straight with another runner within 1 length behind. (Front Runner)Daiwa Scarlet (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Shootin_Straight_Ahead",
+    "name": "Shootin' Straight Ahead!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Mile)Taiki Shuttle (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Takin_Yall_on_a_Wild_Ride",
+    "name": "Takin' Y'all on a Wild Ride!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front upon approaching mid-race. (Mile)Taiki Shuttle (Camping)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Cry_of_Victory",
+    "name": "Cry of Victory",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity and very slightly increase acceleration when trying to pass another runner on the final corner or later. (Medium)Hishi Amazon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Pororoca_Roar",
+    "name": "Pororoca Roar",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity in the last spurt when positioned toward the back late-race. (End Closer)Hishi Amazon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_As_Befits_a_Mejiro",
+    "name": "As Befits a Mejiro",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Long)Mejiro McQueen (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Above_the_Cloudline",
+    "name": "Above the Cloudline",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity on a straight.Mejiro McQueen (Anime Collab)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Classy_Summer",
+    "name": "Classy Summer",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front upon approaching late-race. (Long)Mejiro McQueen (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Entrance_of_the_Centurial_Overlord",
+    "name": "Entrance of the Centurial Overlord!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front on the final corner. (Pace Chaser)TM Opera O (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_The_Leading_Actor",
+    "name": "The Leading Actor",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Medium)TM Opera O (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Never_a_Beat_Late",
+    "name": "Never a Beat Late!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front upon approaching late-race. (Long)TM Opera O (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Decisive_Strike",
+    "name": "Decisive Strike",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity on a straight.Narita Brian (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_In_the_Wolfs_Maw",
+    "name": "In the Wolf's Maw",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity during the last spurt.Narita Brian (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Eyes_of_an_Emperor",
+    "name": "Eyes of an Emperor",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly surge ahead late-race. (Medium)Symboli Rudolf (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Unquestioned_Might",
+    "name": "Unquestioned Might",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase performance on corners, increasing velocity for a medium duration.Symboli Rudolf (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_As_the_Empress_Wills",
+    "name": "As the Empress Wills",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front late-race. (Pace Chaser)Air Groove (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Dignified_Empress",
+    "name": "Dignified Empress",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when trying to pass another runner. (Mile)Air Groove (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Ultimate_Uma_Simp",
+    "name": "Ultimate Uma Simp",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when near several other runners.Agnes Digital (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Run_Like_the_Fics_Due_Tomorrow",
+    "name": "Run Like the Fic's Due Tomorrow!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance after passing another runner mid-race.Agnes Digital (Halloween)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Back_for_More_Moe",
+    "name": "Back for More Moe!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when positioned toward the back mid-race. (Dirt)Agnes Digital (Halloween)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Quick_Reel",
+    "name": "Quick Reel",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when in the lead by a fair margin mid-race. (Long)Seiun Sky (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Breakaway_Scheme",
+    "name": "Breakaway Scheme",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front mid-race. (Front Runner)Seiun Sky (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Run_If_You_Can_♪",
+    "name": "Run If You Can ♪",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when positioned toward the front mid-race. (Front Runner)Seiun Sky (Ballroom)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Gone_in_a_Flash",
+    "name": "Gone in a Flash",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned midpack or further back mid-race. (Late Surger)Tamamo Cross (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Paradise_Tail",
+    "name": "Paradise Tail",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity after activating several skills mid-race.Tamamo Cross (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_A_Prayer_for_Our_Predecessors",
+    "name": "A Prayer for Our Predecessors",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Medium)Tamamo Cross (Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Cmon_Lets_Do_This",
+    "name": "C'mon, Let's Do This!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity after passing another runner mid-race.Tamamo Cross (Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Emboldening_Memories",
+    "name": "Emboldening Memories",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Mile)Fine Motion (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Speedy_Santa",
+    "name": "Speedy Santa",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity during the last spurt.Biwa Hayahide (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Malfunction_Mitigation",
+    "name": "Malfunction Mitigation",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when positioned toward the front mid-race. (Front Runner)Mihono Bourbon (Valentine)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Let_Those_Muscles_SING",
+    "name": "Let Those Muscles SING!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Medium)Mejiro Ryan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Bulk_Up_&_Away",
+    "name": "Bulk Up & Away!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity after passing another runner from the outside on the final corner. (Late Surger)Mejiro Ryan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Give_You_a_Taste_of_Glory",
+    "name": "Give You a Taste of Glory",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity on a downhill.Mejiro Ryan (Valentine)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Slick_Serving",
+    "name": "Slick Serving",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly increase acceleration on a corner. (Front Runner)Ines Fujin (Valentine)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Latent_One",
+    "name": "Latent One",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity late-race. (Medium)Agnes Tachyon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Self-Destructive_Comet",
+    "name": "Self-Destructive Comet",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity in the last spurt when positioned toward the back late-race. (End Closer)Admire Vega (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Firefighters_Ascent",
+    "name": "Firefighter's Ascent",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity after activating several skills mid-race.Inari One (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Superpowered_Engines",
+    "name": "Superpowered Engines!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration on an uphill. (Late Surger)Winning Ticket (Steampunk)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_I_Can_Fly",
+    "name": "I Can Fly!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when well-positioned on a straight during the last spurt. (Medium)Winning Ticket (Steampunk)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Uplift",
+    "name": "Uplift",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when positioned toward the back mid-race. (Medium)Air Shakur (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_On_My_Honor",
+    "name": "On My Honor",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity during the last spurt.Eishin Flash (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Recipe_for_Victory",
+    "name": "Recipe for Victory",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Surge ahead for a medium duration late-race. (Medium)Eishin Flash (Valentine)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Dark_Flash",
+    "name": "Dark Flash",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity on a straight. (Medium)Eishin Flash (Valentine)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Rising_Road_Rage",
+    "name": "Rising Road Rage",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly increase acceleration after passing from the outside on the final corner. (Late Surger)Kawakami Princess (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_The_World_Is_My_Oyster",
+    "name": "The World Is My Oyster",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly surge ahead on a straight. (Sprint/Mile)Seeking the Pearl (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Pearlescent_Danceoff",
+    "name": "Pearlescent Danceoff",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when trying to pass another runner. (Sprint/Mile)Seeking the Pearl (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Just_Run_Like_Crazy",
+    "name": "Just Run Like Crazy!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front during the last spurt. (Dirt)Shinko Windy (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Sweet_Trance",
+    "name": "Sweet Trance",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front late-race. (Pace Chaser)Super Creek (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Expert_Caretaker",
+    "name": "Expert Caretaker",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance on a corner.Super Creek (Halloween)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Umadol_♪_Chart_Topper",
+    "name": "Umadol ♪ Chart Topper!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when engaging in a challenge mid-race. (Dirt)Smart Falcon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Rising_to_Umadol_Stardom",
+    "name": "Rising to Umadol Stardom!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when engaging in a challenge mid-race. (Dirt)Smart Falcon (Grand Live)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Its_All_or_Nothing",
+    "name": "It's All or Nothing",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Massively increase velocity in the second half of the race, but also massively increase fatigue sometimes.Nakayama Festa (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Petals_in_the_Breeze",
+    "name": "Petals in the Breeze",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance on a straight.Nishino Flower (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Peak_Discipline",
+    "name": "Peak Discipline",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly increase acceleration after passing from the outside on the final corner. (Late Surger)Bamboo Memory (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Ready_for_a_Red-Hot_Tech",
+    "name": "Ready for a Red-Hot Tech!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly increase acceleration when positioned toward the back on the final corner. (Mile)Bamboo Memory (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Lucky_Sign",
+    "name": "Lucky Sign!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration late-race. (Long)Matikanefukukitaru (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Crazy_Extra_Mega_Lucky",
+    "name": "Crazy Extra Mega Lucky!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and very slightly increase acceleration for a medium duration after passing another runner late-race. (Long)Matikanefukukitaru (Full Armor)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Bring_On_the_Luck",
+    "name": "Bring On the Luck!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when near the inner rail on the final corner. (Long)Matikanefukukitaru (Full Armor)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Soaring_Steps",
+    "name": "Soaring Steps",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly surge ahead when positioned toward the back on a third corner just before the final corner. (Medium/Long)Mr. C.B. (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Right_on_the_Dot",
+    "name": "Right on the Dot",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front on the final corner. (Pace Chaser)Meisho Doto (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_I_Want_to_Explore_More",
+    "name": "I Want to Explore More!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and very slightly increase acceleration for a medium duration when positioned midpack in the second half of the race. (Late Surger)Mejiro Dober (Camping)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Be_the_Lead",
+    "name": "Be the Lead!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration late-race. (Late Surger)Nice Nature (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Just_Gotta_Do_What_I_Can",
+    "name": "Just Gotta Do What I Can",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration late-race. (Medium)Nice Nature (Cheerleader)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Shocking_Sweep",
+    "name": "Shocking Sweep",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and very slightly increase acceleration for a medium duration when positioned toward the back late-race. (Sprint)King Halo (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Ascend_Glory",
+    "name": "Ascend Glory",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration after passing from the outside on the final corner. (Late Surger)King Halo (Cheerleader)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Ei_Ei_Mun",
+    "name": "Ei, Ei, Mun!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity, very slightly increase acceleration, and slightly recover endurance after passing another runner late-race. (Long)Matikanetannhauser (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_WILD_Amirite",
+    "name": "WILD, Amirite",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when another runner is right behind the skill user for a long time.Mejiro Palmer (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Breakaway_on_Lock",
+    "name": "Breakaway on Lock",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when leading by a fair margin mid-race. (Long)Mejiro Palmer (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_LOL_Im_on_FIRE",
+    "name": "LOL I'm on FIRE!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front mid-race. (Mile)Daitaku Helios (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_DW_Im_on_It",
+    "name": "DW I'm on It!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front upon approaching late-race. (Mile)Daitaku Helios (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Bright_Blast",
+    "name": "Bright Blast",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity on a straight. (Long)Kitasan Black (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Leap_Ahead_to_the_Future",
+    "name": "Leap Ahead to the Future",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front mid-race. (Front Runner)Kitasan Black (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Good_Year_for_Sakura",
+    "name": "Good Year for Sakura!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front on the final corner. (Pace Chaser)Sakura Chiyono O (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Give_This_Moment_Everything",
+    "name": "Give This Moment Everything",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when well-positioned on a straight in the last spurt. (Medium)Mejiro Ardan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Growing_Flame",
+    "name": "Growing Flame",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration after passing another runner mid-race.Yaeno Muteki (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Yaenos_Fighting_Spirit",
+    "name": "Yaeno's Fighting Spirit",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity and very slightly increase acceleration when pressured on the final corner or later. (Medium)Yaeno Muteki (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Shearing_Gust",
+    "name": "Shearing Gust",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the front mid-race. (Mile)Yamanin Zephyr (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_As_Nature_Wills",
+    "name": "As Nature Wills",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned 2nd or later within 2 lengths of the lead just before late-race. (Pace Chaser)Yamanin Zephyr (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Leave_a_Footprint_in_Your_Memory",
+    "name": "Leave a Footprint in Your Memory",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly increase acceleration when positioned toward the front upon approaching late-race. (Sprint)Aston Machan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Lucky_Rickey",
+    "name": "Lucky Rickey!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front upon approaching late-race. (Dirt)Copano Rickey (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Be_a_Good_Ambassador",
+    "name": "Be a Good Ambassador!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when engaging in a challenge mid-race. (Dirt)Hokko Tarumae (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_A_Dose_of_Ambition",
+    "name": "A Dose of Ambition",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when trying to pass another runner. (Mile)Wonder Acute (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Divine_on_the_Dirt",
+    "name": "Divine on the Dirt",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when following directly behind another runner. (Dirt)Wonder Acute (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Imposing_Innovation",
+    "name": "Imposing Innovation",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly recover endurance when positioned toward the back upon approaching late-race. (Medium/Long)Symboli Kris S (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Bloom_Down_the_Branch",
+    "name": "Bloom Down the Branch",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity on a straight.Sakura Chiyono O (Ballroom)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_I_Dont_Wanna_Lose",
+    "name": "I Don't Wanna Lose!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Recover endurance and increase velocity when engaging in a challenge midpack mid-race. (Medium)Sakura Chiyono O (Ballroom)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Fleeting_Afterglow",
+    "name": "Fleeting Afterglow",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately expend endurance to massively increase velocity on a straight during the last spurt. (Pace, Medium)Mejiro Ardan (Ballroom)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Open_All_the_Buds",
+    "name": "Open All the Buds",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity mid-race. (Late Surger)Sakura Laurel (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Blossom_for_Us",
+    "name": "Blossom for Us!",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly surge ahead if still going strong in the early part of late-race. (Late, Long)Sakura Laurel (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Beyond_the_Stars_with_You",
+    "name": "Beyond the Stars with You",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when well-positioned on a straight in the last spurt. (Medium)Neo Universe (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Cross_the_Sea_of_Stars",
+    "name": "Cross the Sea of Stars",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Surge ahead for a medium duration upon activating 13 skills this race. (Medium)Neo Universe (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Full_Charge_BAKUSHIIIN",
+    "name": "Full Charge! BAKUSHIIIN!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front upon approaching late-race. (Sprint)Sakura Bakushin O (Sports Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Baku-speed_BakuSHIIIIN",
+    "name": "Baku-speed! BakuSHIIIIN!",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Surge ahead for a medium duration on a straight. (Sprint)Sakura Bakushin O (Sports Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Collect_All_the_Little_Miracles",
+    "name": "Collect All the Little Miracles",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned midpack mid-race. (Late Surger)Hishi Miracle (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_The_Stormcaller_of_Destruction",
+    "name": "The Stormcaller of Destruction",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity in the last spurt when positioned toward the back late-race. (End Closer)Tanino Gimlet (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Engaging_Engine",
+    "name": "Engaging Engine!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity for a medium duration when positioned toward the back mid-race. (End Closer)Hishi Amazon (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Veil_in_the_Spring_Breeze",
+    "name": "Veil in the Spring Breeze",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly increase acceleration on a downhill. (Sprint/Mile)Nishino Flower (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Marvelous_☆_Thrill",
+    "name": "Marvelous ☆ Thrill",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the back mid-race. (Medium)Marvelous Sunday (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Im_Literally_the_Best",
+    "name": "I'm Literally the Best!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity when positioned midpack on the final corner. If it's a medium-distance race at Tokyo Racecourse, also slightly increase acceleration. (Late Surger)Tosen Jordan (Summer Trip)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Runnin_the_Race_Solo",
+    "name": "Runnin' the Race Solo",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "If the skill user led by a large margin mid-race, greatly increase velocity when leading on the final straight. Increase this skill's effectiveness in medium races at Tokyo Racecourse. (Front Runner)Katsuragi Ace (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Unyielding_Aster",
+    "name": "Unyielding Aster",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when well-positioned on a straight in the last spurt. (Medium)Sirius Symboli (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Arabesque_of_the_Brightest_Star",
+    "name": "Arabesque of the Brightest Star",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Medium)Sirius Symboli (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Ultramarine_Getaway",
+    "name": "Ultramarine Getaway",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase velocity when positioned toward the front mid-race. (Front Runner)Silence Suzuka (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Blinding_Luxon",
+    "name": "Blinding Luxon",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity mid-race. Increase this skill's effectiveness based on how high the Speed attribute is. (Pace Chaser)Agnes Tachyon (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Leap_Forward",
+    "name": "Leap Forward",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase acceleration when trying to pass another runner from the back late-race. (Sprint/Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Sharp_Steps",
+    "name": "Sharp Steps",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase acceleration in the early part of late-race if the skill user stayed toward the back without rushing until the start of late-race. (End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Beating_Heart",
+    "name": "Beating Heart",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase acceleration when positioned toward the front in the early part of late-race. (Mile)",
+    "purchase_option": "Direct",
+    "rarity": "Normal",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Be_the_Center",
+    "name": "Be the Center!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration when positioned toward the front late-race. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Run_Like_Crazy",
+    "name": "Run Like Crazy!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration when positioned midpack or further back late-race. (Dirt)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Claw_Forward",
+    "name": "Claw Forward",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately expend endurance to increase acceleration when positioned midpack or further back in the last spurt. (Late, Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Beast_Mode",
+    "name": "Beast Mode",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration late-race if the skill user led or was within 4 lengths of the lead just before late-race. (Pace, Long)",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Razor-Sharp_Steps",
+    "name": "Razor-Sharp Steps",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration in the early part of late-race if the skill user stayed toward the back without rushing until the start of late-race. (End Closer)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Miracle_for_My_Future",
+    "name": "Miracle for My Future",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration late-race to pull off a miracle. (Sprint)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Solid_Preparation",
+    "name": "Solid Preparation",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration when many skills activate early-race.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Before_Anyone",
+    "name": "Before Anyone!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration in the start dash. (Medium)",
+    "purchase_option": "Direct",
+    "rarity": "Rare",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Red-Hot_Discipline",
+    "name": "Red-Hot Discipline!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Very slightly increase acceleration for a brief duration when closing in from the back on the final corner or later late-race. Effect and duration increase when passing another runner (up to 3 times).Bamboo Memory (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Sunny_Breeze",
+    "name": "Sunny Breeze",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Very slightly increase acceleration continuously for a long duration when toward the front on the latter half of the final corner after biding time in the race's first half. Effect increases if 2nd.Yamanin Zephyr (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Shine_On_Tomakomai_☆",
+    "name": "Shine On, Tomakomai! ☆",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly increase acceleration when well-positioned in the last spurt after engaging in a challenge on a mid-race corner in a dirt race. Effect increases if still going strong.Hokko Tarumae (Original)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Watch_Me_BLOOM",
+    "name": "Watch! Me! BLOOM!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "If the skill user engaged in a challenge mid-race, her determination to realize her dreams increases acceleration continuously when well-positioned with 650m remaining.Sakura Chiyono O (Ballroom)'s unique",
+    "purchase_option": "Direct",
+    "rarity": "Unique"
+  },
+  {
+    "skill_id": "A_Otherworldly_Front-Runner",
+    "name": "Otherworldly Front-Runner",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly surge ahead when leading on the final corner. (Front Runner)Silence Suzuka (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Talented_Technique",
+    "name": "Talented Technique",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and moderately increase velocity when moving sideways. (Pace Chaser)Tokai Teio (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Cornered_by_the_Beast",
+    "name": "Cornered by the Beast",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly recover endurance on corners.Oguri Cap (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Feet_of_Fury",
+    "name": "Feet of Fury",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration when positioned toward the back late-race. (Mile)Vodka (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Cuttin_Through",
+    "name": "Cuttin' Through!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase maneuverability and slightly recover endurance when the way ahead is blocked in the last spurt.Vodka (Christmas)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_May_the_Best_Uma_Win",
+    "name": "May the Best Uma Win!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly widen field of view when positioned toward the front in the early part of late-race. (Pace Chaser)Taiki Shuttle (Camping)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Indomitable_Spirit",
+    "name": "Indomitable Spirit",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly widen field of view when positioned midpack or further back in the early part of late-race. (Late Surger)Grass Wonder (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Heroic_Flurry",
+    "name": "Heroic Flurry",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase passing ability when positioned near the back late-race. (Mile)El Condor Pasa (Fantasy)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Mile"
+  },
+  {
+    "skill_id": "A_Ravenous_Beast",
+    "name": "Ravenous Beast",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration late-race if the skill user led or was within 4 lengths of the lead just before late-race. (Pace, Long)Narita Brian (Blaze)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Moonlight_Sommelier",
+    "name": "Moonlight Sommelier",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly surge ahead on a corner.Air Groove (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Heavenly_Descent",
+    "name": "Heavenly Descent",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration on a downhill. (Pace Chaser)Fine Motion (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Spear_of_Morrígan",
+    "name": "Spear of Morrígan",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly widen field of view when positioned toward the front in the early part of late-race. (Pace Chaser)Fine Motion (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Overclock",
+    "name": "Overclock",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration in the start dash. (Front Runner)Mihono Bourbon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Helping_Grant_Your_Dream",
+    "name": "Helping Grant Your Dream",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration on a downhill. (Pace Chaser)Mejiro Ryan (Valentine)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Like_They_Do_in_the_City",
+    "name": "Like They Do in the City!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and moderately increase navigation for a medium duration when the way ahead is blocked in the last spurt.Yukino Bijin (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Snow_Gals_Know_Howta_Sled",
+    "name": "Snow Gals Know Howta Sled!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase acceleration for a medium duration on a downhill. (Pace Chaser)Yukino Bijin (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Heroic_Determination",
+    "name": "Heroic Determination",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase acceleration and slightly surge ahead on a downhill. (Pace Chaser)Rice Shower (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Standout_Step",
+    "name": "Standout Step",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly widen field of view on a straight during the last spurt. (End Closer)Inari One (Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Never_Ever_Give_Up",
+    "name": "Never Ever Give Up",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase acceleration and slightly increase velocity for a medium duration when trying to pass another runner. (Late Surger)Winning Ticket (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_BeautifulSprint",
+    "name": "#BeautifulSprint",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly widen field of view late-race. (Sprint)Curren Chan (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Unstoppable_Princess",
+    "name": "Unstoppable Princess",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration and moderately increase navigation when the way ahead is blocked during the last spurt.Kawakami Princess (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Always_Center_Stage",
+    "name": "Always Center Stage!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration when positioned toward the front late-race. (Dirt)Smart Falcon (Grand Live)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Lezzgo",
+    "name": "Lezzgo!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly recover endurance in the early part of late-race. (Pace/Late)Tosen Jordan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Heart_of_a_Hunter",
+    "name": "Heart of a Hunter",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly widen field of view on a straight during the last spurt. (End Closer)Narita Taishin (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Bolt_from_the_Brink",
+    "name": "Bolt from the Brink",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration for a medium duration when positioned midpack or further back in the early part of late-race. (Medium)Narita Taishin (Steampunk)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Blooming_Resolve",
+    "name": "Blooming Resolve",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration on a downhill. (Pace Chaser)Nishino Flower (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Ill_Do_My_Very_Best",
+    "name": "I'll Do My Very Best!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately increase acceleration and slightly increase velocity for a medium duration when trying to pass another runner. (Late Surger)Haru Urara (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Spring_from_the_Earth",
+    "name": "Spring from the Earth",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly widen field of view on a straight during the last spurt. (End Closer)Mr. C.B. (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_For_My_Rival",
+    "name": "For My Rival!",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration and slightly recover endurance when positioned toward the front in the early part of late-race. (Pace Chaser)Meisho Doto (Halloween)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_First_Step_from_the_Brink",
+    "name": "First Step from the Brink",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration for a medium duration when positioned midpack or further back in the early part of late-race. (Medium)Mejiro Dober (Camping)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Cynical_Charm",
+    "name": "Cynical Charm",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration for a medium duration when the way ahead is jammed late-race. (Medium)Nice Nature (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Keep_the_Cheers_Comin",
+    "name": "Keep the Cheers Comin'",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration, moderately increase navigation, and slightly recover endurance when the way ahead is blocked in the last spurt.Nice Nature (Cheerleader)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Turbos_Leadin_the_Charge",
+    "name": "Turbo's Leadin' the Charge!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration in the start dash. (Front Runner)Twin Turbo (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Beyond_My_Station",
+    "name": "Beyond My Station",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Very slightly expend endurance to increase acceleration when positioned midpack or further back in the last spurt. (Late, Long)Satono Diamond (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Get_the_Festival_Going",
+    "name": "Get the Festival Going!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration in the start dash. (Front Runner)Kitasan Black (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Introducing_the_Victor",
+    "name": "Introducing the Victor!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration in the start dash. (Front Runner)Kitasan Black (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Raise_the_Pitch",
+    "name": "Raise the Pitch",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration for a medium duration in the start dash. (Front Runner)Aston Machan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Simple_and_Sturdy",
+    "name": "Simple and Sturdy",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately expend endurance to increase acceleration when in midpack or further back in the last spurt. If at Nakayama Racecourse, slightly recover endurance instead of expending it. (Late, Long)Symboli Kris S (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Turning_Things_Right_Around",
+    "name": "Turning Things Right Around!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration for a medium duration when positioned midpack or further back in the early part of late-race. (Medium)Matikanetannhauser (Sports Festival)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Cake-Cuttin_Time",
+    "name": "Cake-Cuttin' Time!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration for a medium duration in the early part of late-race if the skill user reached late-race without rushing. (End, Medium)Hishi Amazon (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Make_the_World_Marvelous_☆",
+    "name": "Make the World Marvelous ☆",
+    "tier": "A",
+    "skill_type": "Passive",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase maneuverability when the way ahead is blocked during the last spurt. If the skill user is far from the finish, also slightly surge ahead.Marvelous Sunday (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_I_Can_Totes_Shake_Em",
+    "name": "I Can Totes Shake 'Em!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration when positioned midpack or further back on the final corner. If it's at Tokyo Racecourse, also moderately increase velocity. (Medium)Tosen Jordan (Summer Trip)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Red-Hot_Transforma-Runner",
+    "name": "Red-Hot Transforma-Runner!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration when positioned midpack or further back in the early part of late-race. Then, slightly increase velocity when there's 200m remaining. (Late Surger)Bamboo Memory (Summer Trip)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_Ultimate_Ultra-Sprint",
+    "name": "Ultimate Ultra-Sprint!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration late-race. Then, slightly increase velocity when there's 200m remaining. (Sprint)Bamboo Memory (Summer Trip)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Aced_It",
+    "name": "Aced It!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration in the start dash. (Front Runner)Katsuragi Ace (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Front Runner"
+  },
+  {
+    "skill_id": "A_Ráfaga_Azul",
+    "name": "Ráfaga Azul",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase acceleration at the start of the race. (Medium)Silence Suzuka (Summer)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Untouchable_Beauty",
+    "name": "Untouchable Beauty",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase navigation and slightly surge ahead late-race.Air Groove (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Best_View_of_Anyone",
+    "name": "Best View of Anyone!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "For a medium duration, increase navigation and moderately increase acceleration late-race. (Dirt)Agnes Digital (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Full_Tank",
+    "name": "Full Tank!",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase navigation for a medium duration, moderately increase acceleration, and slightly increase velocity mid-race. (Sprint)Hishi Akebono (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Sprint"
+  },
+  {
+    "skill_id": "A_Blinding_Magia",
+    "name": "Blinding Magia",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase navigation and moderately surge ahead late-race.Eishin Flash (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Umadol★Onstage",
+    "name": "Umadol★Onstage!",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase navigation for a medium duration early-race.Smart Falcon (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Look_Look",
+    "name": "Look, Look!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Greatly increase navigation and slightly increase velocity early-race.Haru Urara (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Her_Lordship_Seeth_All",
+    "name": "Her Lordship Seeth All",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Moderately widen field of view and slightly recover endurance when moving sideways. (End Closer)Gold Ship (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Eyes_of_the_Condor",
+    "name": "Eyes of the Condor",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Widen field of view and slightly increase velocity early-race. (Medium)El Condor Pasa (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Kingly_View",
+    "name": "Kingly View",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Widen field of view and slightly increase velocity mid-race. (Late Surger)King Halo (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_I_Wanna_Win_with_You",
+    "name": "I Wanna Win with You",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity and slightly increase acceleration when positioned toward the front in the second half of the race. Increase this skill's effectiveness based on the user's number of fans.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Past_My_Limits",
+    "name": "Past My Limits",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity in the last spurt. Increase this skill's effectiveness based on the value of the user's highest attribute.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Wisdom_of_the_Earth",
+    "name": "Wisdom of the Earth",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase velocity around halfway through late-race. Increase this skill's effectiveness based on the number of skills the user has learned.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Wisdom_of_the_Sea",
+    "name": "Wisdom of the Sea",
+    "tier": "A",
+    "skill_type": "Acceleration",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Increase acceleration in the early part of early-race. Increase this skill's effectiveness based on the number of skills the user has learned.",
+    "purchase_option": "Direct",
+    "rarity": "Rare"
+  },
+  {
+    "skill_id": "A_Magic_Charm",
+    "name": "Magic Charm",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Unnerve runners in focus and slightly surge ahead when positioned 2nd or later late-race. (End Closer)Sweep Tosho (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "End Closer"
+  },
+  {
+    "skill_id": "A_Soft_White_Whisper",
+    "name": "Soft White Whisper",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Reduce the endurance of runners ahead and slightly increase own velocity when the way ahead is jammed mid-race. (Medium)Mayano Top Gun (Wedding)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Dont_Leave_Me",
+    "name": "Don't Leave Me...",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly leech endurance from runners ahead and slightly increase velocity when positioned toward the back mid-race. (Long)Manhattan Cafe (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_Trick_and_Treat",
+    "name": "Trick and Treat",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "When positioned toward the front mid-race and a runner behind rushes, reduce that runner's endurance and increase the skill user's own velocity.Rice Shower (Halloween)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved"
+  },
+  {
+    "skill_id": "A_Mummys_Sweet_Whispers",
+    "name": "Mummy's Sweet Whispers",
+    "tier": "A",
+    "skill_type": "Recovery",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Reduce the endurance of runners ahead and slightly recover own endurance when the way ahead is jammed mid-race. (Medium)Super Creek (Halloween)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Medium"
+  },
+  {
+    "skill_id": "A_Cold_Look",
+    "name": "Cold Look",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Reduce the endurance of runners ahead and slightly surge ahead when positioned toward the back late-race. (Late Surger)Mejiro Dober (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Late Surger"
+  },
+  {
+    "skill_id": "A_The_Dawn_Always_Comes",
+    "name": "The Dawn Always Comes!",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly leech endurance from runners ahead and slightly increase velocity when positioned toward the back mid-race. (Long)Satono Diamond (New Year)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
+  },
+  {
+    "skill_id": "A_CuteChaos♪",
+    "name": "#CuteChaos♪",
+    "tier": "A",
+    "skill_type": "Others",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Slightly surge ahead and moderately narrow the field of view of runners behind when positioned toward the front late-race. (Pace Chaser)Curren Chan (Original)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "strategy": "Pace Chaser"
+  },
+  {
+    "skill_id": "A_Gutsiest_in_Japan",
+    "name": "Gutsiest in Japan",
+    "tier": "A",
+    "skill_type": "Speed",
+    "prerequisite_of": [],
+    "prerequisites": [],
+    "description": "Take inspiration from everyone's hopes, greatly increasing velocity on the final corner. (Long)Special Week (Commander)'s evolved skill",
+    "purchase_option": "Direct",
+    "rarity": "Evolved",
+    "distance": "Long"
   }
 ]
