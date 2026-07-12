@@ -2452,7 +2452,7 @@ export default {
       availableStrategies: ['', 'Front Runner', 'Pace Chaser', 'Late Surger', 'End Closer'],
       availableDistances: ['', 'Sprint', 'Mile', 'Medium', 'Long'],
       availableTiers: ['', 'SS', 'S', 'A', 'B', 'C', 'D'],
-      availableRarities: ['', 'Unique', 'Rare', 'Normal'],
+      availableRarities: ['', 'Unique', 'Rare', 'Normal', 'Evolved'],
       showSkillList: false, 
       spBurstEnabled: false,
       spBurstSkillName: '',

@@ -48,6 +48,9 @@ Here's what's changed so far that's worth noting, most of the new bot features h
 ### Unity
 - Bot now detects and scores Purple Spirit Bursts (Extreme Spirit Bursts) in training evaluations.
   - Purple bursts are scored using a scaled bonus weight (1.5x of normal spirit bursts).
+- Bot checks trainings if it sees a spirit burst is ready instead of immediately resting.
+  - It will only consider trainings with <=5% failure rate to click on.
+  - This is mainly for purple Spirit Bursts, which always have a 0% failure rate.
 - Bot will automatically retry Unity Team Races up to your configured clock limit.
 
 ### MANT

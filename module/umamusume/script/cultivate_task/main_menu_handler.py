@@ -85,6 +85,28 @@ def check_unity_spirit_burst(ctx, img) -> bool:
     return False
 
 
+def check_unity_splash(img, ctx: UmamusumeContext) -> bool:
+    try:
+        if ctx.cultivate_detail.scenario.scenario_type() != ScenarioType.SCENARIO_TYPE_AOHARUHAI:
+            return False
+        from module.umamusume.asset.template import REF_UNITY_CUP_SPLASH
+        template = REF_UNITY_CUP_SPLASH.template_image
+        if template is None:
+            log.warning("Could not load unity_cup_splash.png template")
+            return False
+        target_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        h, w = target_gray.shape
+        y1, y2 = h // 3, 2 * h // 3
+        slice_img = target_gray[y1:y2, :]
+        res = cv2.matchTemplate(slice_img, template, cv2.TM_CCOEFF_NORMED)
+        _, max_val, _, _ = cv2.minMaxLoc(res)
+        log.debug(f"Unity Cup splash match score: {max_val:.4f}")
+        return max_val > 0.85
+    except Exception as e:
+        log.error(f"Error in check_unity_splash: {e}")
+        return False
+
+
 def script_cultivate_main_menu(ctx: UmamusumeContext):
     img = ctx.current_screen
     current_date = parse_date(img, ctx)
@@ -157,6 +179,11 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
     ctx.cultivate_detail.turn_info.cached_mood = read_mood(img)
 
     if not ctx.cultivate_detail.turn_info.parse_main_menu_finish:
+        if check_unity_splash(img, ctx):
+            log.info("Unity Cup splash banner detected. Sleeping 2 seconds to let it fade out...")
+            time.sleep(2.0)
+            return
+
         parse_cultivate_main_menu(ctx, img)
 
         # Log post-stats for the previous turn now that this turn's stats are parsed
