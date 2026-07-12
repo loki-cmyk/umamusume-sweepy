@@ -40,9 +40,14 @@ def script_not_found_ui(ctx: UmamusumeContext):
         if has_home_coin(ctx):
             return
 
-        from module.umamusume.script.cultivate_task.helpers import handle_clock_retry
-        if handle_clock_retry(ctx):
-            return
+        from module.umamusume.define import ScenarioType
+        scenario = getattr(getattr(ctx, 'task', None), 'detail', None)
+        scenario_type = getattr(scenario, 'scenario', None)
+        # MANT retries are handled on a per-race basis
+        if scenario_type != ScenarioType.SCENARIO_TYPE_MANT:
+            from module.umamusume.script.cultivate_task.helpers import handle_clock_retry
+            if handle_clock_retry(ctx):
+                return
 
         try:
             from module.umamusume.asset.template import REF_NEXT, REF_NEXT2
