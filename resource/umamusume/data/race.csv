@@ -55,6 +55,7 @@
 24,2055,Junior Year Late Dec,Christmas Rose Stakes,,OP,Nakayama,Turf,1200,Right,,Sprint
 24,2056,Junior Year Late Dec,Hopeful Stakes,,G1,Nakayama,Turf,2000,Right,,Medium
 24,2057,Junior Year Late Dec,Senryo Sho,,PRE-OP,Hanshin,Turf,1600,Right,,Mile
+24,2388,Junior Year Late Dec,Zen-Nippon Junior Yushun,,G1,Kawasaki,Dirt,1600,Left,,Mile
 25,2058,Classic Year Early Jan,Fairy Stakes,,G3,Nakayama,Turf,1600,Right,,Mile
 25,2059,Classic Year Early Jan,Junior Cup,,OP,Nakayama,Turf,1600,Right,,Mile
 25,2060,Classic Year Early Jan,Keisei Hai,,G3,Nakayama,Turf,2000,Right,,Medium
@@ -85,6 +86,7 @@
 31,2085,Classic Year Early Apr,Oka Sho,,G1,Hanshin,Turf,1600,Right,,Mile
 31,2086,Classic Year Early Apr,Satsuki Sho,,G1,Nakayama,Turf,2000,Right,,Medium
 31,2087,Classic Year Early Apr,Wasurenagusa Sho,,OP,Hanshin,Turf,2000,Right,,Medium
+31,2389,Classic Year Early Apr,Marine Cup,,G3,Funabashi,Dirt,1600,Left,,Mile
 32,2088,Classic Year Late Apr,Aoba Sho,,G2,Tokyo,Turf,2400,Left,,Medium
 32,2089,Classic Year Late Apr,Flora Stakes,,G2,Tokyo,Turf,2000,Left,,Medium
 32,2090,Classic Year Late Apr,Sweetpea Stakes,,OP,Tokyo,Turf,1800,Left,,Mile
@@ -105,6 +107,7 @@
 35,2105,Classic Year Early Jun,Sleipnir Stakes,,OP,Tokyo,Dirt,2100,Left,,Medium
 35,2106,Classic Year Early Jun,Tempozan Stakes,,OP,Hanshin,Dirt,1400,Right,,Sprint
 35,2107,Classic Year Early Jun,Yasuda Kinen,,G1,Tokyo,Turf,1600,Left,,Mile
+35,2390,Classic Year Early Jun,Kanto Oaks,,G2,Kawasaki,Dirt,2100,Left,,Medium
 36,2108,Classic Year Late Jun,Akhalteke Stakes,,OP,Tokyo,Dirt,1600,Left,,Mile
 36,2109,Classic Year Late Jun,Hakodate Sprint Stakes,,G3,Hakodate,Turf,1200,Right,,Sprint
 36,2110,Classic Year Late Jun,Onuma Stakes,,OP,Hakodate,Dirt,1700,Right,,Mile
@@ -122,10 +125,12 @@
 37,2122,Classic Year Early Jul,Radio Nikkei Sho,,G3,Fukushima,Turf,1800,Right,,Mile
 37,2123,Classic Year Early Jul,Tanabata Sho,,G3,Fukushima,Turf,2000,Right,,Medium
 37,2124,Classic Year Early Jul,Tomoe Sho,,OP,Hakodate,Turf,1800,Right,,Mile
+37,2391,Classic Year Early Jul,Sparking Lady Cup,,G3,Kawasaki,Dirt,1600,Left,,Mile
 38,2125,Classic Year Late Jul,Chukyo Kinen,,G3,Chukyo,Turf,1600,Left,,Mile
 38,2126,Classic Year Late Jul,Fukushima TV Open,,OP,Fukushima,Turf,1200,Right,,Sprint
 38,2127,Classic Year Late Jul,Ibis Summer Dash,,G3,Niigata,Turf,1000,Straight,,Sprint
 38,2128,Classic Year Late Jul,Queen Stakes,,G3,Sapporo,Turf,1800,Right,,Mile
+38,2392,Classic Year Late Jul,Mercury Cup,,G3,Morioka,Dirt,2000,Left,,Medium
 39,2129,Classic Year Early Aug,Aso Stakes,,OP,Kokura,Dirt,1700,Right,,Mile
 39,2130,Classic Year Early Aug,Elm Stakes,,G3,Sapporo,Dirt,1700,Right,,Mile
 39,2131,Classic Year Early Aug,Kanetsu Stakes,,OP,Niigata,Turf,1800,Left,,Mile
@@ -141,6 +146,7 @@
 40,2141,Classic Year Late Aug,NST Sho,,OP,Niigata,Dirt,1200,Left,,Sprint
 40,2142,Classic Year Late Aug,Sapporo Kinen,,G2,Sapporo,Turf,2000,Right,,Medium
 40,2143,Classic Year Late Aug,Toki Stakes,,OP,Niigata,Turf,1400,Left,,Sprint
+40,2393,Classic Year Late Aug,Cluster Cup,,G3,Morioka,Dirt,1200,Left,,Sprint
 41,2144,Classic Year Early Sep,Centaur Stakes,,G2,Hanshin,Turf,1200,Right,,Sprint
 41,2145,Classic Year Early Sep,Enif Stakes,,OP,Hanshin,Dirt,1400,Right,,Sprint
 41,2146,Classic Year Early Sep,Keisei Hai Autumn Handicap,,G3,Nakayama,Turf,1600,Right,,Mile
@@ -157,6 +163,7 @@
 42,2157,Classic Year Late Sep,Sirius Stakes,,G3,Hanshin,Dirt,2000,Right,,Medium
 42,2158,Classic Year Late Sep,Sprinters Stakes,,G1,Nakayama,Turf,1200,Right,,Sprint
 42,2159,Classic Year Late Sep,St. Lite Kinen,,G2,Nakayama,Turf,2200,Right,,Medium
+42,2394,Classic Year Late Sep,Sazanka TV Hai,,G2,Funabashi,Dirt,1800,Left,,Mile
 43,2160,Classic Year Early Oct,Fuchu Umamusume Stakes,,G2,Tokyo,Turf,1800,Left,,Mile
 43,2161,Classic Year Early Oct,Green Channel Cup,,OP,Tokyo,Dirt,1400,Left,,Sprint
 43,2162,Classic Year Early Oct,Kyoto Daishoten,,G2,Kyoto,Turf,2400,Right,,Medium
@@ -165,6 +172,9 @@
 43,2165,Classic Year Early Oct,Opal Stakes,,OP,Kyoto,Turf,1200,Right,,Sprint
 43,2166,Classic Year Early Oct,Shinetsu Stakes,,OP,Niigata,Turf,1400,Left,,Sprint
 43,2167,Classic Year Early Oct,Uzumasa Stakes,,OP,Kyoto,Dirt,1800,Right,,Mile
+43,2395,Classic Year Early Oct,Mile Championship Nambu Hai,,G1,Morioka,Dirt,1600,Left,,Mile
+43,2396,Classic Year Early Oct,Ladies' Prelude,,G2,Ooi,Dirt,1800,Right,,Mile
+43,2397,Classic Year Early Oct,Tokyo Hai,,G2,Ooi,Dirt,1200,Right,,Sprint
 44,2168,Classic Year Late Oct,Brazil Cup,,OP,Tokyo,Dirt,2100,Left,,Medium
 44,2169,Classic Year Late Oct,Cassiopeia Stakes,,OP,Kyoto,Turf,1800,Right,,Mile
 44,2170,Classic Year Late Oct,Fuji Stakes,,G2,Tokyo,Turf,1600,Left,,Mile
@@ -202,6 +212,7 @@
 47,2202,Classic Year Early Dec,Stayers Stakes,,G2,Nakayama,Turf,3600,Right,,Long
 47,2203,Classic Year Early Dec,Tanzanite Stakes,,OP,Hanshin,Turf,1200,Right,,Sprint
 47,2204,Classic Year Early Dec,Turquoise Stakes,,G3,Nakayama,Turf,1600,Right,,Mile
+47,2398,Classic Year Early Dec,Queen Sho,,G3,Funabashi,Dirt,1800,Left,,Mile
 48,2205,Classic Year Late Dec,Arima Kinen,,G1,Nakayama,Turf,2500,Right,,Long
 48,2206,Classic Year Late Dec,Betelgeuse Stakes,,OP,Hanshin,Dirt,1800,Right,,Mile
 48,2207,Classic Year Late Dec,Galaxy Stakes,,OP,Hanshin,Dirt,1400,Right,,Sprint
@@ -223,12 +234,14 @@
 50,2223,Senior Year Late Jan,Silk Road Stakes,,G3,Kyoto,Turf,1200,Right,,Sprint
 50,2224,Senior Year Late Jan,Subaru Stakes,,OP,Kyoto,Dirt,1400,Right,,Sprint
 50,2225,Senior Year Late Jan,Tokai Stakes,,G2,Chukyo,Dirt,1800,Left,,Mile
+50,2399,Senior Year Late Jan,TCK Jo-o Hai,,G3,Ooi,Dirt,1800,Right,,Mile
 51,2226,Senior Year Early Feb,Aldebaran Stakes,,OP,Kyoto,Dirt,1900,Right,,Medium
 51,2227,Senior Year Early Feb,Kyoto Kinen,,G2,Kyoto,Turf,2200,Right,,Medium
 51,2228,Senior Year Early Feb,Rakuyo Stakes,,OP,Kyoto,Turf,1600,Right,,Mile
 51,2229,Senior Year Early Feb,Tokyo Shimbun Hai,,G3,Tokyo,Turf,1600,Left,,Mile
 51,2230,Senior Year Early Feb,Valentine Stakes,,OP,Tokyo,Dirt,1400,Left,,Sprint
 51,2231,Senior Year Early Feb,Yamato Stakes,,OP,Kyoto,Dirt,1200,Right,,Sprint
+51,2400,Senior Year Early Feb,Kawasaki Kinen,,G1,Kawasaki,Dirt,2100,Left,,Medium
 52,2232,Senior Year Late Feb,Diamond Stakes,,G3,Tokyo,Turf,3400,Left,,Long
 52,2233,Senior Year Late Feb,February Stakes,,G1,Tokyo,Dirt,1600,Left,,Mile
 52,2234,Senior Year Late Feb,Hankyu Hai,,G3,Hanshin,Turf,1400,Right,,Sprint
@@ -244,6 +257,7 @@
 53,2244,Senior Year Early Mar,Ocean Stakes,,G3,Nakayama,Turf,1200,Right,,Sprint
 53,2245,Senior Year Early Mar,Osakajo Stakes,,OP,Hanshin,Turf,1800,Right,,Mile
 53,2246,Senior Year Early Mar,Polaris Stakes,,OP,Hanshin,Dirt,1400,Right,,Sprint
+53,2401,Senior Year Early Mar,Empress Hai,,G2,Kawasaki,Dirt,2100,Left,,Medium
 54,2247,Senior Year Late Mar,Chiba Stakes,,OP,Nakayama,Dirt,1200,Right,,Sprint
 54,2248,Senior Year Late Mar,Hanshin Daishoten,,G2,Hanshin,Turf,3000,Right,,Long
 54,2249,Senior Year Late Mar,March Stakes,,G3,Nakayama,Dirt,1800,Right,,Mile
@@ -251,6 +265,7 @@
 54,2251,Senior Year Late Mar,Osaka Hai,,G1,Hanshin,Turf,2000,Right,,Medium
 54,2252,Senior Year Late Mar,Rokko Stakes,,OP,Hanshin,Turf,1600,Right,,Mile
 54,2253,Senior Year Late Mar,Takamatsunomiya Kinen,,G1,Chukyo,Turf,1200,Left,,Sprint
+54,2402,Senior Year Late Mar,Diolite Kinen,,G2,Funabashi,Dirt,2400,Left,,Medium
 55,2254,Senior Year Early Apr,Antares Stakes,,G3,Hanshin,Dirt,1800,Right,,Mile
 55,2255,Senior Year Early Apr,Azumakofuji Stakes,,OP,Fukushima,Dirt,1700,Right,,Mile
 55,2256,Senior Year Early Apr,Coral Stakes,,OP,Hanshin,Dirt,1400,Right,,Sprint
@@ -264,6 +279,7 @@
 56,2264,Senior Year Late Apr,Oasis Stakes,,OP,Tokyo,Dirt,1600,Left,,Mile
 56,2265,Senior Year Late Apr,Tenno Sho (Spring),,G1,Kyoto,Turf,3200,Right,,Long
 56,2266,Senior Year Late Apr,Tennozan Stakes,,OP,Kyoto,Dirt,1200,Right,,Sprint
+56,2403,Senior Year Late Apr,Tokyo Sprint,,G3,Ooi,Dirt,1200,Right,,Sprint
 57,2267,Senior Year Early May,Brilliant Stakes,,OP,Tokyo,Dirt,2100,Left,,Medium
 57,2268,Senior Year Early May,Keio Hai Spring Cup,,G2,Tokyo,Turf,1400,Left,,Sprint
 57,2269,Senior Year Early May,Kurama Stakes,,OP,Kyoto,Turf,1200,Right,,Sprint
@@ -273,6 +289,7 @@
 57,2273,Senior Year Early May,Ritto Stakes,,OP,Kyoto,Dirt,1400,Right,,Sprint
 57,2274,Senior Year Early May,Tanigawadake Stakes,,OP,Niigata,Turf,1600,Left,,Mile
 57,2275,Senior Year Early May,Victoria Mile,,G1,Tokyo,Turf,1600,Left,,Mile
+57,2404,Senior Year Early May,Kashiwa Kinen,,G1,Funabashi,Dirt,1600,Left,,Mile
 58,2276,Senior Year Late May,Azuchijo Stakes,,OP,Kyoto,Turf,1400,Right,,Sprint
 58,2277,Senior Year Late May,Heian Stakes,,G3,Kyoto,Dirt,1900,Right,,Medium
 58,2278,Senior Year Late May,Idaten Stakes,,OP,Niigata,Turf,1000,Straight,,Sprint

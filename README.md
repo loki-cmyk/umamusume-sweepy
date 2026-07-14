@@ -13,8 +13,7 @@ The bot has support for updated URA/Unity and MANT if you want to still run that
 
 ## Known Bugs
 
-- Initial support for updated Unity is done, I'm currently testing it.
-- Fixing broken UI detection screens as I find them after the 7/1 patch.
+- Stopping the bot mid-run can sometimes get it stuck. If this happens, restart the whole server.
 
 ## Added Features / Changes
 
