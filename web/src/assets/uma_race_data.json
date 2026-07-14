@@ -653,7 +653,7 @@
     },
     {
       "id": 2073,
-      "name": "Fillies/Revue",
+      "name": "Fillies' Revue",
       "date": "Classic Year Early Mar",
       "type": "G2",
       "terrain": "Turf",
@@ -3586,6 +3586,159 @@
       "distance": "Medium",
       "venue": "Ooi",
       "fanGain": 8000
+    },
+    {
+      "id": 2388,
+      "name": "Zen-Nippon Junior Yushun",
+      "date": "Junior Year Late Dec",
+      "type": "G1",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Kawasaki"
+    },
+    {
+      "id": 2389,
+      "name": "Marine Cup",
+      "date": "Classic Year Early Apr",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Funabashi"
+    },
+    {
+      "id": 2390,
+      "name": "Kanto Oaks",
+      "date": "Classic Year Early Jun",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Medium",
+      "venue": "Kawasaki"
+    },
+    {
+      "id": 2391,
+      "name": "Sparking Lady Cup",
+      "date": "Classic Year Early Jul",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Kawasaki"
+    },
+    {
+      "id": 2392,
+      "name": "Mercury Cup",
+      "date": "Classic Year Late Jul",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Medium",
+      "venue": "Morioka"
+    },
+    {
+      "id": 2393,
+      "name": "Cluster Cup",
+      "date": "Classic Year Late Aug",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Sprint",
+      "venue": "Morioka"
+    },
+    {
+      "id": 2394,
+      "name": "Sazanka TV Hai",
+      "date": "Classic Year Late Sep",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Funabashi"
+    },
+    {
+      "id": 2395,
+      "name": "Mile Championship Nambu Hai",
+      "date": "Classic Year Early Oct",
+      "type": "G1",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Morioka"
+    },
+    {
+      "id": 2396,
+      "name": "Ladies' Prelude",
+      "date": "Classic Year Early Oct",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Ooi"
+    },
+    {
+      "id": 2397,
+      "name": "Tokyo Hai",
+      "date": "Classic Year Early Oct",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Sprint",
+      "venue": "Ooi"
+    },
+    {
+      "id": 2398,
+      "name": "Queen Sho",
+      "date": "Classic Year Early Dec",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Funabashi"
+    },
+    {
+      "id": 2399,
+      "name": "TCK Jo-o Hai",
+      "date": "Senior Year Late Jan",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Ooi"
+    },
+    {
+      "id": 2400,
+      "name": "Kawasaki Kinen",
+      "date": "Senior Year Early Feb",
+      "type": "G1",
+      "terrain": "Dirt",
+      "distance": "Medium",
+      "venue": "Kawasaki"
+    },
+    {
+      "id": 2401,
+      "name": "Empress Hai",
+      "date": "Senior Year Early Mar",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Medium",
+      "venue": "Kawasaki"
+    },
+    {
+      "id": 2402,
+      "name": "Diolite Kinen",
+      "date": "Senior Year Late Mar",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Medium",
+      "venue": "Funabashi"
+    },
+    {
+      "id": 2403,
+      "name": "Tokyo Sprint",
+      "date": "Senior Year Late Apr",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Sprint",
+      "venue": "Ooi"
+    },
+    {
+      "id": 2404,
+      "name": "Kashiwa Kinen",
+      "date": "Senior Year Early May",
+      "type": "G1",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Funabashi"
     }
   ]
 }
