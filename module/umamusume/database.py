@@ -142,7 +142,7 @@ class CultivateDatabase:
     # Query helpers
     # ------------------------------------------------------------------
 
-    def get_recent_history(self, limit=2000):
+    def get_recent_history(self, limit=10000):
         try:
             cursor = self.conn.cursor()
             cursor.execute("""

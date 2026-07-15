@@ -14,8 +14,7 @@ PERSIST_FILE = os.path.normpath(PERSIST_FILE)
 
 
 
-MAX_DATAPOINTS = 2000
-HISTORY_VERSION_FLAG = "aaa"
+MAX_DATAPOINTS = 10000
 
 career_cleared_flag = False
 career_data_lock = threading.Lock()
@@ -41,15 +40,6 @@ def migrate_json_to_sqlite(db):
         log.info("Legacy career_data.json detected, starting migration to SQLite...")
         with open(PERSISTENCE_FILE, 'r') as f:
             data = json.load(f)
-            
-        stored_version = data.get('version', "")
-        if stored_version != HISTORY_VERSION_FLAG:
-            log.info("Legacy career_data.json version mismatch - deleting legacy file without migrating")
-            try:
-                os.remove(PERSISTENCE_FILE)
-            except Exception as e:
-                log.warning(f"Failed to delete mismatched legacy file: {e}")
-            return
             
         # Extract histories
         score_history = data.get('score_history', [])
