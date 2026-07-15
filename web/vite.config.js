@@ -55,7 +55,7 @@ export default defineConfig({
       apply: 'build',
       closeBundle() {
         const publicDir = path.join(__dirname, '..', 'public');
-        const racesBackupDir = path.join(__dirname, '..', 'backup_races');
+        const racesBackupDir = path.join(__dirname, '..', 'races');
         const publicRacesDir = path.join(publicDir, 'races');
 
         if (fs.existsSync(racesBackupDir)) {

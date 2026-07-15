@@ -332,6 +332,63 @@ def get_training_characters():
     return names
 
 
+@server.get("/api/recent-trainings")
+def get_recent_trainings():
+    try:
+        from module.umamusume.database import get_database
+        from module.umamusume.persistence import load_run_id
+        db = get_database()
+        try:
+            run_id = load_run_id()
+            if not run_id:
+                # Fallback to the latest run in the database
+                cursor = db.conn.cursor()
+                cursor.execute("SELECT run_id FROM training_analysis ORDER BY id DESC LIMIT 1")
+                row = cursor.fetchone()
+                if row:
+                    run_id = row[0]
+            
+            if not run_id:
+                return []
+                
+            cursor = db.conn.cursor()
+            cursor.execute("""
+                SELECT a.date, a.action, h.score, a.max_score, a.chosen_stats
+                FROM training_analysis a
+                LEFT JOIN training_history h ON a.run_id = h.run_id AND a.date = h.date
+                WHERE a.run_id = ? AND a.date <= 75 AND a.action IN (
+                    'TRAINING_TYPE_SPEED', 'TRAINING_TYPE_STAMINA', 'TRAINING_TYPE_POWER',
+                    'TRAINING_TYPE_WILL', 'TRAINING_TYPE_INTELLIGENCE'
+                )
+                ORDER BY a.date DESC
+                LIMIT 5
+            """, (run_id,))
+            rows = cursor.fetchall()
+            
+            results = []
+            for r in rows:
+                date, action, score, max_score, chosen_stats = r
+                
+                results.append({
+                    "date": date,
+                    "action": action,
+                    "score": score if score is not None else max_score,
+                    "gain": chosen_stats if chosen_stats is not None else 0
+                })
+            
+            results.reverse()
+            return results
+        finally:
+            db.close()
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return []
+
+
+
+
+
 @server.get("/training-icon/{name:path}")
 async def get_training_icon(name: str):
     file_path = os.path.join("resource", "umamusume", "trainingIcons", name + ".png")

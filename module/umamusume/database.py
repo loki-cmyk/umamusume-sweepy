@@ -315,6 +315,7 @@ class CultivateDatabase:
         """Save a training analysis snapshot for the given turn."""
         if not run_id:
             run_id = 'unknown_run'
+        self.ensure_run_exists(run_id)
         try:
             with self.conn:
                 self.conn.execute("""
