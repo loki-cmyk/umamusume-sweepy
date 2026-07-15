@@ -34,6 +34,76 @@ def rebuild_percentile_history(score_history):
     return percentiles
 
 
+def migrate_json_to_sqlite(db):
+    """One-time migration from legacy career_data.json into the given CultivateDatabase."""
+    try:
+        if not os.path.exists(PERSISTENCE_FILE):
+            return
+        
+        log.info("Legacy career_data.json detected, starting migration to SQLite...")
+        with open(PERSISTENCE_FILE, 'r') as f:
+            data = json.load(f)
+            
+        stored_version = data.get('version', "")
+        if stored_version != HISTORY_VERSION_FLAG:
+            log.info("Legacy career_data.json version mismatch - deleting legacy file without migrating")
+            try:
+                os.remove(PERSISTENCE_FILE)
+            except Exception as e:
+                log.warning(f"Failed to delete mismatched legacy file: {e}")
+            return
+            
+        # Extract histories
+        score_history = data.get('score_history', [])
+        stat_only_history = data.get('stat_only_history', [])
+        energy_history = data.get('energy_history', [])
+        action_history = data.get('action_history', [])
+        raw_stat_history = data.get('raw_stat_history', [])
+        date_history = data.get('date_history', [])
+        
+        min_len = min(len(score_history), len(stat_only_history), len(energy_history), len(raw_stat_history), len(date_history))
+        if min_len > 0:
+            legacy_run_index = 0
+            current_run_id = f"legacy_migration_run_{legacy_run_index}"
+            db.ensure_run_exists(current_run_id, scenario_type="migrated")
+            
+            for i in range(min_len):
+                score = score_history[i]
+                stat_only = stat_only_history[i]
+                energy = energy_history[i]
+                raw_stat = raw_stat_history[i]
+                date = date_history[i]
+                action = action_history[i] if i < len(action_history) else "unknown"
+                
+                # Detect start of a new legacy run when turn date resets/decreases
+                if i > 0 and date < date_history[i-1]:
+                    legacy_run_index += 1
+                    current_run_id = f"legacy_migration_run_{legacy_run_index}"
+                    db.ensure_run_exists(current_run_id, scenario_type="migrated")
+                
+                db.save_training_entry(
+                    run_id=current_run_id,
+                    date=date,
+                    score=score,
+                    stat_only=stat_only,
+                    energy=energy,
+                    raw_stat=raw_stat,
+                    action=action,
+                    scenario_type="migrated"
+                )
+            log.info(f"Successfully migrated {min_len} datapoints to SQLite across {legacy_run_index + 1} runs")
+            
+        # Delete the legacy JSON file upon successful migration
+        try:
+            os.remove(PERSISTENCE_FILE)
+            log.info("Deleted legacy career_data.json file")
+        except Exception as e:
+            log.warning(f"Failed to remove legacy career_data.json file: {e}")
+            
+    except Exception as e:
+        log.error(f"Error during legacy career data migration: {e}")
+
+
 def save_career_data(ctx):
     global career_cleared_flag
     try:
@@ -44,67 +114,82 @@ def save_career_data(ctx):
                 ctx.cultivate_detail.percentile_history = []
                 log.info("Career data cleared from memory")
                 return
+                
+            db = ctx.cultivate_detail.db
             score_history = getattr(ctx.cultivate_detail, 'score_history', [])
-            if not score_history:
-                return
-            scores = score_history[-MAX_DATAPOINTS:]
             stat_only_history = getattr(ctx.cultivate_detail, 'stat_only_history', [])
-            stat_only = stat_only_history[-MAX_DATAPOINTS:]
             energy_history = getattr(ctx.cultivate_detail, 'energy_history', [])
-            energy = energy_history[-MAX_DATAPOINTS:]
-            action_history = getattr(ctx.cultivate_detail, 'action_history', [])
-            actions = action_history[-MAX_DATAPOINTS:]
             raw_stat_history = getattr(ctx.cultivate_detail, 'raw_stat_history', [])
-            raw_stats = raw_stat_history[-MAX_DATAPOINTS:]
             date_history = getattr(ctx.cultivate_detail, 'date_history', [])
-            dates = date_history[-MAX_DATAPOINTS:]
-            data = {
-                'version': HISTORY_VERSION_FLAG,
-                'score_history': scores,
-                'stat_only_history': stat_only,
-                'energy_history': energy,
-                'action_history': actions,
-                'raw_stat_history': raw_stats,
-                'date_history': dates,
-            }
-            with open(PERSISTENCE_FILE, 'w') as f:
-                json.dump(data, f)
-                f.flush()
-                os.fsync(f.fileno())
+            action_history = getattr(ctx.cultivate_detail, 'action_history', [])
+            
+            # Get the length of history loaded on startup
+            loaded_len = getattr(ctx.cultivate_detail, 'loaded_history_len', 0)
+            # Get the count of turns we have already saved in this run
+            saved_count = getattr(ctx.cultivate_detail, 'saved_turns_count', 0)
+            
+            # We can only save indices where all lists are complete
+            min_len = min(len(score_history), len(stat_only_history), len(energy_history), len(raw_stat_history), len(date_history))
+            
+            run_id = getattr(ctx.cultivate_detail, 'run_id', 'unknown_run')
+            scenario_type = "unknown"
+            try:
+                scenario_type = ctx.cultivate_detail.scenario.scenario_type().name
+            except Exception:
+                pass
+                
+            for i in range(loaded_len + saved_count, min_len):
+                score = score_history[i]
+                stat_only = stat_only_history[i]
+                energy = energy_history[i]
+                raw_stat = raw_stat_history[i]
+                date = date_history[i]
+                action = action_history[i] if i < len(action_history) else "unknown"
+                
+                db.save_training_entry(
+                    run_id=run_id,
+                    date=date,
+                    score=score,
+                    stat_only=stat_only,
+                    energy=energy,
+                    raw_stat=raw_stat,
+                    action=action,
+                    scenario_type=scenario_type
+                )
+                saved_count += 1
+                
+            ctx.cultivate_detail.saved_turns_count = saved_count
     except Exception as e:
         log.info(f"Failed to save career data: {e}")
 
 
 def load_career_data(ctx):
     try:
-        if not os.path.exists(PERSISTENCE_FILE):
+        db = ctx.cultivate_detail.db
+        # Run legacy migration first
+        migrate_json_to_sqlite(db)
+        
+        # Load from SQLite
+        recent = db.get_recent_history(MAX_DATAPOINTS)
+        scores = recent['score_history']
+        stat_only = recent['stat_only_history']
+        energy = recent['energy_history']
+        actions = recent['action_history']
+        raw_stats = recent['raw_stat_history']
+        dates = recent['date_history']
+        
+        if not scores:
+            ctx.cultivate_detail.score_history = []
+            ctx.cultivate_detail.stat_only_history = []
+            ctx.cultivate_detail.energy_history = []
+            ctx.cultivate_detail.action_history = []
+            ctx.cultivate_detail.raw_stat_history = []
+            ctx.cultivate_detail.date_history = []
+            ctx.cultivate_detail.percentile_history = []
+            ctx.cultivate_detail.loaded_history_len = 0
+            ctx.cultivate_detail.saved_turns_count = 0
             return False
-        with open(PERSISTENCE_FILE, 'r') as f:
-            data = json.load(f)
-        stored_version = data.get('version', "")
-        if stored_version != HISTORY_VERSION_FLAG:
-            clear_career_data()
-            return False
-
-        required_keys = {'score_history', 'stat_only_history', 'energy_history', 'action_history', 'raw_stat_history', 'date_history'}
-        if not required_keys.issubset(data.keys()):
-            log.info("Career data format mismatch - clearing old data")
-            clear_career_data()
-            return False
-        score_history = data.get('score_history', [])
-        stat_only_history = data.get('stat_only_history', [])
-        energy_history = data.get('energy_history', [])
-        action_history = data.get('action_history', [])
-        raw_stat_history = data.get('raw_stat_history', [])
-        date_history = data.get('date_history', [])
-        if not score_history:
-            return False
-        scores = score_history[-MAX_DATAPOINTS:]
-        stat_only = stat_only_history[-MAX_DATAPOINTS:]
-        energy = energy_history[-MAX_DATAPOINTS:]
-        actions = action_history[-MAX_DATAPOINTS:]
-        raw_stats = raw_stat_history[-MAX_DATAPOINTS:]
-        dates = date_history[-MAX_DATAPOINTS:]
+            
         ctx.cultivate_detail.score_history = scores
         ctx.cultivate_detail.stat_only_history = stat_only
         ctx.cultivate_detail.energy_history = energy
@@ -112,6 +197,10 @@ def load_career_data(ctx):
         ctx.cultivate_detail.raw_stat_history = raw_stats
         ctx.cultivate_detail.date_history = dates
         ctx.cultivate_detail.percentile_history = rebuild_percentile_history(scores)
+        
+        ctx.cultivate_detail.loaded_history_len = len(scores)
+        ctx.cultivate_detail.saved_turns_count = 0
+        
         log.info(f"Restored career data: {len(scores)} datapoints")
         return True
     except Exception as e:
@@ -123,18 +212,12 @@ def clear_career_data():
     global career_cleared_flag
     try:
         with career_data_lock:
-            with open(PERSISTENCE_FILE, 'w') as f:
-                json.dump({
-                    'version': HISTORY_VERSION_FLAG,
-                    'score_history': [], 
-                    'stat_only_history': [], 
-                    'energy_history': [], 
-                    'action_history': [], 
-                    'raw_stat_history': [], 
-                    'date_history': []
-                }, f)
-                f.flush()
-                os.fsync(f.fileno())
+            from module.umamusume.database import get_database
+            db = get_database()
+            try:
+                db.clear_all_data()
+            finally:
+                db.close()
             try:
                 if os.path.exists(TRAINING_JSON_FILE):
                     os.remove(TRAINING_JSON_FILE)

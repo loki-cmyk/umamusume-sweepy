@@ -135,19 +135,14 @@ def get_task():
 
 @server.get("/api/current-date")
 def get_current_date():
-    import json
-    import os
-    from module.umamusume.persistence import PERSISTENCE_FILE
     try:
-        if not os.path.exists(PERSISTENCE_FILE):
-            return {"date": None}
-        with open(PERSISTENCE_FILE, 'r') as f:
-            data = json.load(f)
-        date_history = data.get('date_history', [])
-        if not date_history:
-            return {"date": None}
-        # Return most recent date
-        return {"date": date_history[-1]}
+        from module.umamusume.database import get_database
+        db = get_database()
+        try:
+            latest_date = db.get_latest_date()
+        finally:
+            db.close()
+        return {"date": latest_date}
     except Exception:
         return {"date": None}
 
@@ -307,16 +302,14 @@ def clear_career_data_endpoint():
 
 @server.get("/api/career-data-count")
 def get_career_data_count():
-    import json
-    import os
-    from module.umamusume.persistence import PERSISTENCE_FILE
     try:
-        if not os.path.exists(PERSISTENCE_FILE):
-            return {"count": 0}
-        with open(PERSISTENCE_FILE, 'r') as f:
-            data = json.load(f)
-        score_history = data.get('score_history', [])
-        return {"count": len(score_history)}
+        from module.umamusume.database import get_database
+        db = get_database()
+        try:
+            count = db.get_total_history_count()
+        finally:
+            db.close()
+        return {"count": count}
     except Exception:
         return {"count": 0}
 

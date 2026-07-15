@@ -1,4 +1,5 @@
 from bot.base.context import BotContext
+from module.umamusume.database import CultivateDatabase
 from module.umamusume.scenario.registry import create_scenario
 from module.umamusume.scenario import ura_scenario
 from module.umamusume.scenario.aoharuhai import AoharuHaiScenario
@@ -158,6 +159,7 @@ class CultivateContextDetail:
     same_title_count: int
 
     def __init__(self):
+        self.db = None
         self.race_chain_map = {}
         self.expect_attribute = None
         self.turn_info = TurnInfo()
@@ -247,6 +249,7 @@ def build_context(task: UmamusumeTask, ctrl) -> UmamusumeContext:
         clear_ignore_cat_food()
         clear_ignore_grilled_carrots()
         detail = CultivateContextDetail()
+        detail.db = CultivateDatabase()
         detail.scenario = create_scenario(task.detail.scenario)
         if detail.scenario is None:
             log.error("Unknown scenario")
