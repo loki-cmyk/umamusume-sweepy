@@ -37,7 +37,14 @@ class CultivateDatabase:
                     CREATE TABLE IF NOT EXISTS runs (
                         id TEXT PRIMARY KEY,
                         scenario_type TEXT DEFAULT 'unknown',
-                        started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        final_speed INTEGER,
+                        final_stamina INTEGER,
+                        final_power INTEGER,
+                        final_guts INTEGER,
+                        final_wits INTEGER,
+                        final_sp INTEGER,
+                        total_turns INTEGER
                     );
                 """)
                 self.conn.execute("""
@@ -56,6 +63,38 @@ class CultivateDatabase:
                 self.conn.execute("""
                     CREATE UNIQUE INDEX IF NOT EXISTS idx_history_run_date
                     ON training_history(run_id, date);
+                """)
+                # Training analysis table
+                self.conn.execute("""
+                    CREATE TABLE IF NOT EXISTS training_analysis (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        run_id TEXT NOT NULL,
+                        date INTEGER NOT NULL,
+                        pre_speed INTEGER NOT NULL,
+                        pre_stamina INTEGER NOT NULL,
+                        pre_power INTEGER NOT NULL,
+                        pre_guts INTEGER NOT NULL,
+                        pre_wits INTEGER NOT NULL,
+                        pre_sp INTEGER NOT NULL,
+                        post_speed INTEGER,
+                        post_stamina INTEGER,
+                        post_power INTEGER,
+                        post_guts INTEGER,
+                        post_wits INTEGER,
+                        post_sp INTEGER,
+                        action TEXT NOT NULL,
+                        max_score REAL,
+                        chosen_stats REAL,
+                        max_stats REAL,
+                        greedy_type TEXT,
+                        is_override INTEGER,
+                        override_reason TEXT,
+                        FOREIGN KEY(run_id) REFERENCES runs(id) ON DELETE CASCADE
+                    );
+                """)
+                self.conn.execute("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS idx_analysis_run_date
+                    ON training_analysis(run_id, date);
                 """)
         except Exception as e:
             log.error(f"Failed to initialize SQLite tables: {e}")
@@ -157,6 +196,7 @@ class CultivateDatabase:
     def clear_all_data(self):
         try:
             with self.conn:
+                self.conn.execute("DELETE FROM training_analysis")
                 self.conn.execute("DELETE FROM training_history")
                 self.conn.execute("DELETE FROM runs")
             log.info("SQLite database cleared successfully")
@@ -265,6 +305,66 @@ class CultivateDatabase:
             log.error(f"Error calculating date-weighted score percentile in DB: {e}")
             return None
 
+    # ------------------------------------------------------------------
+    # Training analysis
+    # ------------------------------------------------------------------
+
+    def save_training_analysis(self, run_id, date, pre_stats, action,
+                               max_score=None, chosen_stats=None, max_stats=None,
+                               greedy_type=None, is_override=0, override_reason=None):
+        """Save a training analysis snapshot for the given turn."""
+        if not run_id:
+            run_id = 'unknown_run'
+        try:
+            with self.conn:
+                self.conn.execute("""
+                    INSERT OR REPLACE INTO training_analysis
+                    (run_id, date, pre_speed, pre_stamina, pre_power, pre_guts, pre_wits, pre_sp,
+                     action, max_score, chosen_stats, max_stats, greedy_type, is_override, override_reason)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (run_id, date,
+                      pre_stats.get('speed', 0), pre_stats.get('stamina', 0),
+                      pre_stats.get('power', 0), pre_stats.get('guts', 0),
+                      pre_stats.get('wits', 0), pre_stats.get('sp', 0),
+                      action, max_score, chosen_stats, max_stats,
+                      greedy_type, is_override, override_reason))
+        except Exception as e:
+            log.error(f"Failed to save training analysis for run {run_id} turn {date}: {e}")
+
+    def update_analysis_post_stats(self, run_id, date, post_stats):
+        """Update the post-action stats for a previously saved analysis row."""
+        if not run_id:
+            return
+        try:
+            with self.conn:
+                self.conn.execute("""
+                    UPDATE training_analysis
+                    SET post_speed=?, post_stamina=?, post_power=?, post_guts=?, post_wits=?, post_sp=?
+                    WHERE run_id=? AND date=?
+                """, (post_stats.get('speed', 0), post_stats.get('stamina', 0),
+                      post_stats.get('power', 0), post_stats.get('guts', 0),
+                      post_stats.get('wits', 0), post_stats.get('sp', 0),
+                      run_id, date))
+        except Exception as e:
+            log.error(f"Failed to update post-stats for run {run_id} turn {date}: {e}")
+
+    def save_run_final_stats(self, run_id, final_stats, total_turns):
+        """Update a run row with final stats when the cultivation finishes."""
+        if not run_id:
+            return
+        try:
+            with self.conn:
+                self.conn.execute("""
+                    UPDATE runs
+                    SET final_speed=?, final_stamina=?, final_power=?,
+                        final_guts=?, final_wits=?, final_sp=?, total_turns=?
+                    WHERE id=?
+                """, (final_stats.get('speed', 0), final_stats.get('stamina', 0),
+                      final_stats.get('power', 0), final_stats.get('guts', 0),
+                      final_stats.get('wits', 0), final_stats.get('sp', 0),
+                      total_turns, run_id))
+        except Exception as e:
+            log.error(f"Failed to save run final stats for {run_id}: {e}")
 
 def get_database() -> CultivateDatabase:
     """Create a short-lived CultivateDatabase for use outside ctx (e.g. API endpoints).

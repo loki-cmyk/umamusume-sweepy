@@ -3,7 +3,6 @@ import os
 import threading
 
 import bot.base.log as logger
-from config import CONFIG
 
 log = logger.get_logger(__name__)
 
@@ -13,8 +12,7 @@ PERSISTENCE_FILE = os.path.normpath(PERSISTENCE_FILE)
 PERSIST_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'persist.json')
 PERSIST_FILE = os.path.normpath(PERSIST_FILE)
 
-TRAINING_JSON_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'training_analysis.jsonl')
-TRAINING_JSON_FILE = os.path.normpath(TRAINING_JSON_FILE)
+
 
 MAX_DATAPOINTS = 2000
 HISTORY_VERSION_FLAG = "aaa"
@@ -218,11 +216,7 @@ def clear_career_data():
                 db.clear_all_data()
             finally:
                 db.close()
-            try:
-                if os.path.exists(TRAINING_JSON_FILE):
-                    os.remove(TRAINING_JSON_FILE)
-            except Exception as le:
-                log.info(f"Failed to clear training analysis json: {le}")
+
             career_cleared_flag = True
         log.info("Career data cleared")
         return True
@@ -231,14 +225,6 @@ def clear_career_data():
         return False
 
 
-def append_training_json(json_str):
-    if CONFIG.bot.log_training_data is False:
-        return
-    try:
-        with open(TRAINING_JSON_FILE, 'a', encoding='utf-8') as f:
-            f.write(json_str + '\n')
-    except Exception as e:
-        log.info(f"Failed to append to training json: {e}")
 
 
 def load_persist():
