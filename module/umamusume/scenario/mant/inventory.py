@@ -1392,9 +1392,6 @@ def get_best_percentile(ctx):
     scores = getattr(ctx.cultivate_detail.turn_info, 'cached_original_scores', None)
     if not scores or len(scores) != 5:
         return None
-    score_history = getattr(ctx.cultivate_detail, 'score_history', [])
-    if len(score_history) < 16:
-        return None
     best_score = max(scores)
 
     # De-boost best_score if megaphone is active
@@ -1404,17 +1401,12 @@ def get_best_percentile(ctx):
         mult = MEGA_STAT_MULT.get(mega_tier, 1.0)
         best_score /= mult
 
-    prev = score_history[:-1]
-    below_count = sum(1 for s in prev if s < best_score)
-    return below_count / len(prev) * 100
+    return ctx.cultivate_detail.db.get_best_percentile(best_score)
 
 
 def get_stat_only_percentile(ctx):
     scores = getattr(ctx.cultivate_detail.turn_info, 'cached_original_scores', None)
     if not scores or len(scores) != 5:
-        return None
-    stat_only_history = getattr(ctx.cultivate_detail, 'stat_only_history', [])
-    if len(stat_only_history) < 16:
         return None
     best_score = getattr(ctx.cultivate_detail.turn_info, 'cached_stat_only_score', None)
     if best_score is None:
@@ -1427,17 +1419,10 @@ def get_stat_only_percentile(ctx):
         mult = MEGA_STAT_MULT.get(mega_tier, 1.0)
         best_score /= mult
 
-    prev = stat_only_history[:-1]
-    below_count = sum(1 for s in prev if s < best_score)
-    return below_count / len(prev) * 100
+    return ctx.cultivate_detail.db.get_stat_only_percentile(best_score)
 
 
 def get_date_weighted_percentile(ctx):
-    raw_stat_history = getattr(ctx.cultivate_detail, 'raw_stat_history', [])
-    date_history = getattr(ctx.cultivate_detail, 'date_history', [])
-    if len(raw_stat_history) < 8 or len(date_history) != len(raw_stat_history):
-        return get_stat_only_percentile(ctx)
-
     current_date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     current_raw = 0.0
     for idx2 in range(5):
@@ -1453,29 +1438,13 @@ def get_date_weighted_percentile(ctx):
         mult = MEGA_STAT_MULT.get(mega_tier, 1.0)
         current_raw /= mult
 
-    weighted_below = 0.0
-    weighted_total = 0.0
-    for i in range(len(raw_stat_history) - 1):
-        d = date_history[i]
-        distance = abs(d - current_date)
-        weight = 1.0 / (1.0 + distance)
-        if distance > 12:
-            continue
-        weighted_total += weight
-        if raw_stat_history[i] < current_raw:
-            weighted_below += weight
-
-    if weighted_total <= 0:
-        return 50.0
-    return weighted_below / weighted_total * 100
+    pct = ctx.cultivate_detail.db.get_date_weighted_percentile(current_date, current_raw)
+    if pct is None:
+        return get_stat_only_percentile(ctx)
+    return pct
 
 
 def get_date_weighted_score_percentile(ctx):
-    score_history = getattr(ctx.cultivate_detail, 'score_history', [])
-    date_history = getattr(ctx.cultivate_detail, 'date_history', [])
-    if len(score_history) < 8 or len(date_history) != len(score_history):
-        return get_stat_only_percentile(ctx)
-
     current_date = getattr(ctx.cultivate_detail.turn_info, 'date', 0)
     scores = getattr(ctx.cultivate_detail.turn_info, 'cached_original_scores', None)
     if not scores or len(scores) != 5:
@@ -1488,24 +1457,14 @@ def get_date_weighted_score_percentile(ctx):
         mult = MEGA_STAT_MULT.get(mega_tier, 1.0)
         current_score /= mult
 
-    weighted_below = 0.0
-    weighted_total = 0.0
-    for i in range(len(score_history) - 1):
-        d = date_history[i]
-        distance = abs(d - current_date)
-        weight = 1.0 / (1.0 + distance)
-        if distance > 12:
-            continue
-        weighted_total += weight
-        if score_history[i] < current_score:
-            weighted_below += weight
-
-    if weighted_total <= 0:
-        return 50.0
-    return weighted_below / weighted_total * 100
+    pct = ctx.cultivate_detail.db.get_date_weighted_score_percentile(current_date, current_score)
+    if pct is None:
+        return get_stat_only_percentile(ctx)
+    return pct
 
 
 MEGA_STAT_MULT = {1: 1.20, 2: 1.40, 3: 1.60}
+
 
 
 def save_megaphone_scan_state_and_tick(ctx):

@@ -135,19 +135,14 @@ def get_task():
 
 @server.get("/api/current-date")
 def get_current_date():
-    import json
-    import os
-    from module.umamusume.persistence import PERSISTENCE_FILE
     try:
-        if not os.path.exists(PERSISTENCE_FILE):
-            return {"date": None}
-        with open(PERSISTENCE_FILE, 'r') as f:
-            data = json.load(f)
-        date_history = data.get('date_history', [])
-        if not date_history:
-            return {"date": None}
-        # Return most recent date
-        return {"date": date_history[-1]}
+        from module.umamusume.database import get_database
+        db = get_database()
+        try:
+            latest_date = db.get_latest_date()
+        finally:
+            db.close()
+        return {"date": latest_date}
     except Exception:
         return {"date": None}
 
@@ -307,16 +302,14 @@ def clear_career_data_endpoint():
 
 @server.get("/api/career-data-count")
 def get_career_data_count():
-    import json
-    import os
-    from module.umamusume.persistence import PERSISTENCE_FILE
     try:
-        if not os.path.exists(PERSISTENCE_FILE):
-            return {"count": 0}
-        with open(PERSISTENCE_FILE, 'r') as f:
-            data = json.load(f)
-        score_history = data.get('score_history', [])
-        return {"count": len(score_history)}
+        from module.umamusume.database import get_database
+        db = get_database()
+        try:
+            count = db.get_total_history_count()
+        finally:
+            db.close()
+        return {"count": count}
     except Exception:
         return {"count": 0}
 
@@ -337,6 +330,63 @@ def get_training_characters():
         if f.lower().endswith(".png"):
             names.append(f[:-4])
     return names
+
+
+@server.get("/api/recent-trainings")
+def get_recent_trainings():
+    try:
+        from module.umamusume.database import get_database
+        from module.umamusume.persistence import load_run_id
+        db = get_database()
+        try:
+            run_id = load_run_id()
+            if not run_id:
+                # Fallback to the latest run in the database
+                cursor = db.conn.cursor()
+                cursor.execute("SELECT run_id FROM training_analysis ORDER BY id DESC LIMIT 1")
+                row = cursor.fetchone()
+                if row:
+                    run_id = row[0]
+            
+            if not run_id:
+                return []
+                
+            cursor = db.conn.cursor()
+            cursor.execute("""
+                SELECT a.date, a.action, h.score, a.max_score, a.chosen_stats
+                FROM training_analysis a
+                LEFT JOIN training_history h ON a.run_id = h.run_id AND a.date = h.date
+                WHERE a.run_id = ? AND a.date <= 75 AND a.action IN (
+                    'TRAINING_TYPE_SPEED', 'TRAINING_TYPE_STAMINA', 'TRAINING_TYPE_POWER',
+                    'TRAINING_TYPE_WILL', 'TRAINING_TYPE_INTELLIGENCE'
+                )
+                ORDER BY a.date DESC
+                LIMIT 5
+            """, (run_id,))
+            rows = cursor.fetchall()
+            
+            results = []
+            for r in rows:
+                date, action, score, max_score, chosen_stats = r
+                
+                results.append({
+                    "date": date,
+                    "action": action,
+                    "score": score if score is not None else max_score,
+                    "gain": chosen_stats if chosen_stats is not None else 0
+                })
+            
+            results.reverse()
+            return results
+        finally:
+            db.close()
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return []
+
+
+
 
 
 @server.get("/training-icon/{name:path}")

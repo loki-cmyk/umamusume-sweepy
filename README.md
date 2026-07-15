@@ -1,10 +1,8 @@
 # Sweepy — /vg/'s Uma Musume Bot
 
-This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). This is the pre-headless fork of Sweepy with fixes I've added.
+This is a fork for Sweepy with a rewrite taken from [waivegames-oss/umamusume-sweepy](https://github.com/waivegames-oss/umamusume-sweepy). This is the pre-headless fork of Sweepy with fixes I've added. See the section below for what's changed versus the original Sweepy.
 
-Turn on auto-use items for MANT or the bot will break. You need to adjust the configurations as well but I don't have any good recommendations. Enable `log_training_data` in `config.yaml` and use `analyze_trainings.py` to see what it's doing.
-
-The bot has support for updated URA/Unity and MANT if you want to still run that.
+The bot currently has support for updated URA/Unity and MANT.
 
 ## Features Not Implemented Yet
 
@@ -27,8 +25,11 @@ Here's what's changed so far that's worth noting, most of the new bot features h
   - If errors occur, the bot will fall back to using ADB.
 - Safety click checks have been added for Rest and Recreation. This was due to the old code using unsafe areas to click on.
 - You can now install the Python dependencies in `venv` and just run `start.bat` without polluting your core Python install.
-- Added a feature under `log_training_data` in `config.yaml` to dump all relevant internal turn data into `training_data.jsonl`.
-  - You can use `analyze_trainings.py` to get a report on what's happened in your runs as well as some suggestions on settings to tweak.
+- Career data is now saved in a SQLite DB; this replaces the old `career_data.json` file.
+  - The original code was reading/writing an entire JSON file every turn which was slow and bad for SSDs.
+  - Calculations for decisions have been moved into SQL queries; verified that the answers are identical to the old code.
+- Training data selection is now also stored in the DB automatically.
+  - You can use `analyze_trainings.py` to get a rough report on what's happened in your runs as well as some suggestions on settings to tweak.
   - This provides a statistical analysis of your runs and helps you find instances where suboptimal decisions could have been made.
     - In this case, we define suboptimal as a case where picked a training which gave less stats.
     - The analysis gives you a breakdown of what caused this choice to be made (e.g., you're forced to rest, the bot is valuing energy gain too much, etc.)

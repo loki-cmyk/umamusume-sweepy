@@ -407,18 +407,34 @@ def script_cultivate_finish(ctx: UmamusumeContext):
     # Log run summary on career finish
     if not getattr(ctx.cultivate_detail, '_run_summary_logged', False):
         try:
-            from module.umamusume.script.cultivate_task.exporter import export_run_summary
-            from module.umamusume.persistence import append_training_json, clear_run_id, clear_last_turn
-            summary_json = export_run_summary(ctx)
-            if summary_json:
-                append_training_json(summary_json)
+            from module.umamusume.persistence import clear_run_id, clear_last_turn
+            
+            uma = ctx.cultivate_detail.turn_info.uma_attribute
+            if any(s == 0 for s in [uma.speed, uma.stamina, uma.power, uma.will, uma.intelligence]):
+                history = getattr(ctx.cultivate_detail, 'turn_info_history', [])
+                if history:
+                    uma = history[-1].uma_attribute
+            
+            final_stats = {
+                "speed": uma.speed,
+                "stamina": uma.stamina,
+                "power": uma.power,
+                "guts": uma.will,
+                "wits": uma.intelligence,
+                "sp": uma.skill_point,
+            }
+            total_turns = len(getattr(ctx.cultivate_detail, 'turn_info_history', []))
+            run_id = getattr(ctx.cultivate_detail, 'run_id', 'unknown_run')
+            
+            ctx.cultivate_detail.db.save_run_final_stats(run_id, final_stats, total_turns)
+            
             clear_run_id()
             clear_last_turn()
             if hasattr(ctx.cultivate_detail, 'last_logged_date'):
                 delattr(ctx.cultivate_detail, 'last_logged_date')
             ctx.cultivate_detail._run_summary_logged = True
         except Exception as e:
-            log.error(f"Failed to export run summary: {e}")
+            log.error(f"Failed to save run final stats: {e}")
     time.sleep(2.0) # sleep in case we enter the final screen too late
     if not ctx.task.detail.manual_purchase_at_end:
         if not ctx.cultivate_detail.cultivate_finish:

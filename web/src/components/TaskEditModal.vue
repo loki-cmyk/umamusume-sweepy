@@ -78,7 +78,7 @@
                    <button type="button" class="btn btn-sm btn-outline-danger" @click="clearCareerData">Clear Training Data</button>
                  </div>
                   <div class="mt-1" style="font-size:0.85em;color:var(--muted-2)">
-                    Training history: {{ careerDataCount }}/2000
+                    Training history: {{ careerDataCount }}/10000
                   </div>
                </div>
               <div class="row" v-if="selectedScenario === 2">

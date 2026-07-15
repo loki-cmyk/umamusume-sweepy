@@ -191,17 +191,23 @@ def script_cultivate_main_menu(ctx: UmamusumeContext):
         prev_turn_date = getattr(ctx.cultivate_detail.turn_info, '_prev_turn_date', None)
         if prev_turn_date is not None:
             try:
-                from module.umamusume.script.cultivate_task.exporter import export_post_stats
-                from module.umamusume.persistence import append_training_json, get_sanitized_turn
-
-                # Sanitize the previous turn date using the centralized logic
+                from module.umamusume.persistence import get_sanitized_turn
                 sanitized_prev_date = get_sanitized_turn(ctx.cultivate_detail, prev_turn_date)
-
-                post_json = export_post_stats(ctx, sanitized_prev_date)
-                if post_json:
-                    append_training_json(post_json)
+                
+                uma = ctx.cultivate_detail.turn_info.uma_attribute
+                post_stats = {
+                    "speed": uma.speed,
+                    "stamina": uma.stamina,
+                    "power": uma.power,
+                    "guts": uma.will,
+                    "wits": uma.intelligence,
+                    "sp": uma.skill_point,
+                }
+                
+                run_id = getattr(ctx.cultivate_detail, 'run_id', 'unknown_run')
+                ctx.cultivate_detail.db.update_analysis_post_stats(run_id, sanitized_prev_date, post_stats)
             except Exception as e:
-                log.error(f"Failed to export post-stats: {e}")
+                log.error(f"Failed to save post-stats to SQLite: {e}")
             ctx.cultivate_detail.turn_info._prev_turn_date = None
 
         from module.umamusume.asset.race_data import get_races_for_period

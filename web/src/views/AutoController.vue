@@ -19,7 +19,7 @@
             <div class="col-sm-3">
               <div class="stat-card">
                 <div class="stat-label">History</div>
-                <div class="stat-value">{{ careerDataCount }}/2000</div>
+                <div class="stat-value">{{ careerDataCount }}/10000</div>
               </div>
             </div>
             <div class="col-sm-3">
@@ -96,17 +96,20 @@
           :auto-log="autoLog"
           :toggle-auto-log="toggleAutoLog"
         />
+
+        <training-analysis-panel v-if="runningTask" :recent-trainings="recentTrainings" />
       </div>
     </div>
   </div>
 </template>
-
-<script>
+<script>
 import SchedulerPanel from "../components/SchedulerPanel.vue";
 import LogPanel from "../components/base/LogPanel.vue";
+import TrainingAnalysisPanel from "../components/TrainingAnalysisPanel.vue";
+
 export default {
   name: "AutoController",
-  components: { LogPanel, SchedulerPanel },
+  components: { LogPanel, SchedulerPanel, TrainingAnalysisPanel },
   data() {
     return {
       taskId: '0',
@@ -118,68 +121,72 @@ export default {
       logContent: "",
       autoLog: true,
       taskLogTimer: undefined,
-       runtimeState: { repetitive_count: 0, repetitive_other_clicks: 0, repetitive_threshold: 11, watchdog_unchanged: 0, watchdog_threshold: 3 },
-       editRepetitive: 11,
+      runtimeState: { repetitive_count: 0, repetitive_other_clicks: 0, repetitive_threshold: 11, watchdog_unchanged: 0, watchdog_threshold: 3 },
+      editRepetitive: 11,
       editWatchdog: 3,
       detectedSkills: [],
       detectedPortraits: [],
-       detectedItems: [],
-       detectedShopItems: [],
-       careerDataCount: 0,
-       careerDataTimer: null,
-       currentDate: null,
-       currentDateTimer: null,
-       taskListTimer: null,
-       runtimeStateTimer: null,
-       shopItemsTimer: null,
-       detectedItemsTimer: null,
-       detectedSkillsTimer: null,
-       detectedPortraitsTimer: null
-     }
-   },
+      detectedItems: [],
+      detectedShopItems: [],
+      careerDataCount: 0,
+      careerDataTimer: null,
+      currentDate: null,
+      currentDateTimer: null,
+      taskListTimer: null,
+      runtimeStateTimer: null,
+      shopItemsTimer: null,
+      detectedItemsTimer: null,
+      detectedSkillsTimer: null,
+      detectedPortraitsTimer: null,
+      recentTrainings: [],
+      recentTrainingsTimer: null
+    }
+  },
   computed: {
     formattedDate(){
       if (this.currentDate === null) return '—';
       if (this.currentDate >= 73) return 'Finale';
       return `Day ${this.currentDate}`;
     }
-   },
-   mounted(){
-     this.getTaskList();
-     this.getTaskLog();
-     this.pollRuntimeState();
-     this.pollDetectedShopItems();
-     this.fetchCareerDataCount();
-     this.fetchCurrentDate();
-     this.careerDataTimer = setInterval(this.fetchCareerDataCount, 3000);
-     this.currentDateTimer = setInterval(this.fetchCurrentDate, 1000);
-      this.taskListTimer = setInterval(this.getTaskList, 3000);
-      this.runtimeStateTimer = setInterval(this.pollRuntimeState, 2000);
-      this.shopItemsTimer = setInterval(this.pollDetectedShopItems, 5000);
-      this.taskLogTimer = setInterval(this.getTaskLog, 1000);
-      this.detectedItemsTimer = setInterval(this.pollDetectedItems, 3000);
-      this.detectedSkillsTimer = setInterval(this.pollDetectedSkills, 3000);
-      this.detectedPortraitsTimer = setInterval(this.pollDetectedPortraits, 3000);
-      this.pollDetectedItems();
-      this.pollDetectedSkills();
-      this.pollDetectedPortraits();
-   },
-   methods:{
-     fetchCareerDataCount() {
-       this.axios.get('/api/career-data-count').then(res => {
-         this.careerDataCount = res.data.count;
-       }).catch(() => {
-         this.careerDataCount = 0;
-       });
-     },
-     fetchCurrentDate(){
-       this.axios.get('/api/current-date').then(res => {
-         this.currentDate = res.data.date;
-       }).catch(() => {
-         this.currentDate = null;
-       });
-     },
-     scrollToLogs(){
+  },
+  mounted(){
+    this.getTaskList();
+    this.getTaskLog();
+    this.pollRuntimeState();
+    this.pollDetectedShopItems();
+    this.fetchCareerDataCount();
+    this.fetchCurrentDate();
+    this.pollRecentTrainings();
+    this.careerDataTimer = setInterval(this.fetchCareerDataCount, 3000);
+    this.currentDateTimer = setInterval(this.fetchCurrentDate, 1000);
+    this.taskListTimer = setInterval(this.getTaskList, 3000);
+    this.runtimeStateTimer = setInterval(this.pollRuntimeState, 2000);
+    this.shopItemsTimer = setInterval(this.pollDetectedShopItems, 5000);
+    this.taskLogTimer = setInterval(this.getTaskLog, 1000);
+    this.detectedItemsTimer = setInterval(this.pollDetectedItems, 3000);
+    this.detectedSkillsTimer = setInterval(this.pollDetectedSkills, 3000);
+    this.detectedPortraitsTimer = setInterval(this.pollDetectedPortraits, 3000);
+    this.recentTrainingsTimer = setInterval(this.pollRecentTrainings, 3000);
+    this.pollDetectedItems();
+    this.pollDetectedSkills();
+    this.pollDetectedPortraits();
+  },
+  methods:{
+    fetchCareerDataCount() {
+      this.axios.get('/api/career-data-count').then(res => {
+        this.careerDataCount = res.data.count;
+      }).catch(() => {
+        this.careerDataCount = 0;
+      });
+    },
+    fetchCurrentDate(){
+      this.axios.get('/api/current-date').then(res => {
+        this.currentDate = res.data.date;
+      }).catch(() => {
+        this.currentDate = null;
+      });
+    },
+    scrollToLogs(){
       const el = document.getElementById('scroll_text');
       if (el) el.focus();
     },
@@ -265,25 +272,27 @@ export default {
           this.detectedShopItems = res.data
         }
       }).catch(()=>{})
+    },
+    pollRecentTrainings() {
+      this.axios.get('/api/recent-trainings').then(res => {
+        if (res && res.data) {
+          this.recentTrainings = res.data;
+        }
+      }).catch(() => {});
     }
   },
   beforeUnmount(){
-     if (this.careerDataTimer) clearInterval(this.careerDataTimer);
-     if (this.currentDateTimer) clearInterval(this.currentDateTimer);
-     if (this.taskListTimer) clearInterval(this.taskListTimer);
-     if (this.runtimeStateTimer) clearInterval(this.runtimeStateTimer);
-     if (this.shopItemsTimer) clearInterval(this.shopItemsTimer);
-     if (this.taskLogTimer) clearInterval(this.taskLogTimer);
-     if (this.detectedItemsTimer) clearInterval(this.detectedItemsTimer);
-     if (this.detectedSkillsTimer) clearInterval(this.detectedSkillsTimer);
-     if (this.detectedPortraitsTimer) clearInterval(this.detectedPortraitsTimer);
-   }
- }
+    if (this.careerDataTimer) clearInterval(this.careerDataTimer);
+    if (this.currentDateTimer) clearInterval(this.currentDateTimer);
+    if (this.taskListTimer) clearInterval(this.taskListTimer);
+    if (this.runtimeStateTimer) clearInterval(this.runtimeStateTimer);
+    if (this.shopItemsTimer) clearInterval(this.shopItemsTimer);
+    if (this.taskLogTimer) clearInterval(this.taskLogTimer);
+    if (this.detectedItemsTimer) clearInterval(this.detectedItemsTimer);
+    if (this.detectedSkillsTimer) clearInterval(this.detectedSkillsTimer);
+    if (this.detectedPortraitsTimer) clearInterval(this.detectedPortraitsTimer);
+    if (this.recentTrainingsTimer) clearInterval(this.recentTrainingsTimer);
+  }
+}
 </script>
 
-<style scoped>
-.stat-label{font-size:12px;color:var(--muted)}
-.stat-value{font-size:22px;font-weight:700;color:#fff}
-.spot-title{font-weight:700;color:#fff}
-.spot-meta{font-size:12px;color:var(--muted)}
-</style>

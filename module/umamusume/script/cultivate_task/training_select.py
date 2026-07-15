@@ -37,6 +37,114 @@ log = logger.get_logger(__name__)
 
 character_detector = CharacterDetector()
 
+
+def log_training_decision_to_db(ctx, op):
+    try:
+        db = ctx.cultivate_detail.db
+        run_id = getattr(ctx.cultivate_detail, 'run_id', 'unknown_run')
+        date = int(ctx.cultivate_detail.turn_info.date)
+        
+        uma = ctx.cultivate_detail.turn_info.uma_attribute
+        pre_stats = {
+            "speed": uma.speed,
+            "stamina": uma.stamina,
+            "power": uma.power,
+            "guts": uma.will,
+            "wits": uma.intelligence,
+            "sp": uma.skill_point,
+        }
+        
+        action_name = "unknown"
+        if op is not None:
+            if op.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_TRAINING:
+                tt = op.training_type
+                if tt == TrainingType.TRAINING_TYPE_UNKNOWN:
+                    tt = getattr(ctx.cultivate_detail.turn_info, 'cached_training_type', TrainingType.TRAINING_TYPE_SPEED)
+                action_name = tt.name
+            else:
+                action_name = op.turn_operation_type.name
+                
+        # Append to action_history for save_career_data
+        if not hasattr(ctx.cultivate_detail, 'action_history'):
+            ctx.cultivate_detail.action_history = []
+        ctx.cultivate_detail.action_history.append(action_name)
+        if len(ctx.cultivate_detail.action_history) > MAX_DATAPOINTS:
+            ctx.cultivate_detail.action_history = ctx.cultivate_detail.action_history[-MAX_DATAPOINTS:]
+            
+        # Decision Quality metrics
+        max_score = None
+        chosen_stats = None
+        max_stats = None
+        greedy_type = None
+        is_override = 0
+        override_reason = None
+        
+        computed_scores = getattr(ctx.cultivate_detail.turn_info, 'cached_computed_scores', [])
+        if computed_scores and len(computed_scores) >= 5:
+            max_score = float(max(computed_scores[:5]))
+            
+        # Get stat sums for trainings
+        stat_sums = []
+        training_info_list = getattr(ctx.cultivate_detail.turn_info, 'training_info_list', [])
+        if training_info_list and len(training_info_list) >= 5:
+            for idx2 in range(5):
+                til2 = training_info_list[idx2]
+                sr = getattr(til2, 'stat_results', {})
+                stat_sums.append(float(sum(v for v in sr.values() if v > 0)))
+                
+        if stat_sums:
+            max_stats = max(stat_sums)
+            max_stat_idx = stat_sums.index(max_stats)
+            type_names = ["TRAINING_TYPE_SPEED", "TRAINING_TYPE_STAMINA", "TRAINING_TYPE_POWER",
+                          "TRAINING_TYPE_WILL", "TRAINING_TYPE_INTELLIGENCE"]
+            greedy_type = type_names[max_stat_idx]
+            
+            if op is not None and op.turn_operation_type == TurnOperationType.TURN_OPERATION_TYPE_TRAINING:
+                tt = op.training_type
+                if tt == TrainingType.TRAINING_TYPE_UNKNOWN:
+                    tt = getattr(ctx.cultivate_detail.turn_info, 'cached_training_type', TrainingType.TRAINING_TYPE_SPEED)
+                chosen_idx = tt.value - 1
+                if 0 <= chosen_idx < 5:
+                    chosen_stats = stat_sums[chosen_idx]
+                    if tt.name != greedy_type:
+                        is_override = 1
+                        
+                        # Infer reason
+                        chosen_ti = training_info_list[chosen_idx]
+                        greedy_ti = training_info_list[max_stat_idx]
+                        
+                        chosen_sc = len(getattr(chosen_ti, "support_card_info_list", []))
+                        greedy_sc = len(getattr(greedy_ti, "support_card_info_list", []))
+                        
+                        if chosen_sc > greedy_sc:
+                            override_reason = "support_card_bonus"
+                        elif getattr(chosen_ti, "has_hint", False) and not getattr(greedy_ti, "has_hint", False):
+                            override_reason = "hint_bonus"
+                        elif (getattr(greedy_ti, "failure_rate", 0) or 0) > (getattr(chosen_ti, "failure_rate", 0) or 0):
+                            override_reason = "failure_rate"
+                        elif abs(getattr(chosen_ti, "energy_change", 0) or 0) > abs(getattr(greedy_ti, "energy_change", 0) or 0):
+                            override_reason = "energy_management"
+                        elif chosen_idx == 4:  # Wit
+                            override_reason = "energy_management"
+                        else:
+                            override_reason = "other"
+                            
+        db.save_training_analysis(
+            run_id=run_id,
+            date=date,
+            pre_stats=pre_stats,
+            action=action_name,
+            max_score=max_score,
+            chosen_stats=chosen_stats,
+            max_stats=max_stats,
+            greedy_type=greedy_type,
+            is_override=is_override,
+            override_reason=override_reason
+        )
+    except Exception as e:
+        log.error(f"Failed to log training decision to SQLite: {e}")
+
+
 FACILITY_NAME_MAP = {
     TrainingType.TRAINING_TYPE_SPEED: "speed",
     TrainingType.TRAINING_TYPE_STAMINA: "stamina",
@@ -1063,6 +1171,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                     log.info(f"Group card override: percentile {percentile:.1f} < {gc_percentile}, switching to REST")
                     ctx.cultivate_detail.turn_info.turn_operation = TurnOperation()
                     ctx.cultivate_detail.turn_info.turn_operation.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
+                    log_training_decision_to_db(ctx, ctx.cultivate_detail.turn_info.turn_operation)
                     ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
                     return
 
@@ -1116,6 +1225,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
                             ctx.cultivate_detail.mant_cleat_used = False
                         op_from_ai.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
                         ctx.cultivate_detail.turn_info.turn_operation = op_from_ai
+                        log_training_decision_to_db(ctx, op_from_ai)
                         ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
                         return
                     else:
@@ -1130,18 +1240,21 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
             op_new.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_RACE
             op_new.race_id = extra_race_this_turn[0]
             ctx.cultivate_detail.turn_info.turn_operation = op_new
+            log_training_decision_to_db(ctx, op_new)
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
             return
         elif should_use_pal_outing_simple(ctx):
             log.info("Skipping energy items - using pal outing instead")
             op_new.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_TRIP
             ctx.cultivate_detail.turn_info.turn_operation = op_new
+            log_training_decision_to_db(ctx, op_new)
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
             return
         else:
             log.info("Skipping energy items - resting instead")
             op_new.turn_operation_type = TurnOperationType.TURN_OPERATION_TYPE_REST
             ctx.cultivate_detail.turn_info.turn_operation = op_new
+            log_training_decision_to_db(ctx, op_new)
             ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
             return
 
@@ -1232,6 +1345,7 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
         if op.training_type == TrainingType.TRAINING_TYPE_UNKNOWN:
             op.training_type = local_training_type
         
+        log_training_decision_to_db(ctx, op)
         ctx.ctrl.click_by_point(TRAINING_POINT_LIST[op.training_type.value - 1])
         time.sleep(0.15)
         ctx.ctrl.click_by_point(TRAINING_POINT_LIST[op.training_type.value - 1])
@@ -1242,5 +1356,6 @@ def script_cultivate_training_select(ctx: UmamusumeContext):
     else:
         log.info("No turn operation was reached, returning to main menu.")
     
+    log_training_decision_to_db(ctx, op)
     ctx.ctrl.click_by_point(RETURN_TO_CULTIVATE_MAIN_MENU)
     return
