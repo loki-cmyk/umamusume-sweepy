@@ -114,6 +114,7 @@ def main():
     all_divs = soup.find_all("div")
     extracted_data = []
     
+    seen_occurrences = set()
     for race_name in races_to_find:
         search_name = name_mappings.get(race_name, race_name)
         found = False
@@ -164,6 +165,11 @@ def main():
                         distance = distance_str.replace(" m", "").strip()
                         
                         turn_idx = calculate_turn_index(html_year, html_date)
+                        occ_key = (race_name, turn_idx)
+                        if occ_key in seen_occurrences:
+                            continue
+                        seen_occurrences.add(occ_key)
+                        
                         csv_date_str = f"{map_year(html_year)} {html_date}"
                         csv_grade = map_grade(ribbon_src)
                         
@@ -188,7 +194,6 @@ def main():
                             "distance_type": csv_dist_type
                         })
                         found = True
-                        break
         
         if not found:
             print(f"WARNING: Race '{race_name}' not found.")
