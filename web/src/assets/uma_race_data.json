@@ -3739,6 +3739,69 @@
       "terrain": "Dirt",
       "distance": "Mile",
       "venue": "Funabashi"
+    },
+    {
+      "id": 2405,
+      "name": "Sparking Lady Cup",
+      "date": "Senior Year Early Jul",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Kawasaki"
+    },
+    {
+      "id": 2406,
+      "name": "Mercury Cup",
+      "date": "Senior Year Late Jul",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Medium",
+      "venue": "Morioka"
+    },
+    {
+      "id": 2407,
+      "name": "Cluster Cup",
+      "date": "Senior Year Late Aug",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Sprint",
+      "venue": "Morioka"
+    },
+    {
+      "id": 2408,
+      "name": "Mile Championship Nambu Hai",
+      "date": "Senior Year Early Oct",
+      "type": "G1",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Morioka"
+    },
+    {
+      "id": 2409,
+      "name": "Ladies' Prelude",
+      "date": "Senior Year Early Oct",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Ooi"
+    },
+    {
+      "id": 2410,
+      "name": "Tokyo Hai",
+      "date": "Senior Year Early Oct",
+      "type": "G2",
+      "terrain": "Dirt",
+      "distance": "Sprint",
+      "venue": "Ooi"
+    },
+    {
+      "id": 2411,
+      "name": "Queen Sho",
+      "date": "Senior Year Early Dec",
+      "type": "G3",
+      "terrain": "Dirt",
+      "distance": "Mile",
+      "venue": "Funabashi"
     }
   ]
 }
